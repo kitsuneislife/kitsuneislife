@@ -1,6 +1,6 @@
 #cursorwrap {position: absolute; width: auto; height: auto; margin-top: -9px; margin-left: -9px; padding: 14px;}
 
-.inf {width: 584px; height: auto; padding-right: 10px; padding-left: 10px; margin-bottom: 15px; border: 1px solid orange; background-image: url(/assets/medialog/diagstripe.gif);}
+.inf {width: 584px; height: auto; padding-right: 10px; padding-left: 10px; margin-bottom: 15px; border: 1px solid orange; background-image: url("../assets/medialog/diagstripe.gif");}
 .cover {float: left; width: 60px; margin-right: 10px;}
 .cover:hover {top:-50px; left:-35px; width:150px; height:auto; display: block; -webkit-transition-property: all; cursor: pointer;}
 
