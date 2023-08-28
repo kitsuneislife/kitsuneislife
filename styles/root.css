@@ -6,10 +6,10 @@ body {
   overflow-x: hidden;
 }
 
-@font-face {
+/*@font-face {
   src: url("../assets/fonts/birchleaf.ttf");
   font-family: "birchleaf";
-}
+}*/
 
 @keyframes jerk {
   0% {

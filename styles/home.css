@@ -4,7 +4,7 @@ body {
   color: black;
   line-height: 15.5px;
 
-  background-image: url("/assets/home/bg.jpeg");
+  background-image: url("../assets/home/bg.jpeg");
   background-size: cover;
 }
 
@@ -82,9 +82,9 @@ body {
   margin-top: -10px;
   margin-left: -10px;
   margin-bottom: 5px;
-  background-image: url("/assets/home/banner.png");
+  background-image: url("../assets/home/banner.png");
   background-size: cover;
-  background-position: ;
+  /*background-position: ;*/
 }
 
 /* */

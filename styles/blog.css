@@ -5,7 +5,7 @@ body {
   color: magenta;
   font-smooth: never;
   line-height: 15.5px;
-  background-image: url("https://redstring.neocities.org/images/natsume/heart.jpg");
+  background-image: url("../assets/blog/heart.jpg");
   background-repeat: no-repeat;
   background-size: 70%;
   background-position: left top;
@@ -15,7 +15,7 @@ body {
 
 body::after {
   content: "";
-  background: url("https://redstring.neocities.org/images/natsume/sailor.jpg");
+  background: url("../assets/blog/sailor.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: right center;
@@ -128,7 +128,7 @@ body::after {
   margin-top: 100px;
   width: 350px;
   height: 650px;
-  background-image: url(https://redstring.neocities.org/images/natsume/ntm1.png);
+  background-image: url("../assets/blog/ntm1.png");
   background-position: top left;
   background-repeat: no-repeat;
 }

@@ -4,13 +4,13 @@ body {
   color: black;
   font-smooth: never;
   line-height: 15.5px;
-  background-image: url(/assets/medialog/argyl02.gif);
+  background-image: url("../assets/medialog/argyl02.gif");
   overflow-y: hidden;
 }
 
 body::after {
   content: "";
-  background: url(/assets/medialog/lace.png);
+  background: url("../assets/medialog/lace.png");
     background-position-x: 0%;
     background-position-y: 0%;
     background-repeat: repeat;
@@ -106,7 +106,7 @@ body::after {
   border-bottom: none;
   border-top: none;
   overflow: hidden;
-  background-image: url(/assets/medialog/banner.jpg);
+  background-image: url("../assets/medialog/banner.jpg");
   background-size: cover;
 }
 
@@ -125,7 +125,7 @@ body::after {
   height: auto;
   padding: 12px;
   border-right: 1px solid orange;
-  background-image: url(/assets/medialog/diagstripe.gif);
+  background-image: url("../assets/medialog/diagstripe.gif");
 }
 
 .main-nav-item {
