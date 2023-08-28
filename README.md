@@ -32,7 +32,7 @@ Discord: @kitsuneislife
   <a href="https://github.com/kitsuneislife"><img width="50%" src="http://github-readme-streak-stats.herokuapp.com/?user=kitsuneislife&theme=radical&date_format=M%20j%5B%2C%20Y%5D&ring=ff3068&fire=ff3068&sideNums=ff3068"></a>
 
   <br><br><br><br><br><br><br><br><br><br><br><br>
-## 🎮 Tente pressionar o botão e descer a página
+/*## 🎮 Tente pressionar o botão e descer a página
 
 <div style="background:white;">
 <img src="https://toy.aoaoao.me/image" width="300"/> 
@@ -42,4 +42,4 @@ Discord: @kitsuneislife
 <br><a href="https://toy.aoaoao.me/control?button=3&callback=https://github.com/kitsuneislife"><img src="/images/blank.png" width="35"/><img src="/images/down.png" width="35"/></a>
 <br><img src="/images/blank.png" width="35"/><img src="/images/blank.png" width="35"/><a href="https://toy.aoaoao.me/control?button=6&callback=https://github.com/kitsuneislife"><img src="/images/select.png" height="35"/></a> <a href="https://toy.aoaoao.me/control?button=7&callback=https://github.com/kitsuneislife"><img src="/images/start.png" height="35" /></a>
   </div>
-  </div>
+  </div>*/
