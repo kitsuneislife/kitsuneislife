@@ -1,0 +1,27 @@
+@font-face {font-family: ms-serif; src: url(/Assets/Fonts/ms-serif.ttf)}
+@font-face {font-family: creata; src: url(/Assets/Fonts/magazine.ttf)}
+
+:root {
+  --white: #f4f3f0;
+  --light-gray: #b6b2a8;
+  --gray: #858278;
+  --dark-gray: #575452;
+  --off-black: #282625;
+  --black: #121212;
+  --blue: #32a7e2;
+  --red: #e23254;
+  --yellow: #e2a732;
+
+  --wobble: cubic-bezier(.09,.39,0,2.75);
+  scrollbar-color: var(--off-black) var(--black);
+}
+
+html, main, body {
+  margin: 0;
+}
+
+body {
+  color: white;
+  font-family: Helvetica, sans-serif;
+  image-rendering: pixelated
+}
