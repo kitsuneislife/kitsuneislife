@@ -2,7 +2,7 @@
 > neofetch
 ```
 
-<img align="left" src="https://cdn.discordapp.com/attachments/786213920917422130/1145803097789190247/Ena_talking.gif?width=1000" width="295" /> 
+<img align="left" src="https://media.discordapp.net/attachments/786213920917422130/1262041625279074304/alma__1_-removebg-preview.png?ex=6695275b&is=6693d5db&hm=86bd73c0e5c38ba5cde04aaaba2f229d49a879121a930787eaebac1d6038a428&=&format=webp&quality=lossless&width=550&height=550" width="295" /> 
 
 ```csharp
 kitsuneislife@github
@@ -11,22 +11,35 @@ OS: Windows x86_64
 Shell: zsh 5.8
 Pronomes: Ele/Dele/Ela/Dela
 Loc: Paraná, BR
-Frameworks: React Native, Express
-Linguagens: JavaScript, Node.js,
-           HTML, CSS, Ejs
-Aprendendo: MySQL, SQlite
-          Python, C++
-Lendo: A Toca das Raposas (Nora Sakavic)
-Assistindo: Junji ito Collection
 Ouvindo: How to Disappear
 Discord: @kitsuneislife
-```
 
-<br><br><br>
+
+
+
+
+
+```
+<br>
+
+![JavaScript](https://img.shields.io/badge/​-Javascript-323330?logo=javascript)
+![Typescript](https://img.shields.io/badge/​-Typescript-3178C6?logo=typescript)
+![HTML5](https://img.shields.io/badge/​-HTML5-E34F26?logo=html5)
+![CSS3](https://img.shields.io/badge/​-CSS3-1572B6?logo=css3)
+
+![React.js](https://img.shields.io/badge/​-React.js-61DAFB?logo=react)
+![NodeJS](https://img.shields.io/badge/​-NodeJS-5FA04E?logo=nodedotjs)
+![Firebase](https://img.shields.io/badge/​-Firebase-DD2C00?logo=firebase)
+![MongoDB](https://img.shields.io/badge/​-MongoDB-47A248?logo=mongodb)
+![Redis](https://img.shields.io/badge/​-Redis-FF4438?logo=redis)
+
 
 ## ⭐ Estatísticas
 
-  <a href="https://github.com/kitsuneislife"><img width="50%" src="https://github-readme-stats.vercel.app/api?username=kitsuneislife&theme=radical&title_color=ff3068?"></a>
-  <a href="https://github.com/kitsuneislife"><img width="50%" src="http://github-readme-streak-stats.herokuapp.com/?user=kitsuneislife&theme=radical&date_format=M%20j%5B%2C%20Y%5D&ring=ff3068&fire=ff3068&sideNums=ff3068"></a>
+![](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=kitsuneislife&theme=dracula)
 
+![](https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=kitsuneislife&theme=dracula) 
+![](https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=kitsuneislife&theme=dracula) 
 
+![](https://github-profile-summary-cards.vercel.app/api/cards/stats?username=kitsuneislife&theme=dracula) 
+![](https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=kitsuneislife&theme=dracula) 
