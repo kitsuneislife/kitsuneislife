@@ -38,6 +38,8 @@ Discord: @kitsuneislife
 
 ## ⭐ Estatísticas
 
+<div align="center">
+
 ![](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=kitsuneislife&theme=dracula)
 
 ![](https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=kitsuneislife&theme=dracula) 
@@ -45,3 +47,5 @@ Discord: @kitsuneislife
 
 ![](https://github-profile-summary-cards.vercel.app/api/cards/stats?username=kitsuneislife&theme=dracula) 
 ![](https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=kitsuneislife&theme=dracula) 
+
+</div>
