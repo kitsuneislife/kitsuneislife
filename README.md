@@ -2,7 +2,7 @@
 > neofetch
 ```
 
-<img align="left" src="https://media.discordapp.net/attachments/786213920917422130/1262041625279074304/alma__1_-removebg-preview.png?ex=6695275b&is=6693d5db&hm=86bd73c0e5c38ba5cde04aaaba2f229d49a879121a930787eaebac1d6038a428&=&format=webp&quality=lossless&width=550&height=550" width="295" /> 
+<img align="left" src="https://imgur.com/uVQFfu7" width="295" /> 
 
 ```csharp
 kitsuneislife@github
