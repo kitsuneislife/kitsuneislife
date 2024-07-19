@@ -9,7 +9,7 @@ kitsuneislife@github
 -------------------------
 OS: Windows x86_64
 Shell: zsh 5.8
-Pronomes: Ele/Dele/Ela/Dela
+Pronomes: They
 Loc: Paraná, BR
 Ouvindo: How to Disappear
 Discord: @kitsuneislife
