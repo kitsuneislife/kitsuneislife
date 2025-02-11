@@ -12,7 +12,7 @@ Shell: zsh 5.8
 Pronomes: They
 Loc: Paraná, BR
 Ouvindo: How to Disappear
-Discord: @kitsuneislife
+Discord: @eith3r
 
 
 
