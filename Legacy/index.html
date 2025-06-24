@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>kitsuneislife</title>
+  <style>
+    canvas { display: block; width: 100%; height: 100vh; }
+    body { margin: 0; overflow: hidden; }
+  </style>
+  <link rel="stylesheet" href="./styles/main.css"/>
+</head>
+<body>
+  <div id="init-overlay">
+    <span class="init-label">
+        Esta é uma experiência projetada para o computador.
+        <br>Por favor, use um computador para acessar este site.
+        <br>Com carinho, kitsuneislife.
+    </span>
+    <button class="init-button" onclick="init()">Continuar</button>
+  </div>
+  <div id="overlay">
+    <img id="overlay-audio" src="./assets/icons/volume-off.svg" alt="Mute Audio" onclick="toggleAudio()" />
+    <a id="overlay-watermark" href="https://github.com/kitsuneislife" target="_blank">
+        <img id="overlay-github" src="./assets/icons/github.svg" alt="Github"/>
+        <span>kitsuneislife</span>
+    </a>    
+    <div id="menu-about" onclick="initAbout();">
+        <span id="menu-about-label">SOBRE<br>MIM</span>
+    </div>
+  </div>
+  <div id="about-overlay" class="hidden">
+    <span id="about-text" style="position: absolute; top: 10vh; left: 10vw;">
+        A busca por me compreender me faz ter uma mente curiosa, mas também carrego um certo peso emocional — talvez por sentir que ninguém realmente enxerga quem eu sou. E essa falta de conexão genuína acaba gerando uma sensação de isolamento, mesmo quando estou cercado de pessoas.
+    </span>
+    <span id="about-text" style="position: absolute; top: 60vh; left: 5vw;">
+        Ficar sozinho, pra mim, é tanto um refúgio quanto um desafio. Quando estou com amigos ou saindo, sinto que consigo escapar um pouco da minha própria mente. Mas, quando estou sozinho, acabo tendo que lidar com meus sentimentos.
+    </span>
+    <span id="about-text" style="position: absolute; top: 20vh; left: 60vw;">
+        Os traumas que vivi me ensinaram a ser mais cauteloso, talvez por medo de me machucar de novo ou de reviver experiências ruins do passado. Então, mesmo que eu tenha facilidade pra conversar e me aproximar das pessoas, existe sempre um certo receio sobre até onde posso ir sem me expor demais.
+    </span>
+    <span id="about-text" style="position: absolute; top: 60vh; left: 12vw;">
+        Quando minha confiança é abalada, parece que nunca mais volta a ser a mesma. Eu até posso continuar com a pessoa, mas sempre com uma certa cautela, como se estivesse esperando pra ver se tudo vai se repetir. Isso faz com que eu pareça alguém compreensivo, mas, ao mesmo tempo, alguém que carrega feridas que nunca cicatrizam por completo.
+    </span>
+    <span id="about-text" style="position: absolute; top: 30vh; left: 25vw;">
+        O fato de eu ter aprendido a "ignorar" meus medos mostra que, de certa forma, tento seguir em frente apesar dele — mas ele ainda está ali, me puxando pra trás de vez em quando. Isso acaba fazendo com que eu tenha dificuldade em arriscar ou confiar em mim mesmo, porque uma parte de mim sempre espera que algo vá dar errado.
+    </span>
+    <span id="about-text" style="position: absolute; top: 50vh; left: 10vw;">
+        Eu me vejo como um quebra-cabeça inacabado, com peças espalhadas entre o passado, o presente e o futuro. Carrego dores antigas que ainda me seguem, dúvidas sobre quem sou agora e um certo medo sobre pra onde estou indo. Sempre penso sobre como posso ser melhor, mas, ao mesmo tempo, esses pesos tornam o caminho mais difícil.
+    </span>
+    <span id="about-text" style="position: absolute; top: 60vh; left: 60vw;">
+        A decepção tem sido um padrão na minha vida — não porque tudo sempre deu errado, mas porque quase nunca saiu como eu imaginava. Acho que isso revela um lado perfeccionista em mim, não de buscar a perfeição no sentido comum, mas de criar cenários mentais tão detalhados que acabo me frustrando quando a realidade não acompanha minhas expectativas.
+    </span>
+    <span id="about-text" style="position: absolute; top: 40vh; left: 65vw;">
+        Jogos, música e séries são como escapes temporários, formas de me transportar pra outros mundos e me desligar um pouco da realidade e do peso das minhas reflexões. Mas, ao mesmo tempo, percebo que essa busca constante por distração revela algo dentro de mim que ainda tento evitar encarar por completo.
+    </span>
+    <div id="about-static">
+        <img class="about-avatar" src="./assets/images/avatar.png" alt="Avatar" />
+        <span class="about-static-text">
+            Me chamo lukas, pode me chamar de kit. <br>
+            Tenho 17 anos<br>
+            Sou técnico, e futuro técnologo em Análise e Desenvolvimento de Sistemas. <br>
+            Costumo programar, ouvir música, jogar e assistir séries. <br>
+        </span>
+        <span class="about-static-back" onclick="closeAbout()">Voltar</span>
+    </div>
+  </div>
+  <div id="leaf-container"></div>
+  <audio id="bg-music" src="./assets/music/default.mp3" loop preload="auto"></audio>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="./scripts/parallax.js"></script>
+  <script src="./scripts/leaves.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
+  <script>
+    const spans = document.querySelectorAll('#about-text');
+
+    function initAbout() {
+        const overlay = document.getElementById('about-overlay');
+        const staticDiv = document.getElementById('about-static');
+        
+        spans.forEach((span) => {
+            span.style.opacity = 0;
+        });
+
+        overlay.classList.remove('hidden');
+
+        spans.forEach((span, index) => {
+            const delay = index * 8000;
+
+            setTimeout(() => {
+                span.style.opacity = 1;
+            }, delay);
+
+            setTimeout(() => {
+                span.classList.remove('active');
+                span.classList.add('dust');
+            }, delay + 7000);
+        });
+
+        const totalDelay = spans.length * 8000;
+        setTimeout(() => {
+            staticDiv.classList.remove('hidden');
+            staticDiv.style.opacity = 1;
+        }, totalDelay);
+    }
+
+    function closeAbout() {
+        const overlay = document.getElementById('about-overlay');
+        overlay.classList.add('hidden');
+    }
+  </script>
+  
+  
+  <script>
+    var bgMusic = document.getElementById('bg-music');
+    var initOverlay = document.getElementById('init-overlay');
+    var initButton = document.getElementById('init-button');
+
+    function init() {
+      initOverlay.classList.add('hidden');
+      bgMusic.play();
+    }
+
+    function toggleAudio() {
+        bgMusic.muted = !bgMusic.muted;
+    }
+  </script>
+  
+</body>
+</html>

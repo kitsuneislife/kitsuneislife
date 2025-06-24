@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Ferramenta de Sincronização de Letras</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1c1c1e;
+            color: #f2f2f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #2c2c2e;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        textarea {
+            width: 98%;
+            height: 150px;
+            background-color: #3a3a3c;
+            border: 1px solid #545458;
+            color: #f2f2f7;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #0a84ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #3499ff;
+        }
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        #audio-controls, #setup-controls { margin-bottom: 20px; }
+        #display-area {
+            text-align: center;
+            padding: 30px;
+            background-color: #1c1c1e;
+            border-radius: 8px;
+            margin-top: 20px;
+            min-height: 100px;
+            border: 1px dashed #555;
+        }
+        #current-word {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #6effa8;
+            transition: transform 0.1s;
+        }
+        #next-words {
+            margin-top: 15px;
+            color: #8e8e93;
+            font-size: 1.2rem;
+        }
+        #output-container {
+            text-align: left;
+        }
+        #output-container textarea {
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Ferramenta de Sincronização de Letras</h1>
+
+<div class="container" id="setup-controls">
+    <h2>Passo 1: Preparação</h2>
+    <p>Carregue o áudio e cole a letra. Durante a sincronização, pressione <b>R</b> para recomeçar.</p>
+    <input type="file" id="audio-file" accept="audio/*">
+    <audio id="audio-player" controls style="width: 100%; margin-top: 10px;"></audio>
+    <textarea id="lyrics-input" placeholder="Cole a letra completa da música aqui..."></textarea>
+    <button id="prepare-btn">Preparar Sincronização</button>
+</div>
+
+<div class="container" id="sync-controls" style="display: none;">
+    <h2>Passo 2: Sincronização</h2>
+    <p>Dê play na música. Pressione a <strong>BARRA DE ESPAÇO</strong> no ritmo de cada palavra.</p>
+    <div id="display-area">
+        <div id="current-word">Pronto?</div>
+        <div id="next-words">As próximas palavras aparecerão aqui.</div>
+    </div>
+    <p style="text-align: center; margin-top: 10px;">Palavra <span id="word-counter">0</span> de <span id="total-words">0</span></p>
+</div>
+
+<div class="container" id="output-container" style="display: none;">
+    <h2>Passo 3: Resultado</h2>
+    <p>Copie o código gerado e cole no seu arquivo <code>script.js</code>.</p>
+    <textarea id="output-data" readonly></textarea>
+</div>
+
+<script>
+    const audioFile = document.getElementById('audio-file');
+    const audioPlayer = document.getElementById('audio-player');
+    const lyricsInput = document.getElementById('lyrics-input');
+    const prepareBtn = document.getElementById('prepare-btn');
+
+    const syncControls = document.getElementById('sync-controls');
+    const currentWordEl = document.getElementById('current-word');
+    const nextWordsEl = document.getElementById('next-words');
+    const wordCounterEl = document.getElementById('word-counter');
+    const totalWordsEl = document.getElementById('total-words');
+
+    const outputContainer = document.getElementById('output-container');
+    const outputDataEl = document.getElementById('output-data');
+
+    let allWords = [];
+    let originalLines = [];
+    let wordTimestamps = [];
+    let currentIndex = 0;
+    let isSyncing = false;
+
+    audioFile.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            audioPlayer.src = url;
+        }
+    });
+
+    prepareBtn.addEventListener('click', () => {
+        const lyricsText = lyricsInput.value.trim();
+        if (!lyricsText || !audioPlayer.src) {
+            alert('Por favor, carregue um arquivo de áudio e cole a letra da música.');
+            return;
+        }
+
+        originalLines = lyricsText.split('\n').filter(line => line.trim() !== '');
+        allWords = originalLines.join(' ').split(/\s+/).filter(word => word.trim() !== '');
+
+        restartSync();
+
+        totalWordsEl.textContent = allWords.length;
+        syncControls.style.display = 'block';
+
+        if (!isSyncing) {
+            document.addEventListener('keydown', handleKeyPress);
+            isSyncing = true;
+        }
+    });
+
+    function updateDisplay() {
+        if (currentIndex < allWords.length) {
+            currentWordEl.textContent = allWords[currentIndex];
+            nextWordsEl.textContent = allWords.slice(currentIndex + 1, currentIndex + 6).join(' ');
+            wordCounterEl.textContent = currentIndex;
+        } else {
+            currentWordEl.textContent = 'FIM!';
+            nextWordsEl.textContent = 'Sincronização concluída. Veja o resultado abaixo.';
+            generateOutput();
+            outputContainer.style.display = 'block';
+        }
+    }
+
+    function handleKeyPress(event) {
+        if (event.code === 'Space' || event.key === ' ') {
+            event.preventDefault();
+
+            if (currentIndex < allWords.length) {
+                const time = audioPlayer.currentTime;
+                wordTimestamps.push({ text: allWords[currentIndex], time: parseFloat(time.toFixed(2)) });
+
+                currentWordEl.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    currentWordEl.style.transform = 'scale(1)';
+                }, 100);
+
+                currentIndex++;
+                updateDisplay();
+            }
+        } else if (event.key.toLowerCase() === 'r') {
+            event.preventDefault();
+            restartSync();
+        }
+    }
+
+    function restartSync() {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        currentIndex = 0;
+        wordTimestamps = [];
+        outputContainer.style.display = 'none';
+        outputDataEl.value = '';
+        updateDisplay();
+    }
+
+    function generateOutput() {
+        let lyricsData = [];
+        let wordIndex = 0;
+
+        originalLines.forEach(lineText => {
+            const wordsInLine = lineText.split(/\s+/).filter(word => word.trim() !== '');
+            const lineWordsData = [];
+
+            for (let i = 0; i < wordsInLine.length; i++) {
+                if (wordTimestamps[wordIndex]) {
+                    lineWordsData.push(wordTimestamps[wordIndex]);
+                    wordIndex++;
+                }
+            }
+
+            if (lineWordsData.length > 0) {
+                lyricsData.push({
+                    line: lineText,
+                    words: lineWordsData
+                });
+            }
+        });
+
+        let outputString = 'const lyricsData = [\n';
+        lyricsData.forEach(line => {
+            outputString += '    {\n';
+            outputString += `        line: "${line.line.replace(/"/g, '\\"')}",\n`;
+            outputString += '        words: [\n';
+            outputString += '            ' + line.words.map(w => `{ text: "${w.text.replace(/"/g, '\\"')}", time: ${w.time} }`).join(', ') + '\n';
+            outputString += '        ]\n';
+            outputString += '    },\n';
+        });
+        outputString += '];';
+
+        outputDataEl.value = outputString;
+    }
+</script>
+
+</body>
+</html>
