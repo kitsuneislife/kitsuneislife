@@ -7,7 +7,7 @@ conta os dias com contribuição no último ano, os repositórios mexidos por
 último e as ferramentas que aparecem nos arquivos de cada um (Dockerfile,
 package.json e as dependências dele, Cargo.toml...). Grava em
 assets/readme/boletim.json, baixa os ícones que faltarem do Simple Icons
-pra assets/readme/icones.json e redesenha a tira "habilidades".
+pra assets/readme/icones.json e redesenha as tiras "mais" e "habilidades".
 Sem token roda com o que a API pública deixar; a frequência precisa do token.
 """
 import base64
@@ -145,4 +145,4 @@ if __name__ == "__main__":
     dados = coletar()
     SAIDA.write_text(json.dumps(dados, ensure_ascii=False, indent=1), encoding="utf-8")
     baixar_icones([f["nome"] for f in dados["ferramentas"]] + colagem.EXTRAS)
-    colagem.gerar(so=["habilidades"])
+    colagem.gerar(so=["mais", "habilidades"])  # o "tem mais" mostra quantos repos são

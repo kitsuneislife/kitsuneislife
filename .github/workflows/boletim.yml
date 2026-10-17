@@ -25,5 +25,5 @@ jobs:
         run: |
           git config user.name kitsuneislife
           git config user.email kitsuneislif3@gmail.com
-          git add assets/readme/boletim.json assets/readme/icones.json assets/readme/colagem-habilidades.svg
-          git diff --cached --quiet || (git commit -m "boletim de $(date +%d/%m)" && git push)
+          git add assets/readme/boletim.json assets/readme/icones.json assets/readme/colagem-mais.svg assets/readme/colagem-habilidades.svg
+          git diff --cached --quiet || (git commit -m "boletim de $(date +%d/%m)" && git pull --rebase && git push)

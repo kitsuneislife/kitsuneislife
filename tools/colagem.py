@@ -28,33 +28,33 @@ CEU_TOPO, CEU_MEIO, CEU_FUNDO = "#3d8ce6", "#9fd2fa", "#4f9ae9"
 
 # nome, y inicial, altura, link, descrição (alt)
 TIRAS = [
-    ("capa", 0, 440, None,
+    ("capa", 0, 456, None,
      "Uma barrinha de letreiro rolando no topo dizendo oi em várias línguas. "
      "No meio, um arco-íris de papelão com uma nuvem em cada pé, e eu de fone sentado atrás de "
      "kitsuneislife, escrito em letra de adesivo, num céu azul."),
-    ("bio", 440, 340, None,
+    ("bio", 456, 340, None,
      "Uma prancheta com um bilhete: Nunca soube o que escrever em uma bio ou em um sobre-mim. Curioso né? "
      "Então fiz essa página pra contar um pouquinho de quem sou eu. Eu gosto de fazer alguns projetinhos "
      "(e de lasanha) e quero trabalhar na área. Discord: @thurzinhos. “Penso, logo desisto.” love you forever. "
-     "Do lado, a turma correndo com uma placa: olha os projetinhos."),
-    ("projetos", 780, 180, "https://github.com/kitsuneislife?tab=repositories",
+     "Do lado, a turma correndo com uma placa: site novo! kitsuneislife.github.io"),
+    ("projetos", 796, 180, "https://github.com/kitsuneislife?tab=repositories",
      "projetinhos (e de lasanha). Clica nos cards pra abrir cada um."),
-    ("artcode", 960, 270, "https://github.com/kitsuneislife/artcode",
+    ("artcode", 976, 270, "https://github.com/kitsuneislife/artcode",
      "artcode: minha própria linguagem de programação, interpretada e escrita em Rust. Tá na v0.5.1."),
-    ("lover", 1230, 270, "https://kitsuneislife.github.io/lover/",
+    ("lover", 1246, 270, "https://kitsuneislife.github.io/lover/",
      "lover: um jogo de quebra-cabeça em que o controle é o seu navegador. Clica pra jogar."),
-    ("clios", 1500, 270, "https://github.com/kitsuneislife/clios",
+    ("clios", 1516, 270, "https://github.com/kitsuneislife/clios",
      "clios: um desktop Linux feito pro terminal. Arch, Hyprland e Quickshell, com um binário em Rust."),
-    ("hackintosh", 1770, 270, "https://github.com/kitsuneislife/Acer-Nitro-V15-ANV15-51-Hackintosh",
+    ("hackintosh", 1786, 270, "https://github.com/kitsuneislife/Acer-Nitro-V15-ANV15-51-Hackintosh",
      "Hackintosh: macOS Sequoia num Acer Nitro V15, com o desktop acelerado na RTX 3050."),
-    ("mais", 2040, 120, "https://github.com/kitsuneislife?tab=repositories",
+    ("mais", 2056, 120, "https://github.com/kitsuneislife?tab=repositories",
      "Um botão rosa: tem mais no meu perfil, com quantos repositórios eu tenho."),
-    ("habilidades", 2160, 720, None,
+    ("habilidades", 2176, 720, None,
      "O que eu sei fazer, num boletim escolar com as notas tiradas dos meus repositórios no GitHub: "
      "cada linguagem com quantos repos usam ela, a nota e se passou. Dart, Java e Kotlin estão em curso. "
      "Atividades extras: git, npm, Redis, Express, Docker, Expo. Deveres entregues: os repositórios "
      "mexidos por último. Carimbo de aprovado."),
-    ("fim", 2880, 440, None,
+    ("fim", 2896, 440, None,
      "Anoitece. Gostou? Sei fazer bem mais. Eu abraçando uma pelúcia do Claude, com a lua e umas estrelinhas. "
      "Embaixo, botõezinhos de site antigo: feito à mão por kitsune, 100% SVG, movido a lasanha, "
      "melhor visto em qualquer um, sem cookies. kitsuneislife, 2026."),
@@ -198,7 +198,11 @@ def montar():
     # o export da prancheta já vem cortado na esquerda e embaixo: encosta na borda
     # e a folha dos projetinhos cobre o corte de baixo
     c.img("banner-bio.png", 0, 516, 880, 0, z=4, sombra="sombra", px=1238)
-    c.add(f'<g transform="rotate(-22 803 856)">{linha(752, 852, "olha os", 22)}{linha(742, 880, "projetinhos!", 22)}</g>',
+    # a placa (cantos achados no desenho: centro 801,854 e inclinada -21°) aponta pro site novo;
+    # por enquanto só o texto, o link entra quando o site estiver no ar
+    c.add(f'<g transform="rotate(-21 806 854)">{linha(806, 852, "site novo!", 24, TINTA, 'text-anchor="middle"')}'
+          f'{linha(808, 870, "kitsuneislife.github.io", 11.5, ANIL, 'text-anchor="middle"')}'
+          f'<path d="M760 874 q24 3 48 0 t48 0" fill="none" stroke="{ANIL}" stroke-width="1.2" stroke-linecap="round"/></g>',
           (720, 810, 880, 900), z=5)
 
     # ---- projetinhos, numa folha quadriculada amarela que vai até o "tem mais"
@@ -224,6 +228,8 @@ def montar():
     c.subir(3600, 680)
     c.subir(1300, 440)
     c.subir(470, 240)
+    # um respiro entre o letreiro e o arco-íris: desce tudo menos o letreiro
+    c.subir(1, -16)
     return c
 
 
@@ -499,6 +505,8 @@ CORES_LING = {"JavaScript": "#f1e05a", "TypeScript": "#3178c6", "Python": "#3572
               "PHP": "#4F5D95", "HTML": "#e34c26", "CSS": "#563d7c", "Svelte": "#ff3e00", "Shell": "#89e051",
               "Dart": "#00B4AB", "Java": "#b07219", "Kotlin": "#A97BFF", "C": "#555555", "C++": "#f34b7d",
               "Lua": "#000080", "QML": "#44a51c", "Vue": "#41b883", "SCSS": "#c6538c", "Go": "#00ADD8"}
+MATERIAS = 8  # linhas da tabela; mais que isso o boletim passa da tira
+MAX_EXTRAS, LINHAS_EXTRAS = 8, 3  # etiquetas das atividades extras, e em quantas linhas cabem
 CURSANDO = ["Dart", "Java", "Kotlin"]  # o que eu tô aprendendo, mesmo sem código ainda
 EXTRAS = ["git", "npm", "Redis", "Express", "Docker", "Expo"]  # enquanto o boletim.json não tem "ferramentas"
 ICONES_JSON = Path(__file__).resolve().parent.parent / "assets" / "readme" / "icones.json"
@@ -535,10 +543,14 @@ def boletim(c):
     d, exemplo = carregar_boletim()
     ling = sorted(d["linguagens"].items(), key=lambda kv: -kv[1]["bytes"])
     maior = ling[0][1]["bytes"] if ling else 1
-    linhas = [(n, v["repos"], nota_de(v["bytes"], maior)) for n, v in ling[:8 - len(CURSANDO)]]
-    for n in CURSANDO:
-        if n not in d["linguagens"] and len(linhas) < 8:
-            linhas.append((n, 0, None))
+    # sempre no máximo MATERIAS linhas: as maiores linguagens e o que eu tô aprendendo,
+    # que entra com nota se já tiver código e como "cursando" se ainda não tiver
+    cursando = CURSANDO[:MATERIAS]
+    linhas = [(n, v["repos"], nota_de(v["bytes"], maior)) for n, v in ling if n not in cursando][:MATERIAS - len(cursando)]
+    for n in cursando:
+        v = d["linguagens"].get(n)
+        linhas.append((n, v["repos"], nota_de(v["bytes"], maior)) if v else (n, 0, None))
+    linhas.sort(key=lambda l: (l[2] is None, -(l[2] or 0)))  # estável: empate fica na ordem dos bytes
 
     # título no meio, num papel preto de borda branca e sombra lima (igual ao do Gostou?),
     # encavalado no pé rasgado da folha amarela
@@ -596,6 +608,8 @@ def boletim(c):
             s.append(f'<rect x="{x + 16}" y="{ly}" width="{w - 32}" height="30" fill="#e9eefb" opacity=".8"/>')
         s.append(f'<line x1="{x + 16}" y1="{ly + 30}" x2="{x + w - 16}" y2="{ly + 30}" stroke="#c3cbe0" stroke-width="1"/>')
         s.append(f'<circle cx="{x + 38}" cy="{ly + 15}" r="6.5" fill="{CORES_LING.get(nome, "#bbb")}" stroke="{TINTA}" stroke-width="1.6"/>')
+        while medir("revista", nome, 15) > 200:  # nome comprido não invade a coluna dos repos
+            nome = nome[:-2].rstrip() + "…"
         s.append(f'<text x="{x + 54}" y="{ly + 21}" font-size="15" class="revista" fill="{TINTA}">{t(nome)}</text>')
         s.append(f'<text x="{x + 300}" y="{ly + 21}" font-size="15" text-anchor="middle" class="recibo" fill="{TINTA}">{nrepos or "-"}</text>')
         if nota is None:
@@ -633,7 +647,7 @@ def boletim(c):
     nx, ny, nw = 626, 2966, 236
     tags, tx, ty2 = [], nx + 18, ny + 70
     # as ferramentas que o workflow achou nos repos (ou as fixas), com o ícone chapado
-    extras = [f["nome"] for f in d.get("ferramentas", [])][:7] or EXTRAS
+    extras = [f["nome"] for f in d.get("ferramentas", [])][:MAX_EXTRAS] or EXTRAS
     try:
         icones = json.loads(ICONES_JSON.read_text(encoding="utf-8"))
     except (OSError, ValueError):
@@ -642,6 +656,8 @@ def boletim(c):
         cor_, rot_ = ["#fff", AMARELO, "#7fc8ff", VERDE, "#ffb3d1", "#fff"][i % 6], (-3, 2, -2, 3)[i % 4]
         eti, ew = etiqueta(tx, ty2, e, cor_, rot_, px=14, icone=icones.get(e))
         if tx + ew > nx + nw - 10:
+            if ty2 >= ny + 70 + 42 * (LINHAS_EXTRAS - 1):
+                break  # a nota não cresce mais que isso, senão empurra os deveres pra fora
             tx, ty2 = nx + 18, ty2 + 42
             eti, ew = etiqueta(tx, ty2, e, cor_, rot_, px=14, icone=icones.get(e))
         # cada etiqueta dá uma tremidinha, uma depois da outra
@@ -664,7 +680,9 @@ def boletim(c):
     for i, r in enumerate(rec):
         ry = ay + 88 + i * 40
         quando = "hoje" if r["dias"] == 0 else ("ontem" if r["dias"] == 1 else f"há {r['dias']} dias")
-        nome = r["nome"] if len(r["nome"]) <= 14 else r["nome"][:13] + "…"
+        nome = r["nome"]
+        while medir("mao", nome, 21) > nw - 64 - medir("mao", quando, 17):  # não encosta no "há x dias"
+            nome = nome[:-2] + "…"
         a.append(f'<path class="risca" style="animation-delay:{i * .5:.1f}s" pathLength="1" d="M{nx + 10} {ry - 8} l6 7 l11 -14" fill="none" '
                  f'stroke="#2fa35a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
         a.append(linha(nx + 42, ry, nome, 21, ANIL))
@@ -703,8 +721,8 @@ def textura_nuvens(largura=820, emenda=300):
 # nuvens andando atrás de tudo: (tira, y, altura, opacidade, cor, fim do sumiço embaixo)
 # cada camada anda de um tile inteiro por volta, então o fim da volta é igual ao começo
 NUVENS = {
-    "capa": [(40, 420, .6, "#fff", 440), (150, 300, .4, "#fff", 440)],
-    "fim": [(2940, 380, .4, "#cfcaff", None), (3050, 270, .3, "#ffd3ec", None)],
+    "capa": [(56, 420, .6, "#fff", 456), (166, 300, .4, "#fff", 456)],
+    "fim": [(2956, 380, .4, "#cfcaff", None), (3066, 270, .3, "#ffd3ec", None)],
 }
 NUVEM_TILE = 1000
 NUVEM_VOLTA = [46, 33]  # segundos por volta, uma camada mais rápida que a outra
@@ -801,8 +819,8 @@ CSS = """
 .nuvens{animation:nuvens 46s linear infinite}
 .estala{transform-box:fill-box;transform-origin:center;animation:estala 3.6s ease-in-out infinite}
 @keyframes estala{0%,12%,100%{transform:scale(1)}5%{transform:scale(1.18) rotate(-4deg)}}
-.carimba{transform-box:fill-box;transform-origin:center;animation:carimba 5s ease-in infinite}
-@keyframes carimba{0%,64%,100%{transform:scale(1);opacity:1}70%{transform:scale(1.35) translateY(-10px);opacity:0}76%{transform:scale(.94);opacity:1}82%{transform:scale(1)}}
+.carimba{transform-box:fill-box;transform-origin:center;animation:carimba .9s ease-in 1.2s 1 both}
+@keyframes carimba{0%{transform:scale(1.5) translateY(-14px);opacity:0}55%{transform:scale(.93);opacity:1}75%{transform:scale(1.03)}100%{transform:scale(1);opacity:1}}
 .risca{stroke-dasharray:1;animation:risca 6s ease-out infinite}
 @keyframes risca{0%{stroke-dashoffset:1}12%,88%{stroke-dashoffset:0;opacity:1}96%,100%{stroke-dashoffset:0;opacity:0}}
 @keyframes nuvens{to{transform:translateX(var(--tile))}}
