@@ -218,17 +218,6 @@ def folha_rasgada(x, y, w, h, rot, semente):
             f'<path d="{d}" fill="url(#grade-azul)"/>{furos}</g>')
 
 
-def prendedor(cx, y, rot=0, cor=ROSA, escuro=ROSA_ESCURO):
-    """Prendedor de papel (binder clip) rosa, com as duas alças de arame."""
-    return (f'<g transform="rotate({rot} {cx} {y + 20})" filter="url(#sombra-leve)">'
-            f'<path d="M{cx - 18} {y + 4} L{cx - 26} {y - 30} M{cx + 18} {y + 4} L{cx + 26} {y - 30} '
-            f'M{cx - 26} {y - 30} Q{cx} {y - 40} {cx + 26} {y - 30}" fill="none" stroke="#b9bcc4" stroke-width="4.5" stroke-linecap="round"/>'
-            f'<path d="M{cx - 18} {y + 4} L{cx - 26} {y - 30} M{cx + 18} {y + 4} L{cx + 26} {y - 30}" fill="none" stroke="#eef0f4" stroke-width="1.6" stroke-linecap="round"/>'
-            f'<path d="M{cx - 34} {y + 34} L{cx - 26} {y} L{cx + 26} {y} L{cx + 34} {y + 34} Z" fill="{cor}"/>'
-            f'<path d="M{cx - 26} {y} L{cx + 26} {y} L{cx + 28} {y + 8} L{cx - 28} {y + 8} Z" fill="{escuro}"/>'
-            f'<path d="M{cx - 22} {y + 14} L{cx + 10} {y + 14}" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55"/></g>')
-
-
 def etiqueta(x, y, texto, fundo, rot=0, cor=TINTA, px=14):
     """Etiqueta de adesivo com contorno preto, tipo as de aviso das referências."""
     w = medir("revista", texto, px) + 22
@@ -244,20 +233,6 @@ def brilhinho(cx, cy, r, cor="#fff", atraso=None):
          f"Q{cx - r * .18} {cy + r * .18} {cx - r} {cy} Q{cx - r * .18} {cy - r * .18} {cx} {cy - r} Z")
     cl = f' class="brilho" style="animation-delay:{atraso}s"' if atraso is not None else ""
     return f'<path{cl} d="{d}" fill="{cor}" stroke="{TINTA}" stroke-width="2.5" stroke-linejoin="round"/>'
-
-
-def strass(pontos, r=5.5):
-    """Fileira de strass (pedrinhas) ao longo de uma curva quadrática."""
-    (x0, y0), (x1, y1), (x2, y2) = pontos
-    s = []
-    n = int(math.dist((x0, y0), (x2, y2)) / (r * 2.3))
-    for i in range(n + 1):
-        u = i / n
-        x = (1 - u) ** 2 * x0 + 2 * (1 - u) * u * x1 + u * u * x2
-        y = (1 - u) ** 2 * y0 + 2 * (1 - u) * u * y1 + u * u * y2
-        s.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r}" fill="#cfe9ff" stroke="#7d9fc4" stroke-width="1.2"/>'
-                 f'<circle cx="{x - r * .35:.1f}" cy="{y - r * .35:.1f}" r="{r * .32:.1f}" fill="#fff"/>')
-    return f'<g filter="url(#sombra-leve)">{"".join(s)}</g>'
 
 
 def cursor(x, y, rot=0, escala=1):
@@ -299,15 +274,15 @@ def print_adesivo(c, nome, x, y, w, rot, z, moldura="#fff", borda=10, lupa=None)
         u, v, r, zoom, lx, ly = lupa
         px_, py_ = x + borda + u * w, y + borda + v * h
         uri2 = imagem(nome, iw)
+        # o vidro da lupa.png fica em (0.3245, 0.3165) da imagem, com raio de 0.2817 da largura
+        lw = r / .2817
+        lh = lw * 530 / 520
         s.append(f'<clipPath id="lente"><circle cx="{lx}" cy="{ly}" r="{r}"/></clipPath>'
-                 f'<line x1="{lx + r * .7:.1f}" y1="{ly + r * .7:.1f}" x2="{lx + r * 1.6:.1f}" y2="{ly + r * 1.6:.1f}" stroke="#2b2b33" stroke-width="16" stroke-linecap="round" filter="url(#sombra-leve)"/>'
-                 f'<line x1="{lx + r * .75:.1f}" y1="{ly + r * .75:.1f}" x2="{lx + r * 1.55:.1f}" y2="{ly + r * 1.55:.1f}" stroke="#5a5a66" stroke-width="5" stroke-linecap="round"/>'
                  f'<circle cx="{lx}" cy="{ly}" r="{r}" fill="#fff"/>'
                  f'<g clip-path="url(#lente)"><image x="{lx - (px_ - x - borda) * zoom:.1f}" y="{ly - (py_ - y - borda) * zoom:.1f}" '
-                 f'width="{w * zoom:.1f}" height="{h * zoom:.1f}" href="{uri2}"/>'
-                 f'<ellipse cx="{lx - r * .35:.1f}" cy="{ly - r * .4:.1f}" rx="{r * .45:.1f}" ry="{r * .22:.1f}" fill="#fff" opacity=".35" transform="rotate(-30 {lx} {ly})"/></g>'
-                 f'<circle cx="{lx}" cy="{ly}" r="{r}" fill="none" stroke="#c9ccd3" stroke-width="9"/>'
-                 f'<circle cx="{lx}" cy="{ly}" r="{r + 4.5}" fill="none" stroke="{TINTA}" stroke-width="2.5"/>')
+                 f'width="{w * zoom:.1f}" height="{h * zoom:.1f}" href="{uri2}"/></g>'
+                 f'<image x="{lx - .3245 * lw:.1f}" y="{ly - .3165 * lh:.1f}" width="{lw:.1f}" height="{lh:.1f}" '
+                 f'href="{imagem("recortes/lupa.png", 520)}" filter="url(#sombra-leve)"/>')
     s.append("</g>")
     c.add("".join(s), caixa_girada(x, y, fw, fh, rot), z)
     return fw, fh
@@ -328,8 +303,8 @@ def cartao(c, x, y, rot, numero, titulo, cor_titulo, linhas, tags, semente):
         s.append(e)
         tx += ew + 8
     s.append("</g>")
-    s.append(prendedor(x + w - 80, y - 6, rot * 2))
     c.add("".join(s), caixa_girada(x, y - 40, w, h + 40, rot), z=6)
+    c.img("recortes/prendedor-rosa.png", x + w - 112, y - 50, 62, rot * 3 + 4, z=7, px=180)
 
 
 def projetinhos(c):
@@ -342,11 +317,13 @@ def projetinhos(c):
                     for i in range(4))
     c.add(f'<g transform="rotate(-4 660 1528)" filter="url(#sombra-leve)">{setas}</g>'
           + linha(600, 1586, "clica nos cards pra abrir", 21, TINTA, 'transform="rotate(-4 700 1580)"')
-          + cursor(812, 1534, -14) + strass([(600, 1612), (720, 1630), (850, 1600)], 4.5), (580, 1490, 860, 1636), z=7)
+          + cursor(812, 1534, -14), (580, 1490, 860, 1636), z=7)
+    c.img("recortes/tesoura.png", 520, 1560, 62, 58, z=7, px=160)
     c.add(estrela(560, 1500, 16, 0.4, "#ffb3d1") + brilhinho(842, 1490, 13, AMARELO, 1.2), (530, 1470, 870, 1530), z=7)
 
     # 01 artcode: o logo vermelho, a folha e um ingresso da versão
     print_adesivo(c, "foto-artcode.png", 36, 1676, 380, -3, z=5)
+    c.img("recortes/washi-01.png", 4, 1664, 120, -32, z=6, px=300)
     cartao(c, 424, 1660, 1.5, "01", "artcode", LIMA,
            ["minha própria linguagem de programação,", "interpretada e escrita em Rust.", ("clica pra abrir o repo", ANIL)],
            [("Rust", "#ff8a5c", TINTA), ("interpretada", "#fff", TINTA), ("v0.5.1", TINTA, "#fff")], 11)
@@ -365,14 +342,17 @@ def projetinhos(c):
            ["um jogo de quebra-cabeça em que", "o controle é o seu navegador.", ("clica pra jogar", ANIL)],
            [("32 páginas", AMARELO, TINTA), ("dois atos", "#fff", TINTA), ("navegador", AZUL_VIVO, "#fff")], 22)
     print_adesivo(c, "foto-lover.png", 446, 1920, 380, 3, z=5)
+    c.img("recortes/washi-09.png", 736, 1902, 110, 34, z=6, px=300)
     bolha_ = (f'<g transform="rotate(8 760 1922)" filter="url(#sombra-leve)">'
               f'<path d="M700 1900 h110 q14 0 14 14 v18 q0 14 -14 14 h-70 l-18 16 l2 -16 h-24 q-14 0 -14 -14 v-18 q0 -14 14 -14 Z" fill="{ROSA}" stroke="{TINTA}" stroke-width="3"/>'
               f'<text x="755" y="1931" font-size="19" text-anchor="middle" class="bolha" fill="#fff">não fecha!</text></g>')
-    c.add(bolha_ + cursor(538, 2098, -8, .75), (680, 1880, 840, 1975), z=8)
+    c.add(bolha_, (680, 1880, 840, 1975), z=8)
+    c.img("recortes/mao-pixel.png", 530, 2092, 40, -6, z=8, sombra="sombra-leve", px=140)
     c.add(coracao(436, 1952, 18, ROSA, -12) + coracao(838, 2118, 14, "#ff8a5c", 14), (410, 1925, 860, 2140), z=8)
 
     # 03 clios: o terminal, com as teclas dos atalhos
     print_adesivo(c, "foto-clios.png", 34, 2196, 360, -2.5, z=5, moldura=TINTA)
+    c.img("recortes/washi-rasgada-07.png", 2, 2186, 120, -30, z=6, px=300)
     cartao(c, 428, 2214, 1.2, "03", "clios", "#fff",
            ["um desktop Linux feito pro terminal,", "com um binário em Rust.", ("clica pra abrir o repo", ANIL)],
            [("Arch", "#7fc8ff", TINTA), ("Hyprland", VERDE, TINTA), ("Quickshell", "#fff", TINTA)], 33)
@@ -385,14 +365,16 @@ def projetinhos(c):
            ["macOS Sequoia num Acer Nitro V15,", "com o desktop acelerado na RTX 3050.", ("clica pra abrir o repo", ANIL)],
            [("macOS 15", "#fff", TINTA), ("OpenCore", AMARELO, TINTA), ("RTX 3050", VERDE, TINTA)], 44)
     print_adesivo(c, "foto-hackintosh.jpg", 450, 2470, 376, 2.5, z=5, lupa=(.5, .37, 50, 2.6, 560, 2600))
+    c.img("recortes/washi-rasgada-02.png", 772, 2690, 110, -28, z=6, px=300)
     c.add(etiqueta(690, 2700, "psiu: é um Acer", "#fff", 5)[0], (680, 2690, 820, 2740), z=8)
     c.add(brilhinho(458, 2492, 14, AMARELO, 0.5) + estrela(842, 2496, 18, 1.4, "#9fc4ff"), (430, 2470, 870, 2520), z=8)
 
     # tem mais
     svg, cx_ = bilhete(250, 2742, 380, [("tem mais projetinhos no meu perfil", TINTA)], -1.5, cor=ROSA_BILHETE, pautado=False)
     c.add(svg, cx_, z=5)
-    c.img("recortes/tachinha.png", 578, 2722, 40, -6, z=6)
-    c.add(cursor(640, 2776, -20, .8) + brilhinho(220, 2756, 12, "#fff", 1.8), (200, 2730, 690, 2830), z=7)
+    c.img("recortes/alfinete.png", 226, 2722, 92, -10, z=6, px=280)
+    c.img("recortes/seta-pixel.png", 642, 2768, 34, -8, z=7, sombra="sombra-leve", px=120)
+    c.add(brilhinho(694, 2756, 12, "#fff", 1.8), (670, 2730, 720, 2800), z=7)
 
 
 # cores das linguagens, as mesmas do GitHub
@@ -536,7 +518,7 @@ def boletim(c):
     c.add(f'<g transform="rotate(2.5 {nx + nw / 2} {ny + nh / 2})"><rect x="{nx}" y="{ny}" width="{nw}" height="{nh}" fill="{ROSA_BILHETE}" filter="url(#sombra)"/>'
           + linha(nx + 18, ny + 44, "atividades extras", 24, TINTA) + "".join(tags) + "</g>",
           caixa_girada(nx, ny, nw, nh, 2.5), z=6)
-    c.img("recortes/tachinha.png", nx + nw / 2 - 16, ny - 26, 40, -8, z=7)
+    c.img("recortes/tachinha-vermelha.png", nx + nw / 2 - 16, ny - 34, 38, -8, z=7, px=140)
 
     ay = ny + nh + 34
     rec = d.get("recentes", [])[:4]
@@ -556,7 +538,11 @@ def boletim(c):
     a.append("</g>")
     c.add("".join(a), caixa_girada(nx, ay, nw, ah, -2), z=6)
     c.add(fita(nx + 60, ay - 18, 110, 36, 4), (nx + 40, ay - 40, nx + 190, ay + 30), z=7)
-    c.add(estrela(852, ay + ah + 20, 18, 0.6, "#ffb3d1") + brilhinho(612, ay + ah + 40, 12, AMARELO, 1.6),
+    c.img("recortes/lacre.png", nx + nw - 44, ay + ah - 22, 66, 12, z=8, px=200)
+    c.img("recortes/caneta.png", x + w - 150, y + h - 150, 80, 34, z=9, px=220)
+    c.img("recortes/regua.png", -46, y + h - 170, 190, 0, z=5, px=420)
+    c.img("recortes/lapis.png", nx + 20, ay + ah + 8, 150, -4, z=8, px=340)
+    c.add(estrela(640, ay + ah + 74, 16, 0.6, "#ffb3d1") + brilhinho(612, ay + ah + 40, 12, AMARELO, 1.6),
           (590, ay + ah - 10, 875, ay + ah + 60), z=8)
 
 
