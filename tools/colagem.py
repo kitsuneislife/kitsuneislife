@@ -47,14 +47,14 @@ TIRAS = [
      "clios: um desktop Linux feito pro terminal. Arch, Hyprland e Quickshell, com um binário em Rust."),
     ("hackintosh", 1770, 270, "https://github.com/kitsuneislife/Acer-Nitro-V15-ANV15-51-Hackintosh",
      "Hackintosh: macOS Sequoia num Acer Nitro V15, com o desktop acelerado na RTX 3050."),
-    ("mais", 2040, 110, "https://github.com/kitsuneislife?tab=repositories",
-     "Tem mais projetinhos no meu perfil."),
-    ("habilidades", 2150, 690, None,
+    ("mais", 2040, 120, "https://github.com/kitsuneislife?tab=repositories",
+     "Um botão rosa: tem mais no meu perfil, com quantos repositórios eu tenho."),
+    ("habilidades", 2160, 720, None,
      "O que eu sei fazer, num boletim escolar com as notas tiradas dos meus repositórios no GitHub: "
      "cada linguagem com quantos repos usam ela, a nota e se passou. Dart, Java e Kotlin estão em curso. "
      "Atividades extras: git, npm, Redis, Express, Docker, Expo. Deveres entregues: os repositórios "
      "mexidos por último. Carimbo de aprovado."),
-    ("fim", 2840, 440, None,
+    ("fim", 2880, 440, None,
      "Anoitece. Gostou? Sei fazer bem mais. Eu abraçando uma pelúcia do Claude, com a lua e umas estrelinhas. "
      "Embaixo, botõezinhos de site antigo: feito à mão por kitsune, 100% SVG, movido a lasanha, "
      "melhor visto em qualquer um, sem cookies. kitsuneislife, 2026."),
@@ -196,11 +196,15 @@ def montar():
           (720, 810, 880, 900), z=5)
 
     # ---- projetinhos, numa folha quadriculada amarela que vai até o "tem mais"
+    # o pé da folha é rasgado, com a fibra clarinha aparecendo por baixo
+    pe = serrilha(-30, 2862, 940, 21, amp=6, passo=13)
+    fibra = serrilha(-30, 2867, 940, 22, amp=6, passo=11)
     folha = (f'<g transform="rotate(-0.8 440 2100)" filter="url(#sombra)">'
-             f'<rect x="-30" y="1392" width="940" height="1500" fill="{AMARELO_PAG}"/>'
-             f'<rect x="-30" y="1392" width="940" height="1500" fill="url(#quadriculado)"/>'
+             f'<path d="M-30 1392 L{fibra} L910 1392 Z" fill="#fffbe0"/>'
+             f'<path d="M-30 1392 L{pe} L910 1392 Z" fill="{AMARELO_PAG}"/>'
+             f'<path d="M-30 1392 L{pe} L910 1392 Z" fill="url(#quadriculado)"/>'
              f'<rect x="-30" y="1392" width="940" height="26" fill="url(#xadrez)"/></g>')
-    c.add(folha, (-30, 1370, 910, 2910), z=4)
+    c.add(folha, (-30, 1370, 910, 2890), z=4)
     projetinhos(c)
 
     # ---- o que eu sei fazer: um boletim, com as notas tiradas dos repositórios
@@ -210,8 +214,8 @@ def montar():
     rodape(c)
 
     # a cena foi desenhada com o then and now e o recibo no meio; sem eles,
-    # o fim sobe 720, os projetinhos sobem 440 e tudo da bio pra baixo sobe 240
-    c.subir(3600, 720)
+    # o fim sobe 680, os projetinhos sobem 440 e tudo da bio pra baixo sobe 240
+    c.subir(3600, 680)
     c.subir(1300, 440)
     c.subir(470, 240)
     return c
@@ -336,13 +340,7 @@ def projetinhos(c):
     # o "clica nos cards" vira um botão neobrutalista, com a setinha clicando
     texto = "clica nos cards pra abrir"
     bw = medir("revista", texto, 17) + 118
-    bx, by = 846 - bw, 1512
-    setas = "".join(f'<path d="M{bx + 18 + i * 17} {by + 14} l11 10 l-11 10 Z" fill="{TINTA}"/>' for i in range(3))
-    c.add(f'<g transform="rotate(-3 {bx + bw / 2:.0f} {by + 26})">'
-          f'<rect x="{bx + 7:.0f}" y="{by + 7}" width="{bw:.0f}" height="52" rx="10" fill="{TINTA}"/>'
-          f'<g class="aperta"><rect x="{bx:.0f}" y="{by}" width="{bw:.0f}" height="52" rx="10" fill="{LIMA}" stroke="{TINTA}" stroke-width="4"/>'
-          f'{setas}<text x="{bx + 76:.0f}" y="{by + 33}" font-size="17" class="revista" fill="{TINTA}">{t(texto)}</text></g></g>'
-          + '<g class="clica">' + cursor(bx + bw - 10, by + 46, -14, .85) + '</g>', (bx - 10, by - 30, W, by + 110), z=7)
+    botao(c, texto, 846 - bw, 1512, LIMA, -3)
     c.img("recortes/tesoura.png", 404, 1588, 58, 64, z=7, px=160)
     c.add(estrela(540, 1488, 15, 0.4, "#ffb3d1") + brilhinho(850, 1496, 12, AMARELO, 1.2), (500, 1466, 875, 1526), z=8)
 
@@ -395,12 +393,27 @@ def projetinhos(c):
     c.add('<g class="treme" style="animation-delay:1.2s">' + etiqueta(690, 2672, "psiu: é um Acer", "#fff", 5)[0] + "</g>", (680, 2660, 820, 2712), z=8)
     c.add(brilhinho(458, 2492, 14, AMARELO, 0.5) + estrela(842, 2496, 18, 1.4, "#9fc4ff"), (430, 2470, 870, 2520), z=8)
 
-    # tem mais
-    svg, cx_ = bilhete(250, 2742, 380, [("tem mais projetinhos no meu perfil", TINTA)], -1.5, cor=ROSA_BILHETE, pautado=False)
-    c.add(svg, cx_, z=5)
-    c.img("recortes/alfinete.png", 226, 2722, 92, -10, z=6, px=280)
-    c.img("recortes/seta-pixel.png", 642, 2756, 30, -8, z=7, classe="boia", sombra="sombra-leve", px=120)
-    c.add(brilhinho(694, 2756, 12, "#fff", 1.8), (670, 2730, 720, 2800), z=7)
+    # tem mais: o mesmo botão do topo, agora rosa, com quantos repos tem no total
+    texto = "tem mais no meu perfil"
+    repos = f"{carregar_boletim()[0]['repos']} repos"
+    pw = medir("recibo", repos, 15) + 20
+    bw = medir("revista", texto, 18) + 118 + pw + 14
+    bx = 440 - bw / 2
+    pilula = (f'<rect x="{bx + bw - pw - 16:.0f}" y="2755" width="{pw:.0f}" height="26" rx="13" fill="{TINTA}"/>'
+              f'<text x="{bx + bw - 16 - pw / 2:.0f}" y="2773" font-size="15" text-anchor="middle" class="recibo" fill="{LIMA}">{repos}</text>')
+    botao(c, texto, bx, 2742, "#ffb3d1", 1.5, px=18, extra=pilula, bw=bw, seta_y=20)
+    c.add(estrela(bx - 30, 2770, 16, 0.3) + brilhinho(bx + bw + 52, 2752, 11, "#fff", 1.1), (bx - 60, 2730, bx + bw + 80, 2800), z=8)
+
+
+def botao(c, texto, bx, by, cor, rot, px=17, extra="", bw=None, seta_y=46):
+    """Botão neobrutalista de sombra dura, com as setinhas e o cursor clicando nele."""
+    bw = bw or medir("revista", texto, px) + 118
+    setas = "".join(f'<path d="M{bx + 18 + i * 17} {by + 14} l11 10 l-11 10 Z" fill="{TINTA}"/>' for i in range(3))
+    c.add(f'<g transform="rotate({rot} {bx + bw / 2:.0f} {by + 26})">'
+          f'<rect x="{bx + 7:.0f}" y="{by + 7}" width="{bw:.0f}" height="52" rx="10" fill="{TINTA}"/>'
+          f'<g class="aperta"><rect x="{bx:.0f}" y="{by}" width="{bw:.0f}" height="52" rx="10" fill="{cor}" stroke="{TINTA}" stroke-width="4"/>'
+          f'{setas}<text x="{bx + 76:.0f}" y="{by + 33}" font-size="{px}" class="revista" fill="{TINTA}">{t(texto)}</text>{extra}</g></g>'
+          + '<g class="clica">' + cursor(bx + bw - 10, by + seta_y, -14, .85) + '</g>', (bx - 10, by - 20, min(W, bx + bw + 40), by + seta_y + 68), z=7)
 
 
 def botao_88(x, y, linhas, fundo, cor, borda="#fff", icone=""):
@@ -506,11 +519,22 @@ def boletim(c):
         if n not in d["linguagens"] and len(linhas) < 8:
             linhas.append((n, 0, None))
 
-    # título, colado na beirada da folha amarela
-    c.add(logo("o que eu sei fazer?", 40, 2872, 50, LIMA, [-4, 3, -2, 4, -3, 2, -4, 3, -2, 4, -3, 2, -4, 3, -2, 4, -3, 2, 3],
-               [0, -4, 5, -3, 4, -5, 3, -2, 4, -4, 3, -3, 4, -5, 3, -2, 4, -3, 0]), (10, 2810, 620, 2900), z=9)
+    # título no meio, num papel preto de borda branca e sombra lima (igual ao do Gostou?),
+    # encavalado no pé rasgado da folha amarela
+    titulo, px = "o que eu sei fazer?", 56
+    tw = medir("bolha", titulo, px)
+    tx0, ty0, tw0, th0 = 440 - tw / 2 - 40, 2832, tw + 80, 84
+    c.add(f'<g transform="rotate(-2 440 {ty0 + th0 / 2})">'
+          f'<rect x="{tx0 + 10:.0f}" y="{ty0 + 10}" width="{tw0:.0f}" height="{th0}" fill="{LIMA}" stroke="{TINTA}" stroke-width="4" stroke-linejoin="round"/>'
+          f'<rect x="{tx0:.0f}" y="{ty0}" width="{tw0:.0f}" height="{th0}" fill="#111" stroke="#fff" stroke-width="6" stroke-linejoin="round"/></g>'
+          + f'<g transform="rotate(-2 440 {ty0 + th0 / 2})">'
+          + logo(titulo, round(440 - tw / 2), ty0 + 58, px, LIMA, [-4, 3, -2, 4, -3, 2, -4, 3, -2, 4, -3, 2, -4, 3, -2, 4, -3, 2, 3],
+                 [0, -4, 5, -3, 4, -5, 3, -2, 4, -4, 3, -3, 4, -5, 3, -2, 4, -3, 0], borda="#111", sombra="#111") + "</g>",
+          (tx0 - 20, ty0 - 30, tx0 + tw0 + 30, ty0 + th0 + 30), z=9)
+    # etiquetinha em japonês na quina, tipo capa de revista
+    c.add(etiqueta(tx0 + tw0 - 92, ty0 - 16, "できること", "#ffb3d1", 6, px=14)[0], (tx0 + tw0 - 110, ty0 - 40, tx0 + tw0 + 20, ty0 + 30), z=10)
 
-    x, y, w, rot = 30, 2904, 572, -1.2
+    x, y, w, rot = 30, 2944, 572, -1.2
     h = 236 + 30 * len(linhas) + 122
     s = [f'<g transform="rotate({rot} {x + w / 2} {y + h / 2})">',
          f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#fbfaf4" filter="url(#sombra)"/>',
@@ -589,7 +613,7 @@ def boletim(c):
     c.add(fita(x + 210, y - 22, 150, 44, -3), (x + 190, y - 50, x + 380, y + 40), z=9)
 
     # do lado: o que eu uso além das linguagens, e os deveres de casa entregues
-    nx, ny, nw = 626, 2930, 236
+    nx, ny, nw = 626, 2966, 236
     tags, tx, ty2 = [], nx + 18, ny + 70
     for i, e in enumerate(EXTRAS):
         eti, ew = etiqueta(tx, ty2, e, ["#fff", AMARELO, "#7fc8ff", VERDE, "#ffb3d1", "#fff"][i % 6], (-3, 2, -2, 3)[i % 4], px=14)
@@ -656,7 +680,7 @@ def textura_nuvens(largura=820, emenda=300):
 # cada camada anda de um tile inteiro por volta, então o fim da volta é igual ao começo
 NUVENS = {
     "capa": [(40, 420, .6, "#fff", 440), (150, 300, .4, "#fff", 440)],
-    "fim": [(2900, 380, .4, "#cfcaff", None), (3010, 270, .3, "#ffd3ec", None)],
+    "fim": [(2940, 380, .4, "#cfcaff", None), (3050, 270, .3, "#ffd3ec", None)],
 }
 NUVEM_TILE = 1000
 NUVEM_VOLTA = [150, 105]  # segundos por volta, uma camada mais rápida que a outra
