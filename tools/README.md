@@ -1,19 +1,36 @@
 # como o README é montado
 
-Cada pedaço do README é um SVG em `assets/readme/`, gerado por script. O GitHub
-mostra SVG como imagem, então fonte e desenho vão embutidos (base64) e a
-animação é só CSS.
+O README é uma colagem só, de 880 de largura, cortada em tiras horizontais
+(`assets/readme/colagem-*.svg`). Cada tira é a mesma cena com outro viewBox,
+então o que atravessa uma emenda aparece certinho dos dois lados.
+
+No README as tiras usam `width="100%" align="left"`: é o único jeito de o
+GitHub empilhar imagens sem fresta entre elas. Lado a lado não dá (ele põe 20px
+de padding em imagem alinhada), então cada tira pode ser um link inteiro, e só.
+
+Fonte e desenho vão embutidos em base64 dentro do SVG, porque o GitHub não
+carrega nada externo de dentro de uma imagem. Animação é só CSS.
 
 ```sh
 pip install fonttools brotli pillow
-python tools/build.py    # capa, contatos, projetos, habilidades, divisórias
-python tools/recibo.py   # recibo da semana (sem chave do Last.fm sai com dados de exemplo)
+python tools/colagem.py   # gera todas as tiras
+python tools/recibo.py    # só a tira da música (sem chave do Last.fm sai com EXEMPLO)
 ```
 
-- `tools/kit.py`: paleta, fontes, fita crepe, sombras, helpers.
-- `assets/art/`: os desenhos. Troque um PNG aqui e rode o build de novo.
-- `tools/fonts/`: Gochi Hand, Lilita One e DotGothic16 (OFL), já cortadas pro alfabeto latino.
-- `tools/icons/`: ícones do [simple-icons](https://simpleicons.org) (CC0).
+- `tools/colagem.py`: a cena inteira. As posições ficam em `montar()`, e as
+  tiras (altura, link e texto alternativo) em `TIRAS`.
+- `tools/kit.py`: paleta, fontes, fita crepe, sombras.
+- `assets/art/`: seus desenhos. `assets/art/recortes/`: objetos recortados do
+  layout do site (comidinhas, Nendoroids, prancheta, o "Gostou?").
+  Troque um PNG com o mesmo nome e rode o build de novo.
+- `tools/fonts/`: Gochi Hand, Bagel Fat One, Dela Gothic One, Lilita One e
+  DotGothic16 (todas OFL), já cortadas.
+
+Depois de mexer em `TIRAS`, regenere o README:
+
+```sh
+python -c "import sys; sys.path.insert(0,'tools'); import colagem; open('README.md','w').write(colagem.readme()+'\n\n<br clear=\"all\">\n')"
+```
 
 ## recibo da semana
 

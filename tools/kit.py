@@ -4,6 +4,7 @@ O GitHub mostra SVG via <img>, então nada externo carrega lá dentro:
 fonte e imagem vão embutidas em base64, e animação só em CSS.
 """
 import base64
+import functools
 import io
 import re
 from html import escape
@@ -15,7 +16,6 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
 FONTS = ROOT / "tools" / "fonts"
-ICONS = ROOT / "tools" / "icons"
 ART = ROOT / "assets" / "art"
 OUT = ROOT / "assets" / "readme"
 
@@ -38,6 +38,8 @@ FAMILIAS = {
     "mao": "GochiHand-Regular.ttf",
     "titulo": "LilitaOne-Regular.ttf",
     "recibo": "DotGothic16-Regular.ttf",
+    "bolha": "BagelFatOne-Regular.ttf",
+    "revista": "DelaGothicOne-Regular.ttf",
 }
 
 
@@ -55,13 +57,14 @@ def font_face(familia, texto):
     return f"@font-face{{font-family:{familia};src:url(data:font/woff2;base64,{b64}) format('woff2')}}"
 
 
+@functools.lru_cache(maxsize=None)
 def imagem(nome, largura, qualidade=82):
     """Lê um PNG de assets/art, reduz pra largura (px reais) e devolve data URI webp."""
     im = Image.open(ART / nome)
     if im.width > largura:
         im = im.resize((largura, round(im.height * largura / im.width)), Image.LANCZOS)
     buf = io.BytesIO()
-    im.save(buf, "WEBP", quality=qualidade, method=6)
+    im.save(buf, "WEBP", quality=qualidade, method=4)
     return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
@@ -82,13 +85,6 @@ def tamanho(nome):
     return Image.open(ART / nome).size
 
 
-def icone(slug, x, y, s, cor="#fff"):
-    """Ícone do simple-icons (viewBox 24) posicionado em x,y com lado s."""
-    d = re.search(r' d="([^"]+)"', (ICONS / f"{slug}.svg").read_text()).group(1)
-    k = s / 24
-    return f'<path transform="translate({x} {y}) scale({k:.4f})" d="{d}" fill="{cor}"/>'
-
-
 def t(texto):
     return escape(texto, quote=False)
 
@@ -101,6 +97,8 @@ BASE_CSS = """
 .mao{font-family:mao,'Comic Sans MS',cursive}
 .titulo{font-family:titulo,Impact,sans-serif}
 .recibo{font-family:recibo,'Courier New',monospace}
+.bolha{font-family:bolha,'Arial Black',sans-serif}
+.revista{font-family:revista,'Arial Black',sans-serif}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 """
 
@@ -132,12 +130,12 @@ def fita(x, y, w, h, angulo, cor="#f3eccd", opacidade=0.82):
             f'transform="rotate({angulo} {cx} {cy})" filter="url(#sombra-leve)"/>')
 
 
-def svg(largura, altura, corpo, fontes, css="", titulo=""):
+def svg(largura, altura, corpo, fontes, css="", titulo="", viewbox=None):
     """Monta o arquivo final. fontes = {familia: texto_usado}."""
     faces = "".join(font_face(f, txt) for f, txt in fontes.items() if txt)
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
-        f'width="{largura}" height="{altura}" viewBox="0 0 {largura} {altura}" role="img">'
+        f'width="{largura}" height="{altura}" viewBox="{viewbox or f"0 0 {largura} {altura}"}" role="img">'
         f"<title>{t(titulo)}</title>"
         f"<style>{faces}{BASE_CSS}{css}</style><defs>{DEFS}</defs>{corpo}</svg>"
     )
@@ -151,9 +149,9 @@ def textos(corpo, classe):
     return unescape(limpo)
 
 
-def salvar(nome, largura, altura, corpo, css="", titulo=""):
+def salvar(nome, largura, altura, corpo, css="", titulo="", viewbox=None):
     fontes = {f: textos(corpo, f) for f in FAMILIAS}
     OUT.mkdir(parents=True, exist_ok=True)
     caminho = OUT / nome
-    caminho.write_text(svg(largura, altura, corpo, fontes, css, titulo), encoding="utf-8")
+    caminho.write_text(svg(largura, altura, corpo, fontes, css, titulo, viewbox), encoding="utf-8")
     print(f"{nome}: {caminho.stat().st_size / 1024:.0f} KB")
