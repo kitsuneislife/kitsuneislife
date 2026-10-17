@@ -10,9 +10,10 @@ e width="100%", que é o jeito de o GitHub empilhar imagem sem fresta.
 O then and now e o recibo da semana saíram daqui e estão guardados em archive/.
 """
 import math
+import random
 
 from kit import (AMARELO, ANIL, CRACHA, LIMA, PAUTA, TINTA, fita, imagem,
-                 linha, salvar, t, tamanho)
+                 linha, medir, salvar, t, tamanho)
 
 W = 880
 AMARELO_PAG, ROSA_BILHETE = "#f4ec55", "#ffd3e3"
@@ -131,20 +132,6 @@ def bilhete(x, y, w, linhas, rot=0, cor="#fffef6", px=21, pautado=True):
     return "".join(s), caixa_girada(x, y, w, h, rot)
 
 
-def foto(cena, nome, x, y, w, rot, z, moldura="#fff", pad=12, rodape=12):
-    """Foto impressa com borda, como polaroid ou print."""
-    iw, ih = tamanho(nome)
-    h = w * ih / iw
-    fw, fh = w + 2 * pad, h + pad + rodape
-    cx, cy = x + fw / 2, y + fh / 2
-    uri = imagem(nome, min(iw, round(w * 2)))
-    svg = (f'<g transform="rotate({rot} {cx:.1f} {cy:.1f})">'
-           f'<rect x="{x}" y="{y}" width="{fw:.1f}" height="{fh:.1f}" fill="{moldura}" filter="url(#sombra)"/>'
-           f'<image x="{x + pad}" y="{y + pad}" width="{w}" height="{h:.1f}" href="{uri}" preserveAspectRatio="xMidYMid slice"/></g>')
-    cena.add(svg, caixa_girada(x, y, fw, fh, rot), z)
-    return fw, fh
-
-
 # ---------------------------------------------------------------- a cena
 
 def montar():
@@ -187,50 +174,7 @@ def montar():
              f'<rect x="-30" y="1392" width="940" height="26" fill="url(#xadrez)"/></g>')
     c.add(folha, (-30, 1370, 910, 2910), z=4)
     c.add(fita(318, 1376, 150, 44, -6) + fita(640, 1366, 150, 44, 7), (300, 1340, 800, 1430), z=11)
-    c.add(logo("projetinhos", 40, 1562, 74, "#ffb3d1", giros[1:], sobe[2:]), (10, 1480, 600, 1610), z=6)
-    c.add(fita(62, 1578, 240, 46, -2) + linha(92, 1609, "(e de lasanha)", 22, TINTA, 'transform="rotate(-2 180 1600)"'),
-          (50, 1570, 320, 1630), z=7)
-    svg, cx_ = bilhete(600, 1508, 220, [("clica nos cards", TINTA), ("pra abrir cada um", "#5a5a63")], 4, cor=ROSA_BILHETE, pautado=False, px=20)
-    c.add(svg, cx_, z=6)
-    c.img("recortes/tachinha.png", 776, 1486, 38, 8, z=7)
-
-    def projeto(y0, nome_foto, lado, titulo, linhas, rot, deco, moldura="#fff", rodape=12, cor_titulo=LIMA, extra=""):
-        larg = 360
-        if lado == "esq":
-            fx, nx = 46, 466
-        else:
-            fx, nx = 450, 46
-        fw, fh = foto(c, nome_foto, fx, y0 + 18, larg, rot, z=4, moldura=moldura, rodape=rodape)
-        c.add(fita(fx + fw / 2 - 56, y0 + 2, 112, 36, rot * 2), (fx, y0 - 20, fx + fw, y0 + 50), z=5)
-        tx = fx + 10 if lado == "esq" else fx + 20
-        g = [-4, 3, -2, 4, -3, 2, -4, 3, -2, 4]
-        c.add(logo(titulo, tx, y0 + 56, 44, cor_titulo, g, [0] * 12), (tx - 20, y0, tx + 380, y0 + 80), z=6)
-        svg, cx_ = bilhete(nx, y0 + 70, 372, linhas, -rot * 0.7, px=20)
-        c.add(svg + extra, cx_, z=5)
-        c.img("recortes/clipe.png", nx + 336, y0 + 34, 26, 6 if lado == "esq" else -6, z=6, px=120)
-        n, dx, dy, dw, drot = deco
-        c.img(n, dx, y0 + dy, dw, drot, z=6)
-
-    projeto(1640, "foto-artcode.png", "esq", "artcode",
-            ["minha própria linguagem de programação,", "interpretada e escrita em Rust.",
-             "tá na v0.5.1, e a v0.6 já tá saindo.", ("clica pra abrir o repo", ANIL)],
-            -3, ("recortes/waffle.png", 760, 168, 104, 10))
-    projeto(1910, "foto-lover.png", "dir", "lover",
-            ["um jogo de quebra-cabeça em que", "o controle é o seu navegador.", "são 32 páginas em dois atos.",
-             ("clica pra jogar", ANIL)],
-            3, ("recortes/pizza.png", 330, 196, 104, -12), cor_titulo="#ffb3d1")
-    projeto(2180, "foto-clios.png", "esq", "clios",
-            ["um desktop Linux feito pro terminal.", "Arch, Hyprland e Quickshell,", "com um binário em Rust.",
-             ("clica pra abrir o repo", ANIL)],
-            -2, ("recortes/taiyaki.png", 752, 176, 116, 8), moldura="#000", cor_titulo="#fff")
-    projeto(2450, "foto-hackintosh.jpg", "dir", "hackintosh",
-            ["macOS Sequoia num Acer Nitro V15,", "com o desktop acelerado na RTX 3050.",
-             ("clica pra abrir o repo", ANIL)],
-            2.5, ("recortes/ovo.png", 360, 170, 96, -8), rodape=40, cor_titulo="#9fc4ff")
-    svg, cx_ = bilhete(250, 2738, 380, [("tem mais projetinhos no meu perfil", TINTA)], -1.5, cor=ROSA_BILHETE, pautado=False)
-    c.add(svg, cx_, z=5)
-    c.img("recortes/leite-caixinha.png", 650, 2722, 62, 10, z=6)
-    c.img("recortes/tachinha.png", 578, 2708, 40, -6, z=6)
+    projetinhos(c)
 
     # ---- o que eu sei fazer (a prancheta do banner antigo)
     c.img("banner-habilidades.png", 18, 2856, 848, 0.8, z=4, sombra="sombra", px=1124)
@@ -249,6 +193,204 @@ def montar():
     c.subir(1300, 440)
     c.subir(470, 240)
     return c
+
+
+ROSA, ROSA_ESCURO, AZUL_VIVO, VERDE = "#f25ca8", "#c93d86", "#3f7cf4", "#7fd65b"
+
+
+def serrilha(x, y, w, semente, amp=4, passo=9):
+    """Borda de papel rasgado, da esquerda pra direita."""
+    r = random.Random(semente)
+    pts = [f"{x + i:.1f} {y + r.uniform(-amp, amp):.1f}" for i in range(0, int(w) + 1, passo)]
+    return " L".join(pts)
+
+
+def folha_rasgada(x, y, w, h, rot, semente):
+    """Folha arrancada do caderno: topo rasgado com os furos, quadriculado azul."""
+    topo = serrilha(x, y, w, semente)
+    d = f"M{topo} L{x + w} {y + h} L{x} {y + h} Z"
+    furos = "".join(f'<circle cx="{x + 30 + i * 46}" cy="{y + 20}" r="6" fill="{AMARELO_PAG}" stroke="#d9d2a0" stroke-width="1"/>'
+                    for i in range(int((w - 40) // 46) + 1))
+    return (f'<g transform="rotate({rot} {x + w / 2:.1f} {y + h / 2:.1f})">'
+            f'<path d="{d}" fill="#fdfdfb" filter="url(#sombra)"/>'
+            f'<path d="{d}" fill="url(#grade-azul)"/>{furos}</g>')
+
+
+def prendedor(cx, y, rot=0, cor=ROSA, escuro=ROSA_ESCURO):
+    """Prendedor de papel (binder clip) rosa, com as duas alças de arame."""
+    return (f'<g transform="rotate({rot} {cx} {y + 20})" filter="url(#sombra-leve)">'
+            f'<path d="M{cx - 18} {y + 4} L{cx - 26} {y - 30} M{cx + 18} {y + 4} L{cx + 26} {y - 30} '
+            f'M{cx - 26} {y - 30} Q{cx} {y - 40} {cx + 26} {y - 30}" fill="none" stroke="#b9bcc4" stroke-width="4.5" stroke-linecap="round"/>'
+            f'<path d="M{cx - 18} {y + 4} L{cx - 26} {y - 30} M{cx + 18} {y + 4} L{cx + 26} {y - 30}" fill="none" stroke="#eef0f4" stroke-width="1.6" stroke-linecap="round"/>'
+            f'<path d="M{cx - 34} {y + 34} L{cx - 26} {y} L{cx + 26} {y} L{cx + 34} {y + 34} Z" fill="{cor}"/>'
+            f'<path d="M{cx - 26} {y} L{cx + 26} {y} L{cx + 28} {y + 8} L{cx - 28} {y + 8} Z" fill="{escuro}"/>'
+            f'<path d="M{cx - 22} {y + 14} L{cx + 10} {y + 14}" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55"/></g>')
+
+
+def etiqueta(x, y, texto, fundo, rot=0, cor=TINTA, px=14):
+    """Etiqueta de adesivo com contorno preto, tipo as de aviso das referências."""
+    w = medir("revista", texto, px) + 22
+    h = px + 16
+    return (f'<g transform="rotate({rot} {x + w / 2:.1f} {y + h / 2:.1f})" filter="url(#sombra-leve)">'
+            f'<rect x="{x}" y="{y}" width="{w:.1f}" height="{h}" rx="5" fill="{fundo}" stroke="{TINTA}" stroke-width="2.5"/>'
+            f'<text x="{x + 11}" y="{y + h / 2 + px * .36:.1f}" font-size="{px}" class="revista" fill="{cor}">{t(texto)}</text></g>'), w
+
+
+def brilhinho(cx, cy, r, cor="#fff", atraso=None):
+    """Estrelinha de quatro pontas."""
+    d = (f"M{cx} {cy - r} Q{cx + r * .18} {cy - r * .18} {cx + r} {cy} Q{cx + r * .18} {cy + r * .18} {cx} {cy + r} "
+         f"Q{cx - r * .18} {cy + r * .18} {cx - r} {cy} Q{cx - r * .18} {cy - r * .18} {cx} {cy - r} Z")
+    cl = f' class="brilho" style="animation-delay:{atraso}s"' if atraso is not None else ""
+    return f'<path{cl} d="{d}" fill="{cor}" stroke="{TINTA}" stroke-width="2.5" stroke-linejoin="round"/>'
+
+
+def strass(pontos, r=5.5):
+    """Fileira de strass (pedrinhas) ao longo de uma curva quadrática."""
+    (x0, y0), (x1, y1), (x2, y2) = pontos
+    s = []
+    n = int(math.dist((x0, y0), (x2, y2)) / (r * 2.3))
+    for i in range(n + 1):
+        u = i / n
+        x = (1 - u) ** 2 * x0 + 2 * (1 - u) * u * x1 + u * u * x2
+        y = (1 - u) ** 2 * y0 + 2 * (1 - u) * u * y1 + u * u * y2
+        s.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r}" fill="#cfe9ff" stroke="#7d9fc4" stroke-width="1.2"/>'
+                 f'<circle cx="{x - r * .35:.1f}" cy="{y - r * .35:.1f}" r="{r * .32:.1f}" fill="#fff"/>')
+    return f'<g filter="url(#sombra-leve)">{"".join(s)}</g>'
+
+
+def cursor(x, y, rot=0, escala=1):
+    """Setinha amarela de mouse, gordinha, clicando."""
+    d = "M0 0 L0 46 L12 35 L21 55 L30 51 L21 32 L37 32 Z"
+    return (f'<g transform="translate({x} {y}) rotate({rot}) scale({escala})" filter="url(#sombra-leve)">'
+            f'<path d="{d}" transform="translate(4 4)" fill="#d79a00" stroke="{TINTA}" stroke-width="3" stroke-linejoin="round"/>'
+            f'<path d="{d}" fill="{AMARELO}" stroke="{TINTA}" stroke-width="3" stroke-linejoin="round"/>'
+            f'<path d="M-10 -6 l-9 -7 M-2 -12 l-2 -11 M8 -9 l6 -9" stroke="{TINTA}" stroke-width="3" stroke-linecap="round"/></g>')
+
+
+def tecla(x, y, texto, rot=0, w=None):
+    """Tecla de teclado, como adesivo."""
+    w = w or medir("revista", texto, 15) + 26
+    return (f'<g transform="rotate({rot} {x + w / 2:.1f} {y + 22})" filter="url(#sombra-leve)">'
+            f'<rect x="{x}" y="{y}" width="{w:.1f}" height="46" rx="9" fill="#9aa3b5" stroke="{TINTA}" stroke-width="2.5"/>'
+            f'<rect x="{x + 4}" y="{y + 3}" width="{w - 8:.1f}" height="34" rx="7" fill="#eef1f7"/>'
+            f'<text x="{x + w / 2:.1f}" y="{y + 26}" font-size="15" text-anchor="middle" class="revista" fill="{TINTA}">{t(texto)}</text></g>'), w
+
+
+def coracao(cx, cy, r, cor=ROSA, rot=0):
+    d = (f"M{cx} {cy + r * .9} C{cx - r * 1.6} {cy - r * .1}, {cx - r * .7} {cy - r * 1.2}, {cx} {cy - r * .35} "
+         f"C{cx + r * .7} {cy - r * 1.2}, {cx + r * 1.6} {cy - r * .1}, {cx} {cy + r * .9} Z")
+    return (f'<g transform="rotate({rot} {cx} {cy})" filter="url(#sombra-leve)"><path d="{d}" fill="{cor}" stroke="{TINTA}" stroke-width="2.5" stroke-linejoin="round"/>'
+            f'<circle cx="{cx - r * .45}" cy="{cy - r * .35}" r="{r * .16}" fill="#fff"/></g>')
+
+
+def print_adesivo(c, nome, x, y, w, rot, z, moldura="#fff", borda=10, lupa=None):
+    """O print do projeto colado como adesivo grosso. lupa = (u, v, r, zoom, cx, cy)."""
+    iw, ih = tamanho(nome)
+    h = w * ih / iw
+    uri = imagem(nome, min(iw, round(w * 2.4)))
+    fw, fh = w + 2 * borda, h + 2 * borda
+    cx, cy = x + fw / 2, y + fh / 2
+    s = [f'<g transform="rotate({rot} {cx:.1f} {cy:.1f})">',
+         f'<rect x="{x}" y="{y}" width="{fw:.1f}" height="{fh:.1f}" rx="6" fill="{moldura}" filter="url(#sombra)"/>',
+         f'<image x="{x + borda}" y="{y + borda}" width="{w}" height="{h:.1f}" href="{uri}" preserveAspectRatio="xMidYMid slice"/>']
+    if lupa:
+        u, v, r, zoom, lx, ly = lupa
+        px_, py_ = x + borda + u * w, y + borda + v * h
+        uri2 = imagem(nome, iw)
+        s.append(f'<clipPath id="lente"><circle cx="{lx}" cy="{ly}" r="{r}"/></clipPath>'
+                 f'<line x1="{lx + r * .7:.1f}" y1="{ly + r * .7:.1f}" x2="{lx + r * 1.6:.1f}" y2="{ly + r * 1.6:.1f}" stroke="#2b2b33" stroke-width="16" stroke-linecap="round" filter="url(#sombra-leve)"/>'
+                 f'<line x1="{lx + r * .75:.1f}" y1="{ly + r * .75:.1f}" x2="{lx + r * 1.55:.1f}" y2="{ly + r * 1.55:.1f}" stroke="#5a5a66" stroke-width="5" stroke-linecap="round"/>'
+                 f'<circle cx="{lx}" cy="{ly}" r="{r}" fill="#fff"/>'
+                 f'<g clip-path="url(#lente)"><image x="{lx - (px_ - x - borda) * zoom:.1f}" y="{ly - (py_ - y - borda) * zoom:.1f}" '
+                 f'width="{w * zoom:.1f}" height="{h * zoom:.1f}" href="{uri2}"/>'
+                 f'<ellipse cx="{lx - r * .35:.1f}" cy="{ly - r * .4:.1f}" rx="{r * .45:.1f}" ry="{r * .22:.1f}" fill="#fff" opacity=".35" transform="rotate(-30 {lx} {ly})"/></g>'
+                 f'<circle cx="{lx}" cy="{ly}" r="{r}" fill="none" stroke="#c9ccd3" stroke-width="9"/>'
+                 f'<circle cx="{lx}" cy="{ly}" r="{r + 4.5}" fill="none" stroke="{TINTA}" stroke-width="2.5"/>')
+    s.append("</g>")
+    c.add("".join(s), caixa_girada(x, y, fw, fh, rot), z)
+    return fw, fh
+
+
+def cartao(c, x, y, rot, numero, titulo, cor_titulo, linhas, tags, semente):
+    """A folha de cada projeto: número, título de adesivo, o texto à mão e as etiquetas."""
+    w, h = 410, 238
+    s = [folha_rasgada(x, y, w, h, rot, semente), f'<g transform="rotate({rot} {x + w / 2:.1f} {y + h / 2:.1f})">']
+    s.append(f'<text x="{x + 24}" y="{y + 66}" font-size="26" class="revista" fill="{ROSA}" stroke="{TINTA}" stroke-width="5" paint-order="stroke">{numero}</text>')
+    s.append(logo(titulo, x + 84, y + 70, 40, cor_titulo, [-4, 3, -2, 4, -3, 2, -4, 3, -2, 4], [0] * 12))
+    for i, ln in enumerate(linhas):
+        texto, cor_l = ln if isinstance(ln, tuple) else (ln, TINTA)
+        s.append(linha(x + 26, y + 112 + i * 28, texto, 20, cor_l))
+    tx = x + 24
+    for texto, fundo, cor_t in tags:
+        e, ew = etiqueta(tx, y + h - 50, texto, fundo, cor=cor_t, px=13)
+        s.append(e)
+        tx += ew + 8
+    s.append("</g>")
+    s.append(prendedor(x + w - 80, y - 6, rot * 2))
+    c.add("".join(s), caixa_girada(x, y - 40, w, h + 40, rot), z=6)
+
+
+def projetinhos(c):
+    # cabeçalho: o logo, o "(e de lasanha)" e a setinha clicando
+    c.add(logo("projetinhos", 40, 1562, 74, "#ffb3d1", [4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3], [-6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5]),
+          (10, 1480, 600, 1610), z=6)
+    c.add(fita(62, 1578, 240, 46, -2) + linha(92, 1609, "(e de lasanha)", 22, TINTA, 'transform="rotate(-2 180 1600)"'),
+          (50, 1570, 320, 1630), z=7)
+    setas = "".join(f'<path d="M{596 + i * 30} 1512 l20 16 l-20 16 Z" fill="{AZUL_VIVO}" stroke="{TINTA}" stroke-width="2.5" stroke-linejoin="round"/>'
+                    for i in range(4))
+    c.add(f'<g transform="rotate(-4 660 1528)" filter="url(#sombra-leve)">{setas}</g>'
+          + linha(600, 1586, "clica nos cards pra abrir", 21, TINTA, 'transform="rotate(-4 700 1580)"')
+          + cursor(812, 1534, -14) + strass([(600, 1612), (720, 1630), (850, 1600)], 4.5), (580, 1490, 860, 1636), z=7)
+    c.add(estrela(560, 1500, 16, 0.4, "#ffb3d1") + brilhinho(842, 1490, 13, AMARELO, 1.2), (530, 1470, 870, 1530), z=7)
+
+    # 01 artcode: o logo vermelho, a folha e um ingresso da versão
+    print_adesivo(c, "foto-artcode.png", 36, 1676, 380, -3, z=5)
+    cartao(c, 424, 1660, 1.5, "01", "artcode", LIMA,
+           ["minha própria linguagem de programação,", "interpretada e escrita em Rust.", ("clica pra abrir o repo", ANIL)],
+           [("Rust", "#ff8a5c", TINTA), ("interpretada", "#fff", TINTA), ("v0.5.1", TINTA, "#fff")], 11)
+    ingresso = (f'<g transform="rotate(-6 200 1868)" filter="url(#sombra-leve)">'
+                f'<path d="M80 1836 h240 v20 a12 12 0 0 0 0 24 v20 h-240 v-20 a12 12 0 0 0 0 -24 Z" fill="#ffb3d1" stroke="{TINTA}" stroke-width="2.5"/>'
+                f'<line x1="256" y1="1840" x2="256" y2="1896" stroke="{TINTA}" stroke-width="2" stroke-dasharray="4 5"/>'
+                f'<text x="98" y="1862" font-size="13" class="revista" fill="{TINTA}">PRÓXIMA PARADA</text>'
+                f'<text x="98" y="1888" font-size="22" class="revista" fill="{TINTA}">v0.6</text>'
+                f'<text x="166" y="1888" font-size="13" class="recibo" fill="{TINTA}">já tá saindo</text>'
+                f'<circle cx="288" cy="1868" r="9" fill="{AMARELO}" stroke="{TINTA}" stroke-width="2.5"/></g>')
+    c.add(ingresso, (70, 1820, 340, 1915), z=7)
+    c.add(estrela(64, 1676, 20, 0.2) + brilhinho(410, 1700, 12, "#fff", 0.9), (30, 1640, 440, 1730), z=8)
+
+    # 02 lover: a janela do jogo, com a setinha clicando no botão
+    cartao(c, 40, 1934, -1.5, "02", "lover", "#ffb3d1",
+           ["um jogo de quebra-cabeça em que", "o controle é o seu navegador.", ("clica pra jogar", ANIL)],
+           [("32 páginas", AMARELO, TINTA), ("dois atos", "#fff", TINTA), ("navegador", AZUL_VIVO, "#fff")], 22)
+    print_adesivo(c, "foto-lover.png", 446, 1920, 380, 3, z=5)
+    bolha_ = (f'<g transform="rotate(8 760 1922)" filter="url(#sombra-leve)">'
+              f'<path d="M700 1900 h110 q14 0 14 14 v18 q0 14 -14 14 h-70 l-18 16 l2 -16 h-24 q-14 0 -14 -14 v-18 q0 -14 14 -14 Z" fill="{ROSA}" stroke="{TINTA}" stroke-width="3"/>'
+              f'<text x="755" y="1931" font-size="19" text-anchor="middle" class="bolha" fill="#fff">não fecha!</text></g>')
+    c.add(bolha_ + cursor(538, 2098, -8, .75), (680, 1880, 840, 1975), z=8)
+    c.add(coracao(436, 1952, 18, ROSA, -12) + coracao(838, 2118, 14, "#ff8a5c", 14), (410, 1925, 860, 2140), z=8)
+
+    # 03 clios: o terminal, com as teclas dos atalhos
+    print_adesivo(c, "foto-clios.png", 34, 2196, 360, -2.5, z=5, moldura=TINTA)
+    cartao(c, 428, 2214, 1.2, "03", "clios", "#fff",
+           ["um desktop Linux feito pro terminal,", "com um binário em Rust.", ("clica pra abrir o repo", ANIL)],
+           [("Arch", "#7fc8ff", TINTA), ("Hyprland", VERDE, TINTA), ("Quickshell", "#fff", TINTA)], 33)
+    t1, w1 = tecla(260, 2404, "super", -6)
+    t2, _ = tecla(260 + w1 + 6, 2410, "F2", 4, w=52)
+    c.add(t1 + t2, (240, 2380, 420, 2470), z=8)
+
+    # 04 hackintosh: o print do Acer com uma lupa em cima do "MacBook Pro"
+    cartao(c, 40, 2480, -1.2, "04", "hackintosh", "#9fc4ff",
+           ["macOS Sequoia num Acer Nitro V15,", "com o desktop acelerado na RTX 3050.", ("clica pra abrir o repo", ANIL)],
+           [("macOS 15", "#fff", TINTA), ("OpenCore", AMARELO, TINTA), ("RTX 3050", VERDE, TINTA)], 44)
+    print_adesivo(c, "foto-hackintosh.jpg", 450, 2470, 376, 2.5, z=5, lupa=(.5, .37, 50, 2.6, 560, 2600))
+    c.add(etiqueta(690, 2700, "psiu: é um Acer", "#fff", 5)[0], (680, 2690, 820, 2740), z=8)
+    c.add(brilhinho(458, 2492, 14, AMARELO, 0.5) + estrela(842, 2496, 18, 1.4, "#9fc4ff"), (430, 2470, 870, 2520), z=8)
+
+    # tem mais
+    svg, cx_ = bilhete(250, 2742, 380, [("tem mais projetinhos no meu perfil", TINTA)], -1.5, cor=ROSA_BILHETE, pautado=False)
+    c.add(svg, cx_, z=5)
+    c.img("recortes/tachinha.png", 578, 2722, 40, -6, z=6)
+    c.add(cursor(640, 2776, -20, .8) + brilhinho(220, 2756, 12, "#fff", 1.8), (200, 2730, 690, 2830), z=7)
 
 
 # ---------------------------------------------------------------- fundo e saída
@@ -271,6 +413,9 @@ DEFS_CENA = f"""
   <stop offset="1" stop-color="#fff" stop-opacity=".3"/>
 </linearGradient>
 <mask id="some" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#g-some)"/></mask>
+<pattern id="grade-azul" width="18" height="18" patternUnits="userSpaceOnUse">
+  <path d="M18 0 H0 V18" fill="none" stroke="#bcd3f2" stroke-width="1" opacity=".7"/>
+</pattern>
 <pattern id="quadriculado" width="24" height="24" patternUnits="userSpaceOnUse">
   <path d="M24 0 H0 V24" fill="none" stroke="#c9b92c" stroke-width="1" opacity=".55"/>
 </pattern>
