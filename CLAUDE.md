@@ -23,6 +23,7 @@ Tudo junto e encavalado, nada de componentes soltos e espaçados.
   git checkout -B main origin/main
   git merge --squash rework && git rm -q --cached CLAUDE.md
   git commit -m "o que mudou" && git push origin main
+  rm CLAUDE.md                                        # ficou solto; volta no checkout
   git checkout rework && git merge origin/main && git push origin rework
   ```
 - Conversa em português, do jeito que eu escrevo (informal).
