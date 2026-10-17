@@ -1,0 +1,33 @@
+::selection {
+  background: #80DDFF;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/*@font-face {
+  src: url("../assets/fonts/birchleaf.ttf");
+  font-family: "birchleaf";
+}*/
+
+@keyframes jerk {
+  0% {
+    transform: rotate(0.5deg);
+  }
+  50% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+@keyframes swing {
+  0% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(-4deg);
+  }
+}

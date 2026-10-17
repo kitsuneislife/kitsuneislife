@@ -1,0 +1,180 @@
+
+body {
+  font-family: ms gothic;
+  font-size: 14px;
+  color: magenta;
+  font-smooth: never;
+  line-height: 15.5px;
+  background-image: url("../assets/blog/heart.jpg");
+  background-repeat: no-repeat;
+  background-size: 70%;
+  background-position: left top;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+body::after {
+  content: "";
+  background: url("../assets/blog/sailor.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right center;
+  opacity: 1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -100;
+}
+
+/* */
+
+#name {
+  width: 0px;
+  height: 0px;
+  z-index: 99;
+  margin-top: -15px;
+  margin-left: 210px;
+  position: absolute;
+}
+
+#flowers {
+  position: absolute;
+  z-index: 99;
+  width: 0px;
+  height: 0px;
+  margin-top: 40px;
+  margin-left: 520px;
+}
+
+#gem {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  margin-top: 205px;
+  margin-left: 20px;
+  transform: rotate(-25deg);
+}
+
+#manjuu {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  z-index: 99;
+  margin-top: 600px;
+  margin-left: 280px;
+}
+
+#necklace {
+  width: 0px;
+  height: 0px;
+  animation: swing 3s ease-in-out infinite;
+  margin-left: 125px;
+  margin-top: 130px;
+  position: absolute;
+  z-index: 101;
+}
+
+#bandaid {
+  position: absolute;
+  z-index: 100;
+  width: 0px;
+  height: 0px;
+  margin-top: 295px;
+  margin-left: 900px;
+}
+
+#anni {
+  width: 0px;
+  height: 0px;
+  margin-top: 340px;
+  margin-left: -125px;
+  position: absolute;
+  z-index: 99;
+}
+  
+/* */
+
+#wrap {
+  display: flex;
+  height: 700px;
+  width: 1000px;
+  margin-top: 25px;
+  margin-left: 50px;
+}
+
+#content {
+  margin-top: 65px;
+  height: 620px;
+  width: 490px;
+  padding: 10px;
+  border: 2px dashed pink;
+  background-color: #EFFFF1;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  z-index: 98;
+}
+
+.bonus {
+  width: 150px;
+  height: 230px;
+  border: 2px dashed magenta;
+  z-index: 99;
+  padding: 10px;
+}
+
+#splash {
+  margin-top: 100px;
+  width: 350px;
+  height: 650px;
+  background-image: url("../assets/blog/ntm1.png");
+  background-position: top left;
+  background-repeat: no-repeat;
+}
+
+.main-nav-item {
+  border-radius: 5px;
+  height: 26px;
+  width: 100%;
+  border: 1px solid magenta;
+  background-color: #fad3ec;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.post-container {
+  width: 465px;
+  background: #ffe6eb;
+  border: 1px solid pink;
+}
+
+.post-title-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  height: 20px;
+  background-color: pink;
+  padding-top: 5px;
+}
+
+.post-title-image {
+  width: 26px;
+  position: absolute;
+  margin-top: -8px;
+  margin-left: 4px;
+}
+  
+.post-title {
+  color: #ec356c;
+  margin: 0px 0px 0px 40px;
+  font-size: 24px;
+}
+
+.post-content-container {
+  color: #ec356c;
+  padding: 10px;
+}

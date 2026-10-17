@@ -7,7 +7,7 @@ levando só os elementos que encostam nela, então o que atravessa a emenda
 aparece certinho dos dois lados. No README as tiras ficam com align="left"
 e width="100%", que é o jeito de o GitHub empilhar imagem sem fresta.
 
-O then and now e o recibo da semana saíram daqui e estão guardados em archive/.
+O then and now e o recibo da semana saíram daqui e estão guardados em archive/colagem/.
 """
 import json
 import math

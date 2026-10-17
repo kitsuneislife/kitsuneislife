@@ -48,4 +48,4 @@ Sem o json, o boletim sai com dados de exemplo. O que eu tô aprendendo
 (`CURSANDO`) e as atividades extras (`EXTRAS`) ficam fixos em
 `tools/colagem.py`.
 
-O then and now e o recibo da semana estão guardados em `archive/`.
+O then and now e o recibo da semana estão guardados em `archive/colagem/`.

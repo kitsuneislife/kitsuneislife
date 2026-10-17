@@ -1,0 +1,161 @@
+body {
+  font-family: ms gothic;
+  font-size: 14px;
+  color: black;
+  line-height: 15.5px;
+
+  background-image: url("../assets/home/bg.jpeg");
+  background-size: cover;
+}
+
+#wrapper {
+  margin-top: 10px;
+  margin-left: 300px;
+  width: 700px;
+}
+
+#header-container {
+  margin-top: 20px;
+  margin-left: 50px;
+}
+
+#header-marquee-container {
+  position: relative;
+  color: white;
+  width: 288px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+#main-container {
+  display: flex;
+  border: 1px solid purple;
+}
+
+#main-nav {
+  width: 116px;
+  border-right: 1px dashed purple;
+  padding: 10px;
+  padding-left: 10px;
+  padding-left: 4px;
+  background-color: #ECF7FB;
+}
+
+.main-nav-separator {
+  font-size: 16px;
+  font-weight: bold;
+  font-style: italic;
+  margin-bottom: 4px;
+  color: purple;
+}
+
+.main-nav-img {
+  height: 13px;
+  vertical-align: bottom;
+  margin-right: 4px;
+}
+
+.main-nav-item {
+  vertical-align: bottom;
+  text-decoration: underline dotted;
+  color: #7d60f7;
+  cursor: pointer;
+}
+
+.main-nav-item:hover {
+  text-decoration: none;
+  font-style: italic;
+  padding-left: 5px;
+  color: purple;
+}
+
+#main-content {
+  width: 550px;
+  padding: 10px;
+  padding-bottom: 0px;
+  background-color: #FFFFFF;
+}
+
+#main-banner {
+  width: 103.6%;
+  height: 209px;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-bottom: 5px;
+  background-image: url("../assets/home/banner.png");
+  background-size: cover;
+  /*background-position: ;*/
+}
+
+/* */
+
+#main-book {
+  display: flex;
+  width: 103.5%;
+  height: 250px;
+  margin-left: -10px;
+  border-top: 1px dashed purple;
+}
+
+#main-book-updates {
+  width: 50%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border-right: 1px dashed purple; 
+  padding: 10px;
+}
+
+#main-book-references {
+  width: 50%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px;
+}
+
+#main-book-references a {
+  text-decoration: none;
+}
+
+.main-book-fanlist {
+  height: 35px; 
+  margin-bottom: .5px;
+}
+
+#right {
+  position: fixed;
+  width: 246px;
+  margin-top: -515px;
+  left: 1020px;
+  z-index: 99;
+}
+
+.profile-box {
+  border: 1px solid purple;
+  background-color: #ECF7FB;
+  padding: 5px;
+  text-align: center;
+  width: 136px;
+}
+
+.profile-image {
+  width: 108%;
+  border-bottom: 1px solid purple;
+  margin: -5px;
+  margin-bottom: 5px;
+}
+
+.profile-text {
+  margin: 0px;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed purple;
+}
+
+/* */ 
+#player {
+  background-color: white;
+  border: 1px solid purple;
+  width: 244px;
+  height: 93px;
+  margin-top: 10px;
+}

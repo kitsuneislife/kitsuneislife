@@ -1,0 +1,14 @@
+#cursorwrap {position: absolute; width: auto; height: auto; margin-top: -9px; margin-left: -9px; padding: 14px;}
+
+.inf {width: 584px; height: auto; padding-right: 10px; padding-left: 10px; margin-bottom: 15px; border: 1px solid orange; background-image: url("../assets/medialog/diagstripe.gif");}
+.cover {float: left; width: 60px; margin-right: 10px;}
+.cover:hover {top:-50px; left:-35px; width:150px; height:auto; display: block; -webkit-transition-property: all; cursor: pointer;}
+
+body {font-family: ms gothic; font-size: 14px; color: black; font-smooth: never; line-height: 15.5px;}
+p {margin-left: 0px;} p.b {margin-left: 10px;} p.c {margin-left: 20px;} p.d {text-align: right;}
+h1 {font-size: 15px; font-weight: bold; font-smooth: never; margin-bottom: -10px; margin-top: 0px;} h1.b {margin-bottom: 5px;}
+h2 {font-size: 14px; font-weight: bold; font-smooth: never; margin-bottom: -10px; margin-left: 10px;}
+
+a:link {text-decoration: underline solid; color: #0000EE;}
+a:visited {text-decoration: underline dotted; color: #0000EE;}
+a:hover {color: #0000EE; text-decoration: none; font-style: italic; font-smooth: never; cursor: pointer;}

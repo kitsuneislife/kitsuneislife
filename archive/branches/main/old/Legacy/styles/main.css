@@ -1,0 +1,283 @@
+@font-face {
+    font-family: 'work-sans';
+    src: url('../assets/fonts/work-sans.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'bebas-neue';
+    src: url('../assets/fonts/bebas-neue.ttf') format('truetype');
+  }
+
+@font-face {
+    font-family: 'indie-flower';
+    src: url('../assets/fonts/indie-flower.ttf') format('truetype');
+} 
+  
+:root, html, body, * {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+}
+
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #f0f8ff;
+  }
+  
+  #leaf-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 999;
+  }
+  
+  .leaf {
+    position: absolute;
+    width: 5vw;
+    height: 5vw;
+    background-image: url('../assets/leaf.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation-name: fall, sway;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  
+  @keyframes fall {
+    to {
+      transform: translateY(100vh) rotate(360deg);
+    }
+  }
+  
+  @keyframes sway {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(2vw); }
+    100% { transform: translateX(0); }
+  }
+  
+  #init-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 240, 0.8);
+    backdrop-filter: blur(7px);
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: all 0.8s ease;
+  }
+  
+  .hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .init-label {
+    font-family: 'indie-flower', sans-serif;
+    color: #000;
+    text-align: center;
+    font-size: clamp(1rem, 2vw, 2rem);
+  }
+  
+  .init-button {
+    font-family: 'indie-flower', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: -0.25px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: clamp(0.8rem, 1.5vw, 1.25rem);
+    transition: all 0.3s ease;
+  }
+  .init-button:hover {
+    transform: scale(1.05);
+  }
+  
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    z-index: 9998;
+  }
+  
+  #overlay-audio {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 0.5vh;
+    width: 1.5vw;
+    height: auto;
+    cursor: pointer;
+    filter: invert(1);
+    transition: all 0.3s ease;
+  }
+  #overlay-audio:hover {
+    transform: scale(1.25);
+  }
+  
+  #overlay-watermark {
+    position: fixed;
+    font-family: 'work-sans', sans-serif;
+    font-size: clamp(0.6rem, 1vw, 0.875rem);
+    bottom: 0;
+    right: 0;
+    width: 9vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
+    padding: 0.5vh;
+    cursor: pointer;
+    color: #000;
+    transition: all 0.3s ease;
+  }
+  
+  #overlay-github {
+    width: 1.5vw;
+    height: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+/* */
+
+  #particle-overlay {
+    position: relative;
+    height: 100vh;
+    overflow-x: hidden;
+    -webkit-box-shadow: 0 0 30px #241d20;
+    box-shadow: 0 0 30px #241d20;
+    -webkit-transition: -webkit-transform 0.4s;
+    transition: -webkit-transform 0.4s;
+    transition: transform 0.4s;
+    transition: transform 0.4s, -webkit-transform 0.4s;
+  }
+
+  
+/* */
+  #menu-about {
+    position: absolute;
+    top: 68vh;
+    left: 11vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  #menu-about:hover {
+    transform: scale(1.15) rotate(-8deg);
+  }
+  
+  #menu-about-label {
+    font-family: 'bebas-neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 5rem);
+    line-height: clamp(2rem, 4.4vw, 4.4rem);
+    text-transform: uppercase;
+    color: #FFF;
+
+    filter: drop-shadow(0.3vw 0 0 #4d6ef3) 
+       drop-shadow(0 0.3vw 0 #4d6ef3)
+       drop-shadow(-0.7vw 0 0 #4d6ef3) 
+       drop-shadow(0 -0.3vw 0 #4d6ef3);
+    transition: all 0.3s ease;
+  }
+  #menu-about-label:hover {
+    transform: scale(1.05);
+  }
+  
+
+/* */
+
+#about-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 240, 0.8);
+    backdrop-filter: blur(7px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+    z-index: 9999;
+    transition: all 0.8s ease;
+    font-family: 'indie-flower', sans-serif;
+    font-size: clamp(0.8rem, 1.4vw, 1.25rem);
+    color: #000;
+}
+
+#about-text {
+    width: 35vw;
+    text-wrap: break-word;
+    opacity: 0;
+    transition: opacity 1s ease, transform 1s ease;
+    display: inline-block;
+    position: relative;
+}
+
+#about-static {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;    
+    transition: opacity 1.5s ease
+}
+
+.about-avatar {
+    width: 15vw;
+    height: auto;
+    border-radius: 50%;
+}
+
+.about-static-text {
+    font-family: 'indie-flower', sans-serif;
+    font-size: clamp(0.8rem, 1.4vw, 1.25rem);
+    color: #000;
+    text-align: center;
+}
+
+.about-static-back {
+    font-family: 'indie-flower', sans-serif;
+    font-size: clamp(0.8rem, 1.4vw, 1.25rem);
+    font-weight: 700;
+    text-decoration: underline;
+    color: #000;
+    text-align: center;
+
+}
+
+.active {opacity: 1;}
+  
+  @keyframes dust {
+    0% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-50px) scale(1.5);
+      filter: blur(3px);
+    }
+  }
+  
+  .dust {
+    animation: dust 4s forwards;
+  }
+  
