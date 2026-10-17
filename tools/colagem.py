@@ -461,8 +461,8 @@ def rodape(c):
              '<path d="M62 4290 L626 4274 L640 4560 L74 4580 Z" fill="#d3ec3c" stroke="#1d1c22" stroke-width="4" stroke-linejoin="round"/>'
              '<path d="M50 4278 L614 4262 L628 4548 L62 4568 Z" fill="#111" stroke="#fff" stroke-width="6" stroke-linejoin="round"/></g>')
     c.add(papel, (20, 4236, 660, 4600), z=3)
-    # o texto no meio do papel (o centro do papel já girado é 339, 4414)
-    c.img("recortes/gostou.png", 339 - 195, 4414 - 132, 390, -2, z=4, sombra=None)
+    # o texto no papel (o centro do papel já girado é 339, 4414), um tiquinho pra esquerda
+    c.img("recortes/gostou.png", 339 - 195 - 18, 4414 - 132, 390, -2, z=4, sombra=None)
     c.img("recortes/washi-04.png", 18, 4256, 120, -30, z=5, px=300)
     # folga curta pra ele não entrar na tira de cima (o desenho começa logo abaixo da emenda)
     c.img("abraco-claude.png", 552, 4258, 316, 5, z=5, px=800, folga=2)
