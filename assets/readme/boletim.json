@@ -1,0 +1,172 @@
+{
+ "repos": 49,
+ "estrelas": 15,
+ "linguagens": {
+  "HTML": {
+   "bytes": 1263778,
+   "repos": 17
+  },
+  "Python": {
+   "bytes": 853049,
+   "repos": 11
+  },
+  "JavaScript": {
+   "bytes": 1312162,
+   "repos": 27
+  },
+  "CSS": {
+   "bytes": 477509,
+   "repos": 22
+  },
+  "Shell": {
+   "bytes": 250089,
+   "repos": 11
+  },
+  "C": {
+   "bytes": 79261,
+   "repos": 2
+  },
+  "ASL": {
+   "bytes": 10275,
+   "repos": 1
+  },
+  "Rust": {
+   "bytes": 2634075,
+   "repos": 3
+  },
+  "RenderScript": {
+   "bytes": 8,
+   "repos": 2
+  },
+  "Kotlin": {
+   "bytes": 226388,
+   "repos": 1
+  },
+  "TypeScript": {
+   "bytes": 466297,
+   "repos": 4
+  },
+  "Dockerfile": {
+   "bytes": 2409,
+   "repos": 2
+  },
+  "EJS": {
+   "bytes": 98543,
+   "repos": 6
+  },
+  "Lua": {
+   "bytes": 97325,
+   "repos": 1
+  },
+  "QML": {
+   "bytes": 1943325,
+   "repos": 2
+  },
+  "Jinja": {
+   "bytes": 22633,
+   "repos": 1
+  },
+  "Nix": {
+   "bytes": 54661,
+   "repos": 3
+  },
+  "Just": {
+   "bytes": 1174,
+   "repos": 1
+  },
+  "Java": {
+   "bytes": 44527,
+   "repos": 1
+  },
+  "Makefile": {
+   "bytes": 357,
+   "repos": 1
+  },
+  "PowerShell": {
+   "bytes": 168,
+   "repos": 1
+  },
+  "Procfile": {
+   "bytes": 48,
+   "repos": 1
+  }
+ },
+ "recentes": [
+  {
+   "nome": "kitsuneislife",
+   "dias": 0
+  },
+  {
+   "nome": "kitsuneislife.github.io",
+   "dias": 0
+  },
+  {
+   "nome": "nmx-intel",
+   "dias": 0
+  },
+  {
+   "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
+   "dias": 0
+  }
+ ],
+ "ferramentas": [
+  {
+   "nome": "git",
+   "repos": 46
+  },
+  {
+   "nome": "npm",
+   "repos": 19
+  },
+  {
+   "nome": "Actions",
+   "repos": 12
+  },
+  {
+   "nome": "Express",
+   "repos": 8
+  },
+  {
+   "nome": "Vite",
+   "repos": 4
+  },
+  {
+   "nome": "Cargo",
+   "repos": 3
+  },
+  {
+   "nome": "Docker",
+   "repos": 2
+  },
+  {
+   "nome": "Nix",
+   "repos": 2
+  },
+  {
+   "nome": "React",
+   "repos": 2
+  },
+  {
+   "nome": "pnpm",
+   "repos": 1
+  },
+  {
+   "nome": "pip",
+   "repos": 1
+  },
+  {
+   "nome": "Electron",
+   "repos": 1
+  },
+  {
+   "nome": "Redis",
+   "repos": 1
+  }
+ ],
+ "atualizado": "17/10/2026",
+ "frequencia": {
+  "dias": 371,
+  "presente": 59,
+  "contribuicoes": 579
+ }
+}
