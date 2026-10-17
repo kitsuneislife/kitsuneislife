@@ -13,7 +13,7 @@ busca os dados no Last.fm e chama gerar(dados, so=["musica"]).
 import math
 from datetime import datetime, timedelta, timezone
 
-from kit import (AMARELO, ANIL, AZUL, CRACHA, LIMA, PAUTA, TINTA, fita, imagem,
+from kit import (AMARELO, ANIL, CRACHA, LIMA, PAUTA, TINTA, fita, imagem,
                  linha, medir, salvar, t, tamanho)
 
 W = 880
@@ -21,35 +21,34 @@ CEU_TOPO, CEU_MEIO, CEU_FUNDO = "#3d8ce6", "#9fd2fa", "#4f9ae9"
 
 # nome, y inicial, altura, link, descrição (alt)
 TIRAS = [
-    ("capa", 0, 540, None,
+    ("capa", 0, 440, None,
      "kitsuneislife, escrito em letra de adesivo, num céu azul com nuvens de papelão. "
-     "Um arco-íris de papelão e eu sentado numa nuvem, de fone. ようこそ! "
-     "Em fitas de rotulador: artbook, portfolio, media log, em breve no site novo."),
-    ("bio", 540, 540, "https://github.com/kitsuneislife?tab=repositories",
+     "Um arco-íris de papelão e eu sentado numa nuvem, de fone. ようこそ!"),
+    ("bio", 440, 400, "https://github.com/kitsuneislife?tab=repositories",
      "Uma prancheta com um bilhete: Nunca soube o que escrever em uma bio ou em um sobre-mim. Curioso né? "
      "Então fiz essa página pra contar um pouquinho de quem sou eu. Eu gosto de fazer alguns projetinhos "
      "(e de lasanha) e quero trabalhar na área. Discord: @thurzinhos. “Penso, logo desisto.” love you forever. "
      "Do lado, a turma correndo com uma placa: clica aqui."),
-    ("tempo", 1080, 380, None,
+    ("tempo", 840, 380, None,
      "Eu em 2016, com 8 anos, e eu em 2026, com 18, rodeado de cabecinhas de Nendoroid."),
-    ("projetos", 1460, 180, "https://github.com/kitsuneislife?tab=repositories",
+    ("projetos", 1220, 180, "https://github.com/kitsuneislife?tab=repositories",
      "projetinhos (e de lasanha). Clica nos cards pra abrir cada um."),
-    ("artcode", 1640, 270, "https://github.com/kitsuneislife/artcode",
+    ("artcode", 1400, 270, "https://github.com/kitsuneislife/artcode",
      "artcode: minha própria linguagem de programação, interpretada e escrita em Rust. Tá na v0.5.1."),
-    ("lover", 1910, 270, "https://kitsuneislife.github.io/lover/",
+    ("lover", 1670, 270, "https://kitsuneislife.github.io/lover/",
      "lover: um jogo de quebra-cabeça em que o controle é o seu navegador. Clica pra jogar."),
-    ("clios", 2180, 270, "https://github.com/kitsuneislife/clios",
+    ("clios", 1940, 270, "https://github.com/kitsuneislife/clios",
      "clios: um desktop Linux feito pro terminal. Arch, Hyprland e Quickshell, com um binário em Rust."),
-    ("hackintosh", 2450, 270, "https://github.com/kitsuneislife/Acer-Nitro-V15-ANV15-51-Hackintosh",
+    ("hackintosh", 2210, 270, "https://github.com/kitsuneislife/Acer-Nitro-V15-ANV15-51-Hackintosh",
      "Hackintosh: macOS Sequoia num Acer Nitro V15, com o desktop acelerado na RTX 3050."),
-    ("mais", 2720, 110, "https://github.com/kitsuneislife?tab=repositories",
+    ("mais", 2480, 110, "https://github.com/kitsuneislife?tab=repositories",
      "Tem mais projetinhos no meu perfil."),
-    ("habilidades", 2830, 690, None,
+    ("habilidades", 2590, 690, None,
      "O que eu sei fazer: JavaScript (essa eh braba), Python, PHP, HTML, CSS, Svelte, React. "
      "Aprendendo Dart, Java, Kotlin e Rust. Ferramentas: git, npm, Redis, Express, Docker, Expo. "
      "Se você não sabe nem isso, não recomendo continuar. So cold..."),
-    ("musica", 3520, 720, None, "Recibo da semana com as músicas que eu mais ouvi nos últimos 7 dias."),
-    ("fim", 4240, 380, None,
+    ("musica", 3280, 720, None, "Recibo da semana com as músicas que eu mais ouvi nos últimos 7 dias."),
+    ("fim", 4000, 380, None,
      "Gostou? Sei fazer bem mais. Eu abraçando uma pelúcia do Claude. kitsuneislife, 2026."),
 ]
 H = TIRAS[-1][1] + TIRAS[-1][2]
@@ -61,6 +60,15 @@ class Cena:
 
     def add(self, svg, caixa, z=0):
         self.els.append((z, len(self.els), caixa, svg))
+
+    def subir(self, a_partir, d):
+        """Sobe d tudo que começa abaixo de a_partir."""
+        novos = []
+        for z, o, (x0, y0, x1, y1), s in self.els:
+            if y0 >= a_partir:
+                s, y0, y1 = f'<g transform="translate(0 {-d})">{s}</g>', y0 - d, y1 - d
+            novos.append((z, o, (x0, y0, x1, y1), s))
+        self.els = novos
 
     def img(self, nome, x, y, w, rot=0, z=0, classe="", sombra="sombra-leve", px=None):
         iw, ih = tamanho(nome)
@@ -96,21 +104,6 @@ def logo(texto, x, y, px, cor, giros, sobe, contorno=TINTA, borda="#fff", sombra
     return (f'<text {base} fill="{sombra}" stroke="{sombra}" stroke-width="{px * .42:.1f}" transform="translate(6 8)">{s}</text>'
             f'<text {base} fill="{borda}" stroke="{borda}" stroke-width="{px * .40:.1f}">{s}</text>'
             f'<text {base} fill="{cor}" stroke="{contorno}" stroke-width="{px * .16:.1f}" paint-order="stroke">{s}</text>')
-
-
-def rotulo(x, y, texto, cor, rot):
-    """Fita de rotulador (Dymo): plástico colorido com a letra em relevo."""
-    px = 26
-    w = medir("revista", texto, px) + len(texto) * 2.5 + 44
-    h = 44
-    cx, cy = x + w / 2, y + h / 2
-    tx, ty = x + 22, y + 31
-    s = (f'<g transform="rotate({rot} {cx:.1f} {cy:.1f})" filter="url(#sombra-leve)">'
-         f'<rect x="{x}" y="{y}" width="{w:.1f}" height="{h}" rx="5" fill="{cor}"/>'
-         f'<rect x="{x}" y="{y}" width="{w:.1f}" height="{h}" rx="5" fill="url(#brilho-dymo)"/>'
-         f'<text x="{tx - 1}" y="{ty - 1}" font-size="{px}" letter-spacing="2.5" class="revista" fill="#000" opacity=".35">{t(texto)}</text>'
-         f'<text x="{tx}" y="{ty}" font-size="{px}" letter-spacing="2.5" class="revista" fill="#fbfbfb">{t(texto)}</text></g>')
-    return s, caixa_girada(x, y, w, h, rot)
 
 
 def estrela(cx, cy, r, atraso=0, cor=AMARELO):
@@ -183,15 +176,6 @@ def montar(dados_recibo):
     c.add(logo("kitsuneislife", 34, 236, 92, LIMA, giros, sobe), (0, 120, 760, 300), z=7)
     for i, (sx, sy, sr) in enumerate([(700, 120, 26), (40, 300, 18), (430, 120, 14), (560, 330, 16)]):
         c.add(estrela(sx, sy, sr, i * 0.7), (sx - 40, sy - 40, sx + 40, sy + 40), z=8)
-    # as seções do site novo, em fita de rotulador
-    for i, (s, cor, x, y, rot) in enumerate([("artbook", CRACHA, 56, 318, -4), ("portfolio", TINTA, 92, 376, 2.5),
-                                             ("media log", AZUL, 66, 434, -1.5)]):
-        svg_, caixa = rotulo(x, y, s, cor, rot)
-        c.add(svg_, caixa, z=6 + i * 0.1)
-    seta = (f'<path d="M318 466 C 300 462, 292 450, 294 432" fill="none" stroke="{TINTA}" stroke-width="3" stroke-linecap="round"/>'
-            f'<path d="M285 442 l9 -11 l8 12" fill="none" stroke="{TINTA}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'
-            + linha(326, 474, "em breve no site novo", 23, TINTA, 'transform="rotate(-4 430 468)"'))
-    c.add(seta, (270, 420, 580, 500), z=6)
 
     # ---- bio
     # o export da prancheta já vem cortado na esquerda e embaixo: encosta na borda
@@ -199,7 +183,6 @@ def montar(dados_recibo):
     c.img("banner-bio.png", 0, 516, 880, 0, z=4, sombra="sombra", px=1238)
     for x, y, w, rot in [(-40, 914, 250, 3), (186, 940, 236, -1), (400, 918, 250, 4), (630, 910, 260, -3)]:
         c.img("nuvem.png", x, y, w, rot, z=7, sombra="sombra-leve")
-    c.img("diabinho.png", 790, 520, 92, 12, z=5)
     c.img("recortes/croissant.png", 744, 990, 110, 14, z=8)
 
     # ---- 2016 → 2026
@@ -277,6 +260,8 @@ def montar(dados_recibo):
     c.img("abraco-claude.png", 584, 4250, 270, 5, z=5, px=700)
     c.add(fita(550, 4538, 264, 48, 2) + linha(584, 4571, "kitsuneislife, 2026", 22, TINTA, 'transform="rotate(2 680 4563)"'),
           (540, 4530, 820, 4590), z=6)
+    # a bio e tudo que vem depois sobem 240, pra prancheta encaixar embaixo da capa
+    c.subir(470, 240)
     return c
 
 
@@ -394,10 +379,6 @@ DEFS_CENA = f"""
   <stop offset="1" stop-color="#fff" stop-opacity=".3"/>
 </linearGradient>
 <mask id="some" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#g-some)"/></mask>
-<linearGradient id="brilho-dymo" x1="0" y1="0" x2="0" y2="1">
-  <stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity=".05"/>
-  <stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/>
-</linearGradient>
 <clipPath id="borda"><rect x="0" y="0" width="{W}" height="{H}" rx="22"/></clipPath>
 """
 
