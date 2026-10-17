@@ -29,7 +29,7 @@ CEU_TOPO, CEU_MEIO, CEU_FUNDO = "#3d8ce6", "#9fd2fa", "#4f9ae9"
 # nome, y inicial, altura, link, descrição (alt)
 TIRAS = [
     ("capa", 0, 440, None,
-     "Uma barrinha de letreiro rolando no topo: ようこそ! entra, a casa é sua. "
+     "Uma barrinha de letreiro rolando no topo dizendo oi em várias línguas. "
      "No meio, um arco-íris de papelão com uma nuvem em cada pé, e eu de fone sentado atrás de "
      "kitsuneislife, escrito em letra de adesivo, num céu azul."),
     ("bio", 440, 340, None,
@@ -114,8 +114,8 @@ def logo(texto, x, y, px, cor, giros, sobe, contorno=TINTA, borda="#fff", sombra
             f'<text {base} fill="{cor}" stroke="{contorno}" stroke-width="{px * .16:.1f}" paint-order="stroke">{s}</text>')
 
 
-LETREIRO = ["ようこそ!", "entra, a casa é sua", "kitsune tá on-line", "senta e pega um café",
-            "tudo feito à mão", "またね!"]
+LETREIRO = ["oi!", "hello!", "こんにちは!", "hola!", "bonjour!", "ciao!", "hallo!", "hej!", "merhaba!", "aloha!",
+            "ようこそ!"]
 
 
 def letreiro(c):
@@ -351,12 +351,13 @@ def projetinhos(c):
           f'<path d="M-30 1496 L508 1489" stroke="{LIMA}" stroke-width="4"/>'
           f'<path d="{faixa}" fill="none" stroke="{TINTA}" stroke-width="5" stroke-linejoin="round"/></g>',
           (-30, 1466, 530, 1630), z=5)
-    c.add('<g class="pula">' + logo("projetinhos", 40, 1562, 74, "#ffb3d1", [4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3], [-6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5]) + "</g>",
+    # o logo vai no mesmo ângulo da faixa
+    c.add('<g class="pula"><g transform="rotate(-3.3 240 1540)">' + logo("projetinhos", 40, 1562, 74, "#ffb3d1", [4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3], [-6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5]) + "</g></g>",
           (10, 1480, 600, 1610), z=6)
     # o "clica nos cards" vira um botão neobrutalista, com a setinha clicando
     texto = "clica nos cards pra abrir"
     bw = medir("revista", texto, 17) + 118
-    botao(c, texto, 846 - bw, 1512, LIMA, -3)
+    botao(c, texto, 846 - bw, 1512, LIMA, 0)
     c.img("recortes/tesoura.png", 404, 1588, 58, 64, z=7, px=160)
     c.add(estrela(540, 1488, 15, 0.4, "#ffb3d1") + brilhinho(850, 1496, 12, AMARELO, 1.2), (500, 1466, 875, 1526), z=8)
 
@@ -473,21 +474,19 @@ def rodape(c):
 
 
 def etiqueta_fim(x, y):
-    """Etiqueta de roupa vermelha, de contorno grosso e sombra dura, pendurada no meu sticker por uma linha."""
+    """Etiqueta de roupa de papel pardo, de contorno grosso e sombra dura, discreta no canto."""
     nome, ano = "kitsuneislife", "feito em 2026 ♥"
     w = 38 + max(medir("revista", nome, 15), medir("mao", ano, 18)) + 14
     h = 52
     forma = f"M{x + 20} {y} H{x + w} V{y + h} H{x + 20} L{x} {y + h / 2} Z"
     hx, hy = x + 19, y + h / 2
-    return (f'<g class="balanca" style="transform-origin:{hx}px {y - 34}px">'
-            f'<path d="M{hx} {hy} C{hx - 10} {hy - 22} {hx + 14} {y - 20} {hx - 4} {y - 34}" fill="none" stroke="{TINTA}" stroke-width="2.2" stroke-linecap="round"/>'
-            f'<g transform="rotate(5 {x + w / 2:.1f} {y + h / 2})">'
-            f'<path d="{forma}" fill="{TINTA}" transform="translate(5 5)"/>'
-            f'<path d="{forma}" fill="{CRACHA}" stroke="{TINTA}" stroke-width="3.5" stroke-linejoin="round"/>'
-            f'<circle cx="{hx}" cy="{hy}" r="5.5" fill="#fff" stroke="{TINTA}" stroke-width="2.5"/>'
-            f'<line x1="{x + 31}" y1="{y + 8}" x2="{x + 31}" y2="{y + h - 8}" stroke="#fff" stroke-width="1.4" stroke-dasharray="3 3" opacity=".7"/>'
-            f'<text x="{x + 38}" y="{y + 23}" font-size="15" class="revista" fill="#fff">{t(nome)}</text>'
-            + linha(x + 38, y + 43, ano, 18, LIMA) + '</g></g>')
+    return (f'<g transform="rotate(5 {x + w / 2:.1f} {y + h / 2})">'
+            f'<path d="{forma}" fill="{TINTA}" transform="translate(4 4)"/>'
+            f'<path d="{forma}" fill="#e6dcc6" stroke="{TINTA}" stroke-width="3" stroke-linejoin="round"/>'
+            f'<circle cx="{hx}" cy="{hy}" r="5" fill="#2d3a82" stroke="{TINTA}" stroke-width="2.2"/>'
+            f'<line x1="{x + 31}" y1="{y + 8}" x2="{x + 31}" y2="{y + h - 8}" stroke="#a89878" stroke-width="1.4" stroke-dasharray="3 3"/>'
+            f'<text x="{x + 38}" y="{y + 23}" font-size="15" class="revista" fill="{TINTA}">{t(nome)}</text>'
+            + linha(x + 38, y + 43, ano, 18, "#6b5f86") + '</g>')
 
 
 # cores das linguagens, as mesmas do GitHub
@@ -616,7 +615,7 @@ def boletim(c):
     c.img("recortes/clipe.png", x + w - 96, y + 52, 28, 8, z=7, px=120)
 
     # carimbo de aprovado, com tinta falhada
-    sx, sy = x + w - 160, y + h - 46
+    sx, sy = x + w - 118, y + h - 48
     c.add(f'<g transform="rotate(-5 {sx} {sy}) translate({sx} {sy}) scale(.85) translate({-sx} {-sy})" filter="url(#carimbo)" opacity=".85">'
           f'<rect x="{sx - 108}" y="{sy - 34}" width="216" height="68" rx="10" fill="none" stroke="#d42f3a" stroke-width="6"/>'
           f'<rect x="{sx - 98}" y="{sy - 24}" width="196" height="48" rx="6" fill="none" stroke="#d42f3a" stroke-width="2"/>'
@@ -657,11 +656,8 @@ def boletim(c):
     a.append("</g>")
     c.add("".join(a), caixa_girada(nx, ay, nw, ah, -2), z=6)
     c.add(fita(nx + 60, ay - 18, 110, 36, 4), (nx + 40, ay - 40, nx + 190, ay + 30), z=7)
-    # o lacre fecha o boletim na quina, tipo diploma
-    c.img("recortes/lacre.png", x + w - 44, y + h - 40, 76, 12, z=8, px=220)
-    # a régua deitada por cima do pé do boletim, e o lápis na linha vazia dos deveres
-    c.img("recortes/regua.png", 24, y + h - 104, 250, 35, z=8, px=560)
-    c.img("recortes/lapis.png", nx + 52, ay + ah - 70, 150, 26, z=8, px=340)
+    # a régua deitada por cima do pé do boletim, descendo um pouquinho pra direita
+    c.img("recortes/regua.png", 24, y + h - 104, 250, 50, z=8, px=560)
 
 
 # ---------------------------------------------------------------- fundo e saída
@@ -787,8 +783,6 @@ CSS = """
 @keyframes boia{to{transform:translate(-8px,-4px)}}
 @keyframes letreiro{to{transform:translateX(var(--volta))}}
 .nuvens{animation:nuvens 46s linear infinite}
-.balanca{animation:balanca 5s ease-in-out infinite alternate}
-@keyframes balanca{from{transform:rotate(-2deg)}to{transform:rotate(2.5deg)}}
 @keyframes nuvens{to{transform:translateX(var(--tile))}}
 """
 
