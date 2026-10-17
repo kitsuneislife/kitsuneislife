@@ -340,7 +340,17 @@ def cartao(c, x, y, rot, numero, titulo, cor_titulo, linhas, tags, semente):
 
 
 def projetinhos(c):
-    # cabeçalho: o logo pulando e o botão com a setinha clicando
+    # cabeçalho: o logo pulando em cima de uma faixa azul de pontinhos, de ponta
+    # cortada tipo menu de Persona, e o botão com a setinha clicando
+    faixa = "M-30 1486 L512 1478 L486 1608 L-30 1614 Z"
+    c.add(f'<g transform="rotate(-2.5 240 1546)">'
+          f'<path d="{faixa}" fill="{TINTA}" transform="translate(9 9)"/>'
+          f'<path d="{faixa}" fill="{AZUL_VIVO}"/>'
+          f'<path d="{faixa}" fill="url(#pontos)" opacity=".3"/>'
+          f'<path d="M-30 1598 L488 1594" stroke="#fff" stroke-width="3" opacity=".85"/>'
+          f'<path d="M-30 1496 L508 1489" stroke="{LIMA}" stroke-width="4"/>'
+          f'<path d="{faixa}" fill="none" stroke="{TINTA}" stroke-width="5" stroke-linejoin="round"/></g>',
+          (-30, 1466, 530, 1630), z=5)
     c.add('<g class="pula">' + logo("projetinhos", 40, 1562, 74, "#ffb3d1", [4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3], [-6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5]) + "</g>",
           (10, 1480, 600, 1610), z=6)
     # o "clica nos cards" vira um botão neobrutalista, com a setinha clicando
@@ -407,7 +417,7 @@ def projetinhos(c):
     bx = 440 - bw / 2
     pilula = (f'<rect x="{bx + bw - pw - 16:.0f}" y="2755" width="{pw:.0f}" height="26" rx="13" fill="{TINTA}"/>'
               f'<text x="{bx + bw - 16 - pw / 2:.0f}" y="2773" font-size="15" text-anchor="middle" class="recibo" fill="{LIMA}">{repos}</text>')
-    botao(c, texto, bx, 2742, "#ffb3d1", 1.5, px=18, extra=pilula, bw=bw, seta_y=20)
+    botao(c, texto, bx, 2742, "#ffb3d1", 0, px=18, extra=pilula, bw=bw, seta_y=20)
     c.add(estrela(bx - 30, 2770, 16, 0.3) + brilhinho(bx + bw + 52, 2752, 11, "#fff", 1.1), (bx - 60, 2730, bx + bw + 80, 2800), z=8)
 
 
@@ -537,8 +547,6 @@ def boletim(c):
           + logo(titulo, round(440 - tw / 2), ty0 + 58, px, LIMA, [-4, 3, -2, 4, -3, 2, -4, 3, -2, 4, -3, 2, -4, 3, -2, 4, -3, 2, 3],
                  [0, -4, 5, -3, 4, -5, 3, -2, 4, -4, 3, -3, 4, -5, 3, -2, 4, -3, 0], borda="#111", sombra="#111") + "</g>",
           (tx0 - 20, ty0 - 30, tx0 + tw0 + 30, ty0 + th0 + 30), z=9)
-    # etiquetinha em japonês na quina, tipo capa de revista
-    c.add(etiqueta(tx0 + tw0 - 92, ty0 - 16, "できること", "#ffb3d1", 6, px=14)[0], (tx0 + tw0 - 110, ty0 - 40, tx0 + tw0 + 20, ty0 + 30), z=10)
 
     x, y, w, rot = 30, 2944, 572, -1.2
     h = 236 + 30 * len(linhas) + 122
@@ -614,7 +622,6 @@ def boletim(c):
           f'<rect x="{sx - 98}" y="{sy - 24}" width="196" height="48" rx="6" fill="none" stroke="#d42f3a" stroke-width="2"/>'
           f'<text x="{sx}" y="{sy + 13}" font-size="36" letter-spacing="4" text-anchor="middle" class="revista" fill="#d42f3a">APROVADO</text></g>',
           (sx - 140, sy - 80, sx + 140, sy + 80), z=8)
-    c.add(fita(x + 210, y - 22, 150, 44, -3), (x + 190, y - 50, x + 380, y + 40), z=9)
 
     # do lado: o que eu uso além das linguagens, e os deveres de casa entregues
     nx, ny, nw = 626, 2966, 236
