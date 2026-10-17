@@ -78,7 +78,7 @@ class Cena:
             novos.append((z, o, (x0, y0, x1, y1), s))
         self.els = novos
 
-    def img(self, nome, x, y, w, rot=0, z=0, classe="", sombra="sombra-leve", px=None):
+    def img(self, nome, x, y, w, rot=0, z=0, classe="", sombra="sombra-leve", px=None, folga=24):
         iw, ih = tamanho(nome)
         h = w * ih / iw
         cx, cy = x + w / 2, y + h / 2
@@ -88,7 +88,7 @@ class Cena:
         corpo = f'<image x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" href="{uri}"{f}{tr}/>'
         if classe:
             corpo = f'<g class="{classe}">{corpo}</g>'
-        self.add(corpo, caixa_girada(x, y, w, h, rot), z)
+        self.add(corpo, caixa_girada(x, y, w, h, rot, folga), z)
         return h
 
 
@@ -414,30 +414,17 @@ def botao_88(x, y, linhas, fundo, cor, borda="#fff", icone=""):
     return "".join(s)
 
 
-def lua(cx, cy, r):
-    """Lua minguante de adesivo, com o contorno grosso: um círculo menos outro deslocado."""
-    def meia(rr, cor):
-        return (f'<mask id="lua-{rr:.0f}"><circle cx="{cx}" cy="{cy}" r="{rr}" fill="#fff"/>'
-                f'<circle cx="{cx + r * .5}" cy="{cy - r * .3}" r="{rr * .82}" fill="#000"/></mask>'
-                f'<circle cx="{cx}" cy="{cy}" r="{rr}" fill="{cor}" mask="url(#lua-{rr:.0f})"/>')
-    return f'<g filter="url(#sombra-leve)">{meia(r + 3.5, TINTA)}{meia(r, AMARELO)}</g>'
-
-
 def rodape(c):
-    # céu de noite: lua e estrelinhas piscando
-    c.add(lua(700, 4262, 28), (660, 4226, 740, 4300), z=2)
-    for i, (sx, sy, sr, cor) in enumerate([(552, 4282, 10, "#fff"), (852, 4300, 12, AMARELO), (840, 4646, 9, "#fff"),
-                                           (858, 4440, 9, "#ffb3d1")]):
-        c.add(brilhinho(sx, sy, sr, cor, i * .8), (sx - 30, sy - 30, sx + 30, sy + 30), z=2)
-
     # o "Gostou?" num papel preto com borda branca e sombra dura, bem neobrutalista
     papel = ('<g transform="rotate(-2 330 4396)">'
              '<path d="M62 4290 L626 4274 L640 4560 L74 4580 Z" fill="#d3ec3c" stroke="#1d1c22" stroke-width="4" stroke-linejoin="round"/>'
              '<path d="M50 4278 L614 4262 L628 4548 L62 4568 Z" fill="#111" stroke="#fff" stroke-width="6" stroke-linejoin="round"/></g>')
     c.add(papel, (20, 4236, 660, 4600), z=3)
-    c.img("recortes/gostou.png", 96, 4298, 372, -2, z=4, sombra=None)
+    # o texto no meio do papel (o centro do papel já girado é 339, 4414)
+    c.img("recortes/gostou.png", 339 - 195, 4414 - 132, 390, -2, z=4, sombra=None)
     c.img("recortes/washi-04.png", 18, 4256, 120, -30, z=5, px=300)
-    c.img("abraco-claude.png", 590, 4282, 262, 5, z=5, px=700)
+    # folga curta pra ele não entrar na tira de cima (o desenho começa logo abaixo da emenda)
+    c.img("abraco-claude.png", 552, 4258, 316, 5, z=5, px=800, folga=2)
 
     # a fileira de botõezinhos 88x31, que todo site pessoal tinha no rodapé
     coracao_px = '<path d="M{x} {y} h2 v-2 h2 v2 h2 v-2 h2 v2 h2 v4 h-2 v2 h-2 v2 h-2 v2 h-2 v-2 h-2 v-2 h-2 v-2 h-2 Z" fill="#ff5c8a"/>'
@@ -453,8 +440,25 @@ def rodape(c):
         s.append(f'<g transform="rotate({(-2, 1.5, -1, 2, -1.5)[i]} {bx + 44} {by + 15})">{botao_88(bx, by, linhas, fundo, cor, icone=ic)}</g>')
         bx += 96
     c.add(f'<g transform="translate(60 4606) scale(1.25)" filter="url(#sombra-leve)">{"".join(s)}</g>', (40, 4590, 680, 4660), z=6)
-    c.add(fita(572, 4566, 264, 48, 2) + linha(606, 4599, "kitsuneislife, 2026", 22, TINTA, 'transform="rotate(2 700 4590)"'),
-          (550, 4556, 850, 4626), z=6)
+    c.add(etiqueta_fim(668, 4602), (640, 4540, 880, 4680), z=6)
+
+
+def etiqueta_fim(x, y):
+    """Etiqueta de roupa vermelha, de contorno grosso e sombra dura, pendurada no meu sticker por uma linha."""
+    nome, ano = "kitsuneislife", "feito em 2026 ♥"
+    w = 38 + max(medir("revista", nome, 15), medir("mao", ano, 18)) + 14
+    h = 52
+    forma = f"M{x + 20} {y} H{x + w} V{y + h} H{x + 20} L{x} {y + h / 2} Z"
+    hx, hy = x + 19, y + h / 2
+    return (f'<g class="balanca" style="transform-origin:{hx}px {y - 34}px">'
+            f'<path d="M{hx} {hy} C{hx - 10} {hy - 22} {hx + 14} {y - 20} {hx - 4} {y - 34}" fill="none" stroke="{TINTA}" stroke-width="2.2" stroke-linecap="round"/>'
+            f'<g transform="rotate(5 {x + w / 2:.1f} {y + h / 2})">'
+            f'<path d="{forma}" fill="{TINTA}" transform="translate(5 5)"/>'
+            f'<path d="{forma}" fill="{CRACHA}" stroke="{TINTA}" stroke-width="3.5" stroke-linejoin="round"/>'
+            f'<circle cx="{hx}" cy="{hy}" r="5.5" fill="#fff" stroke="{TINTA}" stroke-width="2.5"/>'
+            f'<line x1="{x + 31}" y1="{y + 8}" x2="{x + 31}" y2="{y + h - 8}" stroke="#fff" stroke-width="1.4" stroke-dasharray="3 3" opacity=".7"/>'
+            f'<text x="{x + 38}" y="{y + 23}" font-size="15" class="revista" fill="#fff">{t(nome)}</text>'
+            + linha(x + 38, y + 43, ano, 18, LIMA) + '</g></g>')
 
 
 # cores das linguagens, as mesmas do GitHub
@@ -622,8 +626,6 @@ def boletim(c):
     c.img("recortes/caneta.png", x + w - 150, y + h - 150, 80, 34, z=9, px=220)
     c.img("recortes/regua.png", -46, y + h - 170, 190, 0, z=5, px=420)
     c.img("recortes/lapis.png", nx + 20, ay + ah + 8, 150, -4, z=8, px=340)
-    c.add(estrela(640, ay + ah + 74, 16, 0.6, "#ffb3d1") + brilhinho(612, ay + ah + 40, 12, AMARELO, 1.6),
-          (590, ay + ah - 10, 875, ay + ah + 60), z=8)
 
 
 # ---------------------------------------------------------------- fundo e saída
@@ -749,6 +751,8 @@ CSS = """
 @keyframes boia{to{transform:translate(-8px,-4px)}}
 @keyframes letreiro{to{transform:translateX(var(--volta))}}
 .nuvens{animation:nuvens 150s linear infinite}
+.balanca{animation:balanca 5s ease-in-out infinite alternate}
+@keyframes balanca{from{transform:rotate(-2deg)}to{transform:rotate(2.5deg)}}
 @keyframes nuvens{to{transform:translateX(var(--tile))}}
 """
 
