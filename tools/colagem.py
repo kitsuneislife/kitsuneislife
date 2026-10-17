@@ -196,7 +196,6 @@ def montar():
              f'<rect x="-30" y="1392" width="940" height="1500" fill="url(#quadriculado)"/>'
              f'<rect x="-30" y="1392" width="940" height="26" fill="url(#xadrez)"/></g>')
     c.add(folha, (-30, 1370, 910, 2910), z=4)
-    c.add(fita(318, 1376, 150, 44, -6) + fita(640, 1366, 150, 44, 7), (300, 1340, 800, 1430), z=11)
     projetinhos(c)
 
     # ---- o que eu sei fazer: um boletim, com as notas tiradas dos repositórios
@@ -327,15 +326,20 @@ def projetinhos(c):
     # cabeçalho: o logo, o "(e de lasanha)" e a setinha clicando
     c.add(logo("projetinhos", 40, 1562, 74, "#ffb3d1", [4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3], [-6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5]),
           (10, 1480, 600, 1610), z=6)
-    c.add(fita(62, 1578, 240, 46, -2) + linha(92, 1609, "(e de lasanha)", 22, TINTA, 'transform="rotate(-2 180 1600)"'),
+    c.add(linha(70, 1612, "(e de lasanha)", 24, TINTA, 'transform="rotate(-3 160 1604)"'),
           (50, 1570, 320, 1630), z=7)
-    setas = "".join(f'<path d="M{596 + i * 30} 1512 l20 16 l-20 16 Z" fill="{AZUL_VIVO}" stroke="{TINTA}" stroke-width="2.5" stroke-linejoin="round"/>'
-                    for i in range(4))
-    c.add(f'<g transform="rotate(-4 660 1528)" filter="url(#sombra-leve)">{setas}</g>'
-          + linha(600, 1586, "clica nos cards pra abrir", 21, TINTA, 'transform="rotate(-4 700 1580)"')
-          + cursor(812, 1534, -14), (580, 1490, 860, 1636), z=7)
-    c.img("recortes/tesoura.png", 520, 1560, 62, 58, z=7, px=160)
-    c.add(estrela(560, 1500, 16, 0.4, "#ffb3d1") + brilhinho(842, 1490, 13, AMARELO, 1.2), (530, 1470, 870, 1530), z=7)
+    # o "clica nos cards" vira um botão neobrutalista, com a setinha clicando
+    texto = "clica nos cards pra abrir"
+    bw = medir("revista", texto, 17) + 118
+    bx, by = 846 - bw, 1512
+    setas = "".join(f'<path d="M{bx + 18 + i * 17} {by + 14} l11 10 l-11 10 Z" fill="{TINTA}"/>' for i in range(3))
+    c.add(f'<g transform="rotate(-3 {bx + bw / 2:.0f} {by + 26})">'
+          f'<rect x="{bx + 7:.0f}" y="{by + 7}" width="{bw:.0f}" height="52" rx="10" fill="{TINTA}"/>'
+          f'<rect x="{bx:.0f}" y="{by}" width="{bw:.0f}" height="52" rx="10" fill="{LIMA}" stroke="{TINTA}" stroke-width="4"/>'
+          f'{setas}<text x="{bx + 76:.0f}" y="{by + 33}" font-size="17" class="revista" fill="{TINTA}">{t(texto)}</text></g>'
+          + cursor(bx + bw - 10, by + 46, -14, .85), (bx - 10, by - 30, W, by + 110), z=7)
+    c.img("recortes/tesoura.png", 404, 1588, 58, 64, z=7, px=160)
+    c.add(estrela(540, 1488, 15, 0.4, "#ffb3d1") + brilhinho(850, 1496, 12, AMARELO, 1.2), (500, 1466, 875, 1526), z=8)
 
     # 01 artcode: o logo vermelho, a folha e um ingresso da versão
     print_adesivo(c, "foto-artcode.png", 36, 1676, 380, -3, z=5)
