@@ -25,15 +25,15 @@ TIRAS = [
      "kitsuneislife, escrito em letra de adesivo, num céu azul com nuvens de papelão. "
      "Um arco-íris de papelão e eu sentado numa nuvem, de fone. ようこそ! "
      "artbook, portfolio, media log."),
-    ("bio", 540, 540, None,
-     "Uma pasta de arquivo com um crachá e um bilhete: Costumam escrever muitas coisas por aqui, né? "
-     "Tem gente que quer falar sobre o quanto eh bom, ou o quanto eh apaixonado pelo que faz.. "
-     "Bom, eu gosto de fazer alguns projetinhos (e de lasanha) e quero trabalhar na área. "
-     "Discord: @thur3inhos. “Penso, logo desisto.” love you forever."),
+    ("bio", 540, 540, "https://github.com/kitsuneislife?tab=repositories",
+     "Uma prancheta com um bilhete: Nunca soube o que escrever em uma bio ou em um sobre-mim. Curioso né? "
+     "Então fiz essa página pra contar um pouquinho de quem sou eu. Eu gosto de fazer alguns projetinhos "
+     "(e de lasanha) e quero trabalhar na área. Discord: @thurzinhos. “Penso, logo desisto.” love you forever. "
+     "Do lado, a turma correndo com uma placa: clica aqui."),
     ("tempo", 1080, 380, None,
      "Eu em 2016, com 8 anos, e eu em 2026, com 18, rodeado de cabecinhas de Nendoroid."),
     ("projetos", 1460, 180, "https://github.com/kitsuneislife?tab=repositories",
-     "projetinhos (e de lasanha). A turma correndo segurando uma placa: clica nos cards."),
+     "projetinhos (e de lasanha). Clica nos cards pra abrir cada um."),
     ("artcode", 1640, 270, "https://github.com/kitsuneislife/artcode",
      "artcode: minha própria linguagem de programação, interpretada e escrita em Rust. Tá na v0.5.1."),
     ("lover", 1910, 270, "https://kitsuneislife.github.io/lover/",
@@ -173,10 +173,13 @@ def montar(dados_recibo):
     c.add("".join(nav), (40, 320, 400, 480), z=6)
 
     # ---- bio
-    c.img("banner-bio.png", 26, 520, 830, -1.5, z=4, sombra="sombra", px=1095)
+    # o export da prancheta já vem cortado na esquerda e embaixo: encosta na borda
+    # e as nuvens cobrem o corte de baixo
+    c.img("banner-bio.png", 0, 516, 880, 0, z=4, sombra="sombra", px=1238)
+    for x, y, w, rot in [(-40, 914, 250, 3), (186, 940, 236, -1), (400, 918, 250, 4), (630, 910, 260, -3)]:
+        c.img("nuvem.png", x, y, w, rot, z=7, sombra="sombra-leve")
     c.img("diabinho.png", 790, 520, 92, 12, z=5)
-    c.img("skate.png", -14, 930, 330, -3, z=6)
-    c.img("recortes/croissant.png", 742, 975, 128, 14, z=6)
+    c.img("recortes/croissant.png", 744, 990, 110, 14, z=8)
 
     # ---- 2016 → 2026
     c.img("eu-2016.png", 70, 1110, 172, -2, z=3, px=205)
@@ -197,9 +200,9 @@ def montar(dados_recibo):
     c.add(logo("projetinhos", 40, 1562, 74, "#ffb3d1", giros[1:], sobe[2:]), (10, 1480, 600, 1610), z=6)
     c.add(fita(62, 1578, 240, 46, -2) + linha(92, 1609, "(e de lasanha)", 22, TINTA, 'transform="rotate(-2 180 1600)"'),
           (50, 1570, 320, 1630), z=7)
-    c.img("turma-correndo.png", 520, 1440, 340, 0, z=5, px=597)
-    c.add(f'<g transform="rotate(-9 800 1545)">{linha(786, 1552, "clica nos", 18)}{linha(792, 1575, "cards", 18)}</g>',
-          (740, 1500, 860, 1590), z=6)
+    svg, cx_ = bilhete(600, 1508, 220, [("clica nos cards", TINTA), ("pra abrir cada um", "#5a5a63")], 4, cor="#eef08a", pautado=False, px=20)
+    c.add(svg, cx_, z=6)
+    c.img("recortes/tachinha.png", 776, 1486, 38, 8, z=7)
 
     def projeto(y0, nome_foto, lado, titulo, linhas, rot, deco, moldura="#fff", rodape=12, cor_titulo=LIMA, extra=""):
         larg = 360
