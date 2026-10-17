@@ -48,8 +48,10 @@ TIRAS = [
      "cada linguagem com quantos repos usam ela, a nota e se passou. Dart, Java e Kotlin estão em curso. "
      "Atividades extras: git, npm, Redis, Express, Docker, Expo. Deveres entregues: os repositórios "
      "mexidos por último. Carimbo de aprovado."),
-    ("fim", 2840, 380, None,
-     "Gostou? Sei fazer bem mais. Eu abraçando uma pelúcia do Claude. kitsuneislife, 2026."),
+    ("fim", 2840, 440, None,
+     "Anoitece. Gostou? Sei fazer bem mais. Eu abraçando uma pelúcia do Claude, com a lua e umas estrelinhas. "
+     "Embaixo, botõezinhos de site antigo: feito à mão por kitsune, 100% SVG, movido a lasanha, "
+     "melhor visto em qualquer um, sem cookies. kitsuneislife, 2026."),
 ]
 H = TIRAS[-1][1] + TIRAS[-1][2]
 
@@ -182,13 +184,9 @@ def montar():
     # ---- o que eu sei fazer: um boletim, com as notas tiradas dos repositórios
     boletim(c)
 
-    # ---- fim
-    papel = ('<g transform="rotate(-2 330 4390)"><path d="M48 4272 L612 4256 L626 4500 L60 4522 Z" fill="#111" filter="url(#sombra)"/></g>')
-    c.add(papel, (20, 4230, 660, 4550), z=3)
-    c.img("recortes/gostou.png", 96, 4296, 430, -2, z=4, sombra=None)
-    c.img("abraco-claude.png", 584, 4250, 270, 5, z=5, px=700)
-    c.add(fita(550, 4538, 264, 48, 2) + linha(584, 4571, "kitsuneislife, 2026", 22, TINTA, 'transform="rotate(2 680 4563)"'),
-          (540, 4530, 820, 4590), z=6)
+    # ---- fim: anoitece
+    rodape(c)
+
     # a cena foi desenhada com o then and now e o recibo no meio; sem eles,
     # o fim sobe 720, os projetinhos sobem 440 e tudo da bio pra baixo sobe 240
     c.subir(3600, 720)
@@ -377,6 +375,60 @@ def projetinhos(c):
     c.add(brilhinho(694, 2756, 12, "#fff", 1.8), (670, 2730, 720, 2800), z=7)
 
 
+def botao_88(x, y, linhas, fundo, cor, borda="#fff", icone=""):
+    """Botãozinho 88x31 de site dos anos 2000, com borda em relevo."""
+    s = [f'<rect x="{x}" y="{y}" width="88" height="31" fill="{fundo}"/>',
+         f'<path d="M{x} {y + 31} V{y} H{x + 88}" fill="none" stroke="{borda}" stroke-width="2" opacity=".85"/>',
+         f'<path d="M{x} {y + 31} H{x + 88} V{y}" fill="none" stroke="#000" stroke-width="2" opacity=".55"/>', icone]
+    for i, (texto, px) in enumerate(linhas):
+        s.append(f'<text x="{x + 44}" y="{y + 31 / 2 + (i - (len(linhas) - 1) / 2) * (px + 1) + px * .36:.1f}" font-size="{px}" '
+                 f'text-anchor="middle" class="recibo" fill="{cor}">{t(texto)}</text>')
+    return "".join(s)
+
+
+def lua(cx, cy, r):
+    """Lua minguante de adesivo, com o contorno grosso: um círculo menos outro deslocado."""
+    def meia(rr, cor):
+        return (f'<mask id="lua-{rr:.0f}"><circle cx="{cx}" cy="{cy}" r="{rr}" fill="#fff"/>'
+                f'<circle cx="{cx + r * .5}" cy="{cy - r * .3}" r="{rr * .82}" fill="#000"/></mask>'
+                f'<circle cx="{cx}" cy="{cy}" r="{rr}" fill="{cor}" mask="url(#lua-{rr:.0f})"/>')
+    return f'<g filter="url(#sombra-leve)">{meia(r + 3.5, TINTA)}{meia(r, AMARELO)}</g>'
+
+
+def rodape(c):
+    # céu de noite: lua e estrelinhas piscando
+    c.add(lua(700, 4262, 28), (660, 4226, 740, 4300), z=2)
+    for i, (sx, sy, sr, cor) in enumerate([(552, 4282, 10, "#fff"), (852, 4300, 12, AMARELO), (840, 4646, 9, "#fff"),
+                                           (858, 4440, 9, "#ffb3d1")]):
+        c.add(brilhinho(sx, sy, sr, cor, i * .8), (sx - 30, sy - 30, sx + 30, sy + 30), z=2)
+
+    # o "Gostou?" num papel preto com borda branca e sombra dura, bem neobrutalista
+    papel = ('<g transform="rotate(-2 330 4396)">'
+             '<path d="M62 4290 L626 4274 L640 4560 L74 4580 Z" fill="#d3ec3c" stroke="#1d1c22" stroke-width="4" stroke-linejoin="round"/>'
+             '<path d="M50 4278 L614 4262 L628 4548 L62 4568 Z" fill="#111" stroke="#fff" stroke-width="6" stroke-linejoin="round"/></g>')
+    c.add(papel, (20, 4236, 660, 4600), z=3)
+    c.img("recortes/gostou.png", 96, 4298, 372, -2, z=4, sombra=None)
+    c.img("recortes/washi-04.png", 18, 4256, 120, -30, z=5, px=300)
+    c.img("abraco-claude.png", 590, 4282, 262, 5, z=5, px=700)
+
+    # a fileira de botõezinhos 88x31, que todo site pessoal tinha no rodapé
+    coracao_px = '<path d="M{x} {y} h2 v-2 h2 v2 h2 v-2 h2 v2 h2 v4 h-2 v2 h-2 v2 h-2 v2 h-2 v-2 h-2 v-2 h-2 v-2 h-2 Z" fill="#ff5c8a"/>'
+    botoes = [
+        ([("feito à mão", 11), ("por kitsune", 11)], "#ffb3d1", TINTA, ""),
+        ([("100% SVG", 13)], TINTA, LIMA, ""),
+        ([("movido a", 10), ("lasanha", 13)], "#ff8a5c", TINTA, ""),
+        ([("melhor visto", 10), ("em qualquer um", 10)], "#3f7cf4", "#fff", ""),
+        ([("sem cookies", 12)], "#fff", TINTA, ""),
+    ]
+    bx, by, s = 0, 0, []
+    for i, (linhas, fundo, cor, ic) in enumerate(botoes):
+        s.append(f'<g transform="rotate({(-2, 1.5, -1, 2, -1.5)[i]} {bx + 44} {by + 15})">{botao_88(bx, by, linhas, fundo, cor, icone=ic)}</g>')
+        bx += 96
+    c.add(f'<g transform="translate(60 4606) scale(1.25)" filter="url(#sombra-leve)">{"".join(s)}</g>', (40, 4590, 680, 4660), z=6)
+    c.add(fita(572, 4566, 264, 48, 2) + linha(606, 4599, "kitsuneislife, 2026", 22, TINTA, 'transform="rotate(2 700 4590)"'),
+          (550, 4556, 850, 4626), z=6)
+
+
 # cores das linguagens, as mesmas do GitHub
 CORES_LING = {"JavaScript": "#f1e05a", "TypeScript": "#3178c6", "Python": "#3572A5", "Rust": "#dea584",
               "PHP": "#4F5D95", "HTML": "#e34c26", "CSS": "#563d7c", "Svelte": "#ff3e00", "Shell": "#89e051",
@@ -557,8 +609,9 @@ DEFS_CENA = f"""
 <linearGradient id="ceu" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="{H}">
   <stop offset="0" stop-color="{CEU_TOPO}"/><stop offset=".12" stop-color="#7fbdf3"/>
   <stop offset=".3" stop-color="{CEU_MEIO}"/><stop offset=".5" stop-color="#78b8f2"/>
-  <stop offset=".7" stop-color="{CEU_MEIO}"/><stop offset=".9" stop-color="#78b8f2"/>
-  <stop offset="1" stop-color="{CEU_FUNDO}"/>
+  <stop offset=".64" stop-color="{CEU_MEIO}"/><stop offset=".74" stop-color="#f4b6c8"/>
+  <stop offset=".81" stop-color="#9a86dc"/><stop offset=".89" stop-color="#2d3a82"/>
+  <stop offset="1" stop-color="#121a44"/>
 </linearGradient>
 <pattern id="pontos" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="1.7" fill="#fff"/></pattern>
 <linearGradient id="g-some" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="{W}" y2="0">
