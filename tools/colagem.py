@@ -248,13 +248,18 @@ def folha_rasgada(x, y, w, h, rot, semente):
             f'<path d="{d}" fill="url(#grade-azul)"/>{furos}</g>')
 
 
-def etiqueta(x, y, texto, fundo, rot=0, cor=TINTA, px=14):
-    """Etiqueta de adesivo com contorno preto, tipo as de aviso das referências."""
-    w = medir("revista", texto, px) + 22
+def etiqueta(x, y, texto, fundo, rot=0, cor=TINTA, px=14, icone=None):
+    """Etiqueta de adesivo com contorno preto, tipo as de aviso das referências.
+    icone é o path de um ícone 24x24 (Simple Icons), desenhado chapado antes do texto."""
     h = px + 16
+    lado = px + 2  # tamanho do ícone
+    dx = lado + 6 if icone else 0
+    w = medir("revista", texto, px) + 22 + dx
+    desenho = (f'<path d="{icone}" fill="{TINTA}" transform="translate({x + 9} {y + (h - lado) / 2:.1f}) scale({lado / 24:.3f})"/>'
+               if icone else "")
     return (f'<g transform="rotate({rot} {x + w / 2:.1f} {y + h / 2:.1f})" filter="url(#sombra-leve)">'
             f'<rect x="{x}" y="{y}" width="{w:.1f}" height="{h}" rx="5" fill="{fundo}" stroke="{TINTA}" stroke-width="2.5"/>'
-            f'<text x="{x + 11}" y="{y + h / 2 + px * .36:.1f}" font-size="{px}" class="revista" fill="{cor}">{t(texto)}</text></g>'), w
+            f'{desenho}<text x="{x + 11 + dx}" y="{y + h / 2 + px * .36:.1f}" font-size="{px}" class="revista" fill="{cor}">{t(texto)}</text></g>'), w
 
 
 def brilhinho(cx, cy, r, cor="#fff", atraso=None):
@@ -495,7 +500,8 @@ CORES_LING = {"JavaScript": "#f1e05a", "TypeScript": "#3178c6", "Python": "#3572
               "Dart": "#00B4AB", "Java": "#b07219", "Kotlin": "#A97BFF", "C": "#555555", "C++": "#f34b7d",
               "Lua": "#000080", "QML": "#44a51c", "Vue": "#41b883", "SCSS": "#c6538c", "Go": "#00ADD8"}
 CURSANDO = ["Dart", "Java", "Kotlin"]  # o que eu tô aprendendo, mesmo sem código ainda
-EXTRAS = ["git", "npm", "Redis", "Express", "Docker", "Expo"]
+EXTRAS = ["git", "npm", "Redis", "Express", "Docker", "Expo"]  # enquanto o boletim.json não tem "ferramentas"
+ICONES_JSON = Path(__file__).resolve().parent.parent / "assets" / "readme" / "icones.json"
 BOLETIM_JSON = Path(__file__).resolve().parent.parent / "assets" / "readme" / "boletim.json"
 BOLETIM_EXEMPLO = {
     "repos": 24, "estrelas": 31, "atualizado": None,
@@ -575,8 +581,8 @@ def boletim(c):
         s.append(campo(x + 24, yy + 92, "ESTRELAS DE BOM COMPORTAMENTO", str(d["estrelas"]), 300))
     # foto 3x4, presa com clipe
     s.append(f'<rect x="{x + w - 140}" y="{y + 72}" width="112" height="140" fill="#fff" stroke="#c9ccd6" stroke-width="1.5"/>'
-             f'<image x="{x + w - 134}" y="{y + 78}" width="100" height="128" preserveAspectRatio="xMidYMid slice" '
-             f'href="{imagem("3x4.png", 220)}"/>')
+             f'<image x="{x + w - 134}" y="{y + 78}" width="100" height="128" preserveAspectRatio="xMidYMin slice" '
+             f'href="{imagem("eu-2016.png", 205)}"/>')
 
     # a tabela das notas
     ty = y + 212
@@ -600,8 +606,9 @@ def boletim(c):
             s.append(linha(x + 384, ly + 24, virgula(nota), 24, cor_nota, f'text-anchor="middle" transform="rotate({(-3, 2, -1, 3)[i % 4]} {x + 384} {ly + 15})"'))
             sit, cor_sit, fundo_sit = ("aprovado", "#fff", "#2fa35a") if nota >= 6 else ("recuperação", "#fff", "#d42f3a")
         sw = medir("revista", sit, 11) + 18
-        s.append(f'<rect x="{x + w - 30 - sw:.1f}" y="{ly + 5}" width="{sw:.1f}" height="20" rx="10" fill="{fundo_sit}" stroke="{TINTA}" stroke-width="1.6"/>'
-                 f'<text x="{x + w - 30 - sw / 2:.1f}" y="{ly + 19}" font-size="11" text-anchor="middle" class="revista" fill="{cor_sit}">{sit}</text>')
+        s.append(f'<g class="estala" style="animation-delay:{i * .12:.2f}s">'
+                 f'<rect x="{x + w - 30 - sw:.1f}" y="{ly + 5}" width="{sw:.1f}" height="20" rx="10" fill="{fundo_sit}" stroke="{TINTA}" stroke-width="1.6"/>'
+                 f'<text x="{x + w - 30 - sw / 2:.1f}" y="{ly + 19}" font-size="11" text-anchor="middle" class="revista" fill="{cor_sit}">{sit}</text></g>')
 
     # observações do professor, de caneta vermelha
     oy = ty + 30 + len(linhas) * 30 + 24
@@ -616,21 +623,29 @@ def boletim(c):
 
     # carimbo de aprovado, com tinta falhada
     sx, sy = x + w - 118, y + h - 48
-    c.add(f'<g transform="rotate(-5 {sx} {sy}) translate({sx} {sy}) scale(.85) translate({-sx} {-sy})" filter="url(#carimbo)" opacity=".85">'
+    c.add(f'<g class="carimba"><g transform="rotate(-5 {sx} {sy}) translate({sx} {sy}) scale(.85) translate({-sx} {-sy})" filter="url(#carimbo)" opacity=".85">'
           f'<rect x="{sx - 108}" y="{sy - 34}" width="216" height="68" rx="10" fill="none" stroke="#d42f3a" stroke-width="6"/>'
           f'<rect x="{sx - 98}" y="{sy - 24}" width="196" height="48" rx="6" fill="none" stroke="#d42f3a" stroke-width="2"/>'
-          f'<text x="{sx}" y="{sy + 13}" font-size="36" letter-spacing="4" text-anchor="middle" class="revista" fill="#d42f3a">APROVADO</text></g>',
+          f'<text x="{sx}" y="{sy + 13}" font-size="36" letter-spacing="4" text-anchor="middle" class="revista" fill="#d42f3a">APROVADO</text></g></g>',
           (sx - 140, sy - 80, sx + 140, sy + 80), z=8)
 
     # do lado: o que eu uso além das linguagens, e os deveres de casa entregues
     nx, ny, nw = 626, 2966, 236
     tags, tx, ty2 = [], nx + 18, ny + 70
-    for i, e in enumerate(EXTRAS):
-        eti, ew = etiqueta(tx, ty2, e, ["#fff", AMARELO, "#7fc8ff", VERDE, "#ffb3d1", "#fff"][i % 6], (-3, 2, -2, 3)[i % 4], px=14)
+    # as ferramentas que o workflow achou nos repos (ou as fixas), com o ícone chapado
+    extras = [f["nome"] for f in d.get("ferramentas", [])][:7] or EXTRAS
+    try:
+        icones = json.loads(ICONES_JSON.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        icones = {}
+    for i, e in enumerate(extras):
+        cor_, rot_ = ["#fff", AMARELO, "#7fc8ff", VERDE, "#ffb3d1", "#fff"][i % 6], (-3, 2, -2, 3)[i % 4]
+        eti, ew = etiqueta(tx, ty2, e, cor_, rot_, px=14, icone=icones.get(e))
         if tx + ew > nx + nw - 10:
             tx, ty2 = nx + 18, ty2 + 42
-            eti, ew = etiqueta(tx, ty2, e, ["#fff", AMARELO, "#7fc8ff", VERDE, "#ffb3d1", "#fff"][i % 6], (-3, 2, -2, 3)[i % 4], px=14)
-        tags.append(eti)
+            eti, ew = etiqueta(tx, ty2, e, cor_, rot_, px=14, icone=icones.get(e))
+        # cada etiqueta dá uma tremidinha, uma depois da outra
+        tags.append(f'<g class="treme" style="animation-delay:{i * .45:.2f}s">{eti}</g>')
         tx += ew + 8
     nh = ty2 - ny + 64
     c.add(f'<g transform="rotate(2.5 {nx + nw / 2} {ny + nh / 2})"><rect x="{nx}" y="{ny}" width="{nw}" height="{nh}" fill="{ROSA_BILHETE}" filter="url(#sombra)"/>'
@@ -650,7 +665,8 @@ def boletim(c):
         ry = ay + 88 + i * 40
         quando = "hoje" if r["dias"] == 0 else ("ontem" if r["dias"] == 1 else f"há {r['dias']} dias")
         nome = r["nome"] if len(r["nome"]) <= 14 else r["nome"][:13] + "…"
-        a.append(f'<path d="M{nx + 10} {ry - 8} l6 7 l11 -14" fill="none" stroke="#2fa35a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
+        a.append(f'<path class="risca" style="animation-delay:{i * .5:.1f}s" pathLength="1" d="M{nx + 10} {ry - 8} l6 7 l11 -14" fill="none" '
+                 f'stroke="#2fa35a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
         a.append(linha(nx + 42, ry, nome, 21, ANIL))
         a.append(linha(nx + nw - 12, ry, quando, 17, "#6b6b78", 'text-anchor="end"'))
     a.append("</g>")
@@ -783,6 +799,12 @@ CSS = """
 @keyframes boia{to{transform:translate(-8px,-4px)}}
 @keyframes letreiro{to{transform:translateX(var(--volta))}}
 .nuvens{animation:nuvens 46s linear infinite}
+.estala{transform-box:fill-box;transform-origin:center;animation:estala 3.6s ease-in-out infinite}
+@keyframes estala{0%,12%,100%{transform:scale(1)}5%{transform:scale(1.18) rotate(-4deg)}}
+.carimba{transform-box:fill-box;transform-origin:center;animation:carimba 5s ease-in infinite}
+@keyframes carimba{0%,64%,100%{transform:scale(1);opacity:1}70%{transform:scale(1.35) translateY(-10px);opacity:0}76%{transform:scale(.94);opacity:1}82%{transform:scale(1)}}
+.risca{stroke-dasharray:1;animation:risca 6s ease-out infinite}
+@keyframes risca{0%{stroke-dashoffset:1}12%,88%{stroke-dashoffset:0;opacity:1}96%,100%{stroke-dashoffset:0;opacity:0}}
 @keyframes nuvens{to{transform:translateX(var(--tile))}}
 """
 

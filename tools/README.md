@@ -48,8 +48,14 @@ O workflow `.github/workflows/boletim.yml` roda todo dia usando o
 só roda na branch padrão, então ele começa quando isso estiver na `main`;
 antes disso dá pra rodar na mão em Actions → boletim → Run workflow.
 
+As atividades extras também saem dos repositórios: o `boletim.py` olha os
+arquivos da raiz e as dependências do `package.json` de cada um (`FERRAMENTAS`
+diz o que procurar) e conta quantos repos usam cada ferramenta. O ícone de cada
+uma vem do [Simple Icons](https://simpleicons.org) (CC0), guardado em
+`assets/readme/icones.json` e desenhado chapado de preto na etiqueta.
+
 Sem o json, o boletim sai com dados de exemplo. O que eu tô aprendendo
-(`CURSANDO`) e as atividades extras (`EXTRAS`) ficam fixos em
-`tools/colagem.py`.
+(`CURSANDO`) fica fixo em `tools/colagem.py`, e `EXTRAS` é a lista de
+ferramentas enquanto o json ainda não tem as detectadas.
 
 O then and now e o recibo da semana estão guardados em `archive/colagem/`.
