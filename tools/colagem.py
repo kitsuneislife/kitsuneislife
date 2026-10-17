@@ -29,7 +29,7 @@ CEU_TOPO, CEU_MEIO, CEU_FUNDO = "#3d8ce6", "#9fd2fa", "#4f9ae9"
 # nome, y inicial, altura, link, descrição (alt)
 TIRAS = [
     ("capa", 0, 440, None,
-     "Uma barrinha de letreiro rolando no topo: ようこそ! boas-vindas ao meu cantinho. "
+     "Uma barrinha de letreiro rolando no topo: ようこそ! entra, a casa é sua. "
      "No meio, um arco-íris de papelão com uma nuvem em cada pé, e eu de fone sentado atrás de "
      "kitsuneislife, escrito em letra de adesivo, num céu azul."),
     ("bio", 440, 340, None,
@@ -114,20 +114,26 @@ def logo(texto, x, y, px, cor, giros, sobe, contorno=TINTA, borda="#fff", sombra
             f'<text {base} fill="{cor}" stroke="{contorno}" stroke-width="{px * .16:.1f}" paint-order="stroke">{s}</text>')
 
 
+LETREIRO = ["ようこそ!", "entra, a casa é sua", "kitsune tá on-line", "senta e pega um café",
+            "tudo feito à mão", "またね!"]
+
+
 def letreiro(c):
-    """Faixa de letreiro rolando no topo, tipo <marquee>, torta como fita de cuidado."""
-    frase = "ようこそ! boas-vindas ao meu cantinho"
+    """Faixa de letreiro rolando no topo, tipo <marquee>, com as frases uma atrás da outra."""
     px = 15
-    unidade = medir("revista", frase, px) + 56
+    larguras = [medir("revista", f, px) + 56 for f in LETREIRO]
+    unidade = sum(larguras)
     n = math.ceil((W + 200 + unidade) / unidade) + 1
     itens = []
     for i in range(n):
         x = -100 + i * unidade
-        itens.append(f'<text x="{x:.1f}" y="21" font-size="{px}" class="revista" fill="#fff" opacity=".9">{t(frase)}</text>')
-        itens.append(f'<text x="{x + unidade - 34:.1f}" y="21" font-size="{px}" class="revista" fill="{LIMA}">✦</text>')
+        for frase, lf in zip(LETREIRO, larguras):
+            itens.append(f'<text x="{x:.1f}" y="21" font-size="{px}" class="revista" fill="#fff" opacity=".9">{t(frase)}</text>')
+            itens.append(f'<text x="{x + lf - 34:.1f}" y="21" font-size="{px}" class="revista" fill="{LIMA}">✦</text>')
+            x += lf
     corpo = (f'<rect x="0" y="0" width="{W}" height="30" fill="{TINTA}"/>'
              f'<clipPath id="faixa"><rect x="0" y="0" width="{W}" height="30"/></clipPath>'
-             f'<g clip-path="url(#faixa)"><g class="letreiro" style="--volta:-{unidade:.1f}px">{"".join(itens)}</g></g>')
+             f'<g clip-path="url(#faixa)"><g class="letreiro" style="--volta:-{unidade:.1f}px;animation-duration:{unidade / 19:.1f}s">{"".join(itens)}</g></g>')
     c.add(corpo, (0, 0, W, 40), z=9)
 
 
@@ -593,19 +599,17 @@ def boletim(c):
     # observações do professor, de caneta vermelha
     oy = ty + 30 + len(linhas) * 30 + 24
     s.append(f'<text x="{x + 24}" y="{oy}" font-size="12" class="revista" fill="#6b6b78">OBSERVAÇÕES</text>')
-    top = linhas[0][0] if linhas else "JavaScript"
-    s.append(linha(x + 24, oy + 28, f"{top}: essa eh braba.", 23, "#d42f3a", f'transform="rotate(-1 {x + 200} {oy + 30})"'))
-    s.append(linha(x + 24, oy + 54, "se você não sabe nem isso,", 21, "#d42f3a", f'transform="rotate(-1 {x + 200} {oy + 60})"'))
-    s.append(linha(x + 24, oy + 80, "não recomendo continuar.", 21, "#d42f3a", f'transform="rotate(-1 {x + 200} {oy + 60})"'))
+    s.append(linha(x + 24, oy + 36, "se você não sabe nem isso,", 22, "#d42f3a", f'transform="rotate(-1 {x + 200} {oy + 48})"'))
+    s.append(linha(x + 24, oy + 63, "não recomendo continuar.", 22, "#d42f3a", f'transform="rotate(-1 {x + 200} {oy + 48})"'))
     rodape = f"atualizado em {d['atualizado']}" if d.get("atualizado") else "(dados de exemplo)"
-    s.append(f'<text x="{x + w - 20}" y="{y + h - 14}" font-size="11" text-anchor="end" class="recibo" fill="#8a8a96">{t(rodape)}</text>')
+    s.append(f'<text x="{x + w - 20}" y="{oy}" font-size="11" text-anchor="end" class="recibo" fill="#8a8a96">{t(rodape)}</text>')
     s.append("</g>")
     c.add("".join(s), caixa_girada(x, y, w, h, rot), z=6)
     c.img("recortes/clipe.png", x + w - 96, y + 52, 28, 8, z=7, px=120)
 
     # carimbo de aprovado, com tinta falhada
-    sx, sy = x + w - 140, y + h - 70
-    c.add(f'<g transform="rotate(-14 {sx} {sy})" filter="url(#carimbo)" opacity=".85">'
+    sx, sy = x + w - 160, y + h - 46
+    c.add(f'<g transform="rotate(-5 {sx} {sy}) translate({sx} {sy}) scale(.85) translate({-sx} {-sy})" filter="url(#carimbo)" opacity=".85">'
           f'<rect x="{sx - 108}" y="{sy - 34}" width="216" height="68" rx="10" fill="none" stroke="#d42f3a" stroke-width="6"/>'
           f'<rect x="{sx - 98}" y="{sy - 24}" width="196" height="48" rx="6" fill="none" stroke="#d42f3a" stroke-width="2"/>'
           f'<text x="{sx}" y="{sy + 13}" font-size="36" letter-spacing="4" text-anchor="middle" class="revista" fill="#d42f3a">APROVADO</text></g>',
@@ -646,10 +650,11 @@ def boletim(c):
     a.append("</g>")
     c.add("".join(a), caixa_girada(nx, ay, nw, ah, -2), z=6)
     c.add(fita(nx + 60, ay - 18, 110, 36, 4), (nx + 40, ay - 40, nx + 190, ay + 30), z=7)
-    c.img("recortes/lacre.png", nx + nw - 44, ay + ah - 22, 66, 12, z=8, px=200)
-    c.img("recortes/caneta.png", x + w - 150, y + h - 150, 80, 34, z=9, px=220)
-    c.img("recortes/regua.png", -46, y + h - 170, 190, 0, z=5, px=420)
-    c.img("recortes/lapis.png", nx + 20, ay + ah + 8, 150, -4, z=8, px=340)
+    # o lacre fecha o boletim na quina, tipo diploma
+    c.img("recortes/lacre.png", x + w - 44, y + h - 40, 76, 12, z=8, px=220)
+    # a régua deitada por cima do pé do boletim, e o lápis na linha vazia dos deveres
+    c.img("recortes/regua.png", 24, y + h - 104, 250, 35, z=8, px=560)
+    c.img("recortes/lapis.png", nx + 52, ay + ah - 70, 150, 26, z=8, px=340)
 
 
 # ---------------------------------------------------------------- fundo e saída
@@ -683,7 +688,7 @@ NUVENS = {
     "fim": [(2940, 380, .4, "#cfcaff", None), (3050, 270, .3, "#ffd3ec", None)],
 }
 NUVEM_TILE = 1000
-NUVEM_VOLTA = [150, 105]  # segundos por volta, uma camada mais rápida que a outra
+NUVEM_VOLTA = [46, 33]  # segundos por volta, uma camada mais rápida que a outra
 
 
 def nuvens(nome, y0, h):
@@ -774,7 +779,7 @@ CSS = """
 .boia{animation:boia 2.2s ease-in-out infinite alternate}
 @keyframes boia{to{transform:translate(-8px,-4px)}}
 @keyframes letreiro{to{transform:translateX(var(--volta))}}
-.nuvens{animation:nuvens 150s linear infinite}
+.nuvens{animation:nuvens 46s linear infinite}
 .balanca{animation:balanca 5s ease-in-out infinite alternate}
 @keyframes balanca{from{transform:rotate(-2deg)}to{transform:rotate(2.5deg)}}
 @keyframes nuvens{to{transform:translateX(var(--tile))}}
