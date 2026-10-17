@@ -24,8 +24,8 @@ CEU_TOPO, CEU_MEIO, CEU_FUNDO = "#3d8ce6", "#9fd2fa", "#4f9ae9"
 # nome, y inicial, altura, link, descrição (alt)
 TIRAS = [
     ("capa", 0, 440, None,
-     "Uma faixa de letreiro rolando: ようこそ! boas-vindas ao meu cantinho. Um adesivo de explosão rosa com ようこそ! "
-     "e kitsuneislife em letra de adesivo, num céu azul. Um arco-íris de papelão e eu sentado numa nuvem, de fone."),
+     "Uma barrinha de letreiro rolando no topo: ようこそ! boas-vindas ao meu cantinho. "
+     "kitsuneislife em letra de adesivo, num céu azul. Um arco-íris de papelão e eu sentado numa nuvem, de fone."),
     ("bio", 440, 340, None,
      "Uma prancheta com um bilhete: Nunca soube o que escrever em uma bio ou em um sobre-mim. Curioso né? "
      "Então fiz essa página pra contar um pouquinho de quem sou eu. Eu gosto de fazer alguns projetinhos "
@@ -111,35 +111,18 @@ def logo(texto, x, y, px, cor, giros, sobe, contorno=TINTA, borda="#fff", sombra
 def letreiro(c):
     """Faixa de letreiro rolando no topo, tipo <marquee>, torta como fita de cuidado."""
     frase = "ようこそ! boas-vindas ao meu cantinho"
-    px = 22
-    unidade = medir("revista", frase, px) + 70
+    px = 15
+    unidade = medir("revista", frase, px) + 56
     n = math.ceil((W + 200 + unidade) / unidade) + 1
     itens = []
     for i in range(n):
         x = -100 + i * unidade
-        itens.append(f'<text x="{x:.1f}" y="49" font-size="{px}" class="revista" fill="{LIMA}">{t(frase)}</text>')
-        itens.append(brilhinho(x + unidade - 35, 41, 11, "#ffb3d1"))
-    corpo = (f'<g transform="rotate(-2.5 440 40)">'
-             f'<rect x="-60" y="22" width="1000" height="44" fill="#ffb3d1" stroke="{TINTA}" stroke-width="4" transform="translate(7 7)"/>'
-             f'<rect x="-60" y="22" width="1000" height="44" fill="{TINTA}" stroke="#fff" stroke-width="3"/>'
-             f'<clipPath id="faixa"><rect x="-60" y="24" width="1000" height="40"/></clipPath>'
-             f'<g clip-path="url(#faixa)"><g class="letreiro" style="--volta:-{unidade:.1f}px">{"".join(itens)}</g></g></g>')
-    c.add(corpo, (-60, 0, 940, 100), z=9)
-
-
-def explosao_boas_vindas(cx, cy, r=112, pontas=13):
-    """O ようこそ! num adesivo de explosão, contorno grosso e sombra dura."""
-    pts = []
-    for i in range(pontas * 2):
-        a = math.pi * i / pontas + .2
-        rr = r if i % 2 == 0 else r * .72
-        pts.append(f"{cx + rr * math.cos(a):.1f},{cy + rr * .56 * math.sin(a):.1f}")
-    p = " ".join(pts)
-    return (f'<g class="balanca" style="transform-origin:{cx}px {cy}px">'
-            f'<polygon points="{p}" fill="{TINTA}" transform="translate(7 8)"/>'
-            f'<polygon points="{p}" fill="#f25ca8" stroke="{TINTA}" stroke-width="4" stroke-linejoin="round"/>'
-            f'<text x="{cx}" y="{cy + 6}" font-size="30" text-anchor="middle" class="revista" fill="#fff" '
-            f'stroke="{TINTA}" stroke-width="6" paint-order="stroke" transform="rotate(-6 {cx} {cy})">ようこそ!</text></g>')
+        itens.append(f'<text x="{x:.1f}" y="21" font-size="{px}" class="revista" fill="#fff" opacity=".9">{t(frase)}</text>')
+        itens.append(f'<text x="{x + unidade - 34:.1f}" y="21" font-size="{px}" class="revista" fill="{LIMA}">✦</text>')
+    corpo = (f'<rect x="0" y="0" width="{W}" height="30" fill="{TINTA}"/>'
+             f'<clipPath id="faixa"><rect x="0" y="0" width="{W}" height="30"/></clipPath>'
+             f'<g clip-path="url(#faixa)"><g class="letreiro" style="--volta:-{unidade:.1f}px">{"".join(itens)}</g></g>')
+    c.add(corpo, (0, 0, W, 40), z=9)
 
 
 def estrela(cx, cy, r, atraso=0, cor=AMARELO):
@@ -189,11 +172,10 @@ def montar():
     c.img("nuvem.png", 660, 270, 260, 4, z=2, sombra="sombra-leve")
     c.img("sentado.png", 590, 120, 210, 0, z=3, classe="flutua", px=411)
     letreiro(c)
-    c.add(explosao_boas_vindas(170, 122), (40, 40, 300, 215), z=6)
     giros = [-6, 4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3, -4]
     sobe = [0, -6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5, 6]
-    c.add(logo("kitsuneislife", 34, 236, 92, LIMA, giros, sobe), (0, 120, 760, 300), z=7)
-    for i, (sx, sy, sr) in enumerate([(700, 120, 26), (40, 300, 18), (430, 120, 14), (560, 330, 16)]):
+    c.add(logo("kitsuneislife", 30, 196, 98, LIMA, giros, sobe), (0, 70, 760, 270), z=7)
+    for i, (sx, sy, sr) in enumerate([(700, 120, 26), (52, 262, 18), (520, 76, 13), (560, 330, 16)]):
         c.add(estrela(sx, sy, sr, i * 0.7), (sx - 40, sy - 40, sx + 40, sy + 40), z=8)
 
     # ---- bio
@@ -675,10 +657,8 @@ CSS = """
 @keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .brilho{transform-box:fill-box;transform-origin:center;animation:brilho 3.4s ease-in-out infinite}
 @keyframes brilho{0%,70%,100%{transform:scale(1) rotate(0)}80%{transform:scale(1.2) rotate(10deg)}}
-.letreiro{animation:letreiro 14s linear infinite}
+.letreiro{animation:letreiro 22s linear infinite}
 @keyframes letreiro{to{transform:translateX(var(--volta))}}
-.balanca{animation:balanca 3s ease-in-out infinite}
-@keyframes balanca{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
 """
 
 
