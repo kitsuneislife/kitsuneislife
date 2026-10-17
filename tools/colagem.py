@@ -323,11 +323,9 @@ def cartao(c, x, y, rot, numero, titulo, cor_titulo, linhas, tags, semente):
 
 
 def projetinhos(c):
-    # cabeçalho: o logo, o "(e de lasanha)" e a setinha clicando
-    c.add(logo("projetinhos", 40, 1562, 74, "#ffb3d1", [4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3], [-6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5]),
+    # cabeçalho: o logo pulando e o botão com a setinha clicando
+    c.add('<g class="pula">' + logo("projetinhos", 40, 1562, 74, "#ffb3d1", [4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3], [-6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5]) + "</g>",
           (10, 1480, 600, 1610), z=6)
-    c.add(linha(70, 1612, "(e de lasanha)", 24, TINTA, 'transform="rotate(-3 160 1604)"'),
-          (50, 1570, 320, 1630), z=7)
     # o "clica nos cards" vira um botão neobrutalista, com a setinha clicando
     texto = "clica nos cards pra abrir"
     bw = medir("revista", texto, 17) + 118
@@ -335,9 +333,9 @@ def projetinhos(c):
     setas = "".join(f'<path d="M{bx + 18 + i * 17} {by + 14} l11 10 l-11 10 Z" fill="{TINTA}"/>' for i in range(3))
     c.add(f'<g transform="rotate(-3 {bx + bw / 2:.0f} {by + 26})">'
           f'<rect x="{bx + 7:.0f}" y="{by + 7}" width="{bw:.0f}" height="52" rx="10" fill="{TINTA}"/>'
-          f'<rect x="{bx:.0f}" y="{by}" width="{bw:.0f}" height="52" rx="10" fill="{LIMA}" stroke="{TINTA}" stroke-width="4"/>'
-          f'{setas}<text x="{bx + 76:.0f}" y="{by + 33}" font-size="17" class="revista" fill="{TINTA}">{t(texto)}</text></g>'
-          + cursor(bx + bw - 10, by + 46, -14, .85), (bx - 10, by - 30, W, by + 110), z=7)
+          f'<g class="aperta"><rect x="{bx:.0f}" y="{by}" width="{bw:.0f}" height="52" rx="10" fill="{LIMA}" stroke="{TINTA}" stroke-width="4"/>'
+          f'{setas}<text x="{bx + 76:.0f}" y="{by + 33}" font-size="17" class="revista" fill="{TINTA}">{t(texto)}</text></g></g>'
+          + '<g class="clica">' + cursor(bx + bw - 10, by + 46, -14, .85) + '</g>', (bx - 10, by - 30, W, by + 110), z=7)
     c.img("recortes/tesoura.png", 404, 1588, 58, 64, z=7, px=160)
     c.add(estrela(540, 1488, 15, 0.4, "#ffb3d1") + brilhinho(850, 1496, 12, AMARELO, 1.2), (500, 1466, 875, 1526), z=8)
 
@@ -355,6 +353,8 @@ def projetinhos(c):
                 f'<text x="166" y="1888" font-size="13" class="recibo" fill="{TINTA}">já tá saindo</text>'
                 f'<circle cx="288" cy="1868" r="9" fill="{AMARELO}" stroke="{TINTA}" stroke-width="2.5"/></g>')
     c.add(ingresso, (70, 1820, 340, 1915), z=7)
+    c.add(f'<g transform="rotate(-6 200 1868)"><rect class="pisca" x="{166 + medir("recibo", "já tá saindo", 13) + 3:.0f}" y="1878" width="7" height="13" fill="{TINTA}"/></g>',
+          (230, 1860, 270, 1900), z=8)
     c.add(estrela(64, 1676, 20, 0.2) + brilhinho(410, 1700, 12, "#fff", 0.9), (30, 1640, 440, 1730), z=8)
 
     # 02 lover: a janela do jogo, com a setinha clicando no botão
@@ -363,12 +363,13 @@ def projetinhos(c):
            [("32 páginas", AMARELO, TINTA), ("dois atos", "#fff", TINTA), ("navegador", AZUL_VIVO, "#fff")], 22)
     print_adesivo(c, "foto-lover.png", 446, 1920, 380, 3, z=5)
     c.img("recortes/washi-09.png", 736, 1902, 110, 34, z=6, px=300)
-    bolha_ = (f'<g transform="rotate(8 760 1922)" filter="url(#sombra-leve)">'
+    bolha_ = (f'<g class="treme"><g transform="translate(0 22) rotate(8 760 1922)" filter="url(#sombra-leve)">'
               f'<path d="M700 1900 h110 q14 0 14 14 v18 q0 14 -14 14 h-70 l-18 16 l2 -16 h-24 q-14 0 -14 -14 v-18 q0 -14 14 -14 Z" fill="{ROSA}" stroke="{TINTA}" stroke-width="3"/>'
-              f'<text x="755" y="1931" font-size="19" text-anchor="middle" class="bolha" fill="#fff">não fecha!</text></g>')
-    c.add(bolha_, (680, 1880, 840, 1975), z=8)
-    c.img("recortes/mao-pixel.png", 530, 2092, 40, -6, z=8, sombra="sombra-leve", px=140)
-    c.add(coracao(436, 1952, 18, ROSA, -12) + coracao(838, 2118, 14, "#ff8a5c", 14), (410, 1925, 860, 2140), z=8)
+              f'<text x="755" y="1931" font-size="19" text-anchor="middle" class="bolha" fill="#fff">não fecha!</text></g></g>')
+    c.add(bolha_, (680, 1912, 840, 1998), z=8)
+    c.img("recortes/mao-pixel.png", 530, 2092, 40, -6, z=8, classe="toca", sombra="sombra-leve", px=140)
+    c.add('<g class="bate">' + coracao(436, 1952, 18, ROSA, -12) + '</g>', (410, 1925, 470, 1985), z=8)
+    c.add('<g class="bate" style="animation-delay:.4s">' + coracao(838, 2118, 14, "#ff8a5c", 14) + '</g>', (815, 2095, 862, 2142), z=8)
 
     # 03 clios: o terminal, com as teclas dos atalhos
     print_adesivo(c, "foto-clios.png", 34, 2196, 360, -2.5, z=5, moldura=TINTA)
@@ -376,9 +377,9 @@ def projetinhos(c):
     cartao(c, 428, 2214, 1.2, "03", "clios", "#fff",
            ["um desktop Linux feito pro terminal,", "com um binário em Rust.", ("clica pra abrir o repo", ANIL)],
            [("Arch", "#7fc8ff", TINTA), ("Hyprland", VERDE, TINTA), ("Quickshell", "#fff", TINTA)], 33)
-    t1, w1 = tecla(260, 2404, "super", -6)
-    t2, _ = tecla(260 + w1 + 6, 2410, "F2", 4, w=52)
-    c.add(t1 + t2, (240, 2380, 420, 2470), z=8)
+    t1, w1 = tecla(260, 2384, "super", -6)
+    t2, _ = tecla(260 + w1 + 6, 2390, "F2", 4, w=52)
+    c.add(f'<g class="tecla-a">{t1}</g><g class="tecla-b">{t2}</g>', (240, 2366, 420, 2446), z=8)
 
     # 04 hackintosh: o print do Acer com uma lupa em cima do "MacBook Pro"
     cartao(c, 40, 2480, -1.2, "04", "hackintosh", "#9fc4ff",
@@ -386,14 +387,14 @@ def projetinhos(c):
            [("macOS 15", "#fff", TINTA), ("OpenCore", AMARELO, TINTA), ("RTX 3050", VERDE, TINTA)], 44)
     print_adesivo(c, "foto-hackintosh.jpg", 450, 2470, 376, 2.5, z=5, lupa=(.5, .37, 50, 2.6, 560, 2600))
     c.img("recortes/washi-rasgada-02.png", 772, 2690, 110, -28, z=6, px=300)
-    c.add(etiqueta(690, 2700, "psiu: é um Acer", "#fff", 5)[0], (680, 2690, 820, 2740), z=8)
+    c.add('<g class="treme" style="animation-delay:1.2s">' + etiqueta(690, 2672, "psiu: é um Acer", "#fff", 5)[0] + "</g>", (680, 2660, 820, 2712), z=8)
     c.add(brilhinho(458, 2492, 14, AMARELO, 0.5) + estrela(842, 2496, 18, 1.4, "#9fc4ff"), (430, 2470, 870, 2520), z=8)
 
     # tem mais
     svg, cx_ = bilhete(250, 2742, 380, [("tem mais projetinhos no meu perfil", TINTA)], -1.5, cor=ROSA_BILHETE, pautado=False)
     c.add(svg, cx_, z=5)
     c.img("recortes/alfinete.png", 226, 2722, 92, -10, z=6, px=280)
-    c.img("recortes/seta-pixel.png", 642, 2768, 34, -8, z=7, sombra="sombra-leve", px=120)
+    c.img("recortes/seta-pixel.png", 642, 2756, 30, -8, z=7, classe="boia", sombra="sombra-leve", px=120)
     c.add(brilhinho(694, 2756, 12, "#fff", 1.8), (670, 2730, 720, 2800), z=7)
 
 
@@ -667,6 +668,25 @@ CSS = """
 .brilho{transform-box:fill-box;transform-origin:center;animation:brilho 3.4s ease-in-out infinite}
 @keyframes brilho{0%,70%,100%{transform:scale(1) rotate(0)}80%{transform:scale(1.2) rotate(10deg)}}
 .letreiro{animation:letreiro 22s linear infinite}
+.pula{animation:pula 3.6s ease-in-out infinite}
+@keyframes pula{0%,60%,100%{transform:translateY(0)}70%{transform:translateY(-10px)}80%{transform:translateY(0)}86%{transform:translateY(-4px)}}
+.aperta{animation:aperta 2.4s ease-in-out infinite}
+@keyframes aperta{0%,72%,100%{transform:translate(0,0)}78%,84%{transform:translate(6px,6px)}}
+.clica{animation:clica 2.4s ease-in-out infinite}
+@keyframes clica{0%,60%,100%{transform:translate(18px,18px)}72%{transform:translate(0,0)}78%,84%{transform:translate(3px,4px)}}
+.pisca{animation:pisca 1s steps(1) infinite}
+@keyframes pisca{50%{opacity:0}}
+.treme{transform-box:fill-box;transform-origin:center;animation:treme 3.2s ease-in-out infinite}
+@keyframes treme{0%,80%,100%{transform:rotate(0)}84%{transform:rotate(-6deg)}88%{transform:rotate(5deg)}92%{transform:rotate(-3deg)}}
+.toca{animation:toca 1.6s ease-in-out infinite}
+@keyframes toca{0%,55%,100%{transform:translate(0,0)}65%,75%{transform:translate(2px,5px)}}
+.bate{transform-box:fill-box;transform-origin:center;animation:bate 1.8s ease-in-out infinite}
+@keyframes bate{0%,40%,100%{transform:scale(1)}10%,30%{transform:scale(1.18)}20%{transform:scale(1.04)}}
+.tecla-a,.tecla-b{animation:tecla 2.8s ease-in-out infinite}
+.tecla-b{animation-delay:.35s}
+@keyframes tecla{0%,30%,100%{transform:translateY(0)}38%,46%{transform:translateY(5px)}}
+.boia{animation:boia 2.2s ease-in-out infinite alternate}
+@keyframes boia{to{transform:translate(-8px,-4px)}}
 @keyframes letreiro{to{transform:translateX(var(--volta))}}
 """
 
