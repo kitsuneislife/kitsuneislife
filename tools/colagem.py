@@ -13,7 +13,7 @@ busca os dados no Last.fm e chama gerar(dados, so=["musica"]).
 import math
 from datetime import datetime, timedelta, timezone
 
-from kit import (AMARELO, ANIL, CRACHA, LIMA, PAUTA, TINTA, fita, imagem,
+from kit import (AMARELO, ANIL, AZUL, CRACHA, LIMA, PAUTA, TINTA, fita, imagem,
                  linha, medir, salvar, t, tamanho)
 
 W = 880
@@ -24,7 +24,7 @@ TIRAS = [
     ("capa", 0, 540, None,
      "kitsuneislife, escrito em letra de adesivo, num céu azul com nuvens de papelão. "
      "Um arco-íris de papelão e eu sentado numa nuvem, de fone. ようこそ! "
-     "artbook, portfolio, media log."),
+     "Em fitas de rotulador: artbook, portfolio, media log, em breve no site novo."),
     ("bio", 540, 540, "https://github.com/kitsuneislife?tab=repositories",
      "Uma prancheta com um bilhete: Nunca soube o que escrever em uma bio ou em um sobre-mim. Curioso né? "
      "Então fiz essa página pra contar um pouquinho de quem sou eu. Eu gosto de fazer alguns projetinhos "
@@ -98,6 +98,21 @@ def logo(texto, x, y, px, cor, giros, sobe, contorno=TINTA, borda="#fff", sombra
             f'<text {base} fill="{cor}" stroke="{contorno}" stroke-width="{px * .16:.1f}" paint-order="stroke">{s}</text>')
 
 
+def rotulo(x, y, texto, cor, rot):
+    """Fita de rotulador (Dymo): plástico colorido com a letra em relevo."""
+    px = 26
+    w = medir("revista", texto, px) + len(texto) * 2.5 + 44
+    h = 44
+    cx, cy = x + w / 2, y + h / 2
+    tx, ty = x + 22, y + 31
+    s = (f'<g transform="rotate({rot} {cx:.1f} {cy:.1f})" filter="url(#sombra-leve)">'
+         f'<rect x="{x}" y="{y}" width="{w:.1f}" height="{h}" rx="5" fill="{cor}"/>'
+         f'<rect x="{x}" y="{y}" width="{w:.1f}" height="{h}" rx="5" fill="url(#brilho-dymo)"/>'
+         f'<text x="{tx - 1}" y="{ty - 1}" font-size="{px}" letter-spacing="2.5" class="revista" fill="#000" opacity=".35">{t(texto)}</text>'
+         f'<text x="{tx}" y="{ty}" font-size="{px}" letter-spacing="2.5" class="revista" fill="#fbfbfb">{t(texto)}</text></g>')
+    return s, caixa_girada(x, y, w, h, rot)
+
+
 def estrela(cx, cy, r, atraso=0, cor=AMARELO):
     pts = []
     for i in range(10):
@@ -155,7 +170,9 @@ def montar(dados_recibo):
 
     # ---- capa
     c.img("arco-iris.png", 450, 150, 420, -4, z=1)
-    c.img("nuvem.png", 500, 300, 360, 2, z=2, sombra="sombra-leve")
+    # uma nuvem em cada pé do arco-íris, e eu sentado onde elas se encontram
+    c.img("nuvem.png", 410, 288, 280, -3, z=2, sombra="sombra-leve")
+    c.img("nuvem.png", 660, 270, 260, 4, z=2, sombra="sombra-leve")
     c.img("sentado.png", 590, 120, 210, 0, z=3, classe="flutua", px=411)
     bolha_ = ('<g transform="rotate(-7 150 70)"><path d="M70 40 h170 q18 0 18 18 v34 q0 18 -18 18 h-120 l-22 22 l4 -22 h-32 '
               'q-18 0 -18 -18 v-34 q0 -18 18 -18 Z" fill="#fff" stroke="#1d1c22" stroke-width="4" filter="url(#sombra-leve)"/>'
@@ -166,11 +183,15 @@ def montar(dados_recibo):
     c.add(logo("kitsuneislife", 34, 236, 92, LIMA, giros, sobe), (0, 120, 760, 300), z=7)
     for i, (sx, sy, sr) in enumerate([(700, 120, 26), (40, 300, 18), (430, 120, 14), (560, 330, 16)]):
         c.add(estrela(sx, sy, sr, i * 0.7), (sx - 40, sy - 40, sx + 40, sy + 40), z=8)
-    nav = []
-    for i, s in enumerate(["artbook ↘", "portfolio", "media log"]):
-        nav.append(f'<text x="60" y="{360 + i * 46}" font-size="34" class="revista" fill="{TINTA}" transform="translate(3 4)">{t(s)}</text>'
-                   f'<text x="60" y="{360 + i * 46}" font-size="34" class="revista" fill="#fff">{t(s)}</text>')
-    c.add("".join(nav), (40, 320, 400, 480), z=6)
+    # as seções do site novo, em fita de rotulador
+    for i, (s, cor, x, y, rot) in enumerate([("artbook", CRACHA, 56, 318, -4), ("portfolio", TINTA, 92, 376, 2.5),
+                                             ("media log", AZUL, 66, 434, -1.5)]):
+        svg_, caixa = rotulo(x, y, s, cor, rot)
+        c.add(svg_, caixa, z=6 + i * 0.1)
+    seta = (f'<path d="M318 466 C 300 462, 292 450, 294 432" fill="none" stroke="{TINTA}" stroke-width="3" stroke-linecap="round"/>'
+            f'<path d="M285 442 l9 -11 l8 12" fill="none" stroke="{TINTA}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'
+            + linha(326, 474, "em breve no site novo", 23, TINTA, 'transform="rotate(-4 430 468)"'))
+    c.add(seta, (270, 420, 580, 500), z=6)
 
     # ---- bio
     # o export da prancheta já vem cortado na esquerda e embaixo: encosta na borda
@@ -373,6 +394,10 @@ DEFS_CENA = f"""
   <stop offset="1" stop-color="#fff" stop-opacity=".3"/>
 </linearGradient>
 <mask id="some" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#g-some)"/></mask>
+<linearGradient id="brilho-dymo" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".35" stop-color="#fff" stop-opacity=".05"/>
+  <stop offset=".8" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/>
+</linearGradient>
 <clipPath id="borda"><rect x="0" y="0" width="{W}" height="{H}" rx="22"/></clipPath>
 """
 
