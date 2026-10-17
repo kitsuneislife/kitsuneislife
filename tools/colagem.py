@@ -32,7 +32,7 @@ TIRAS = [
      "Uma barrinha de letreiro rolando no topo dizendo oi em várias línguas. "
      "No meio, um arco-íris de papelão com uma nuvem em cada pé, e eu de fone sentado atrás de "
      "kitsuneislife, escrito em letra de adesivo, num céu azul."),
-    ("bio", 470, 340, None,
+    ("bio", 470, 340, "https://kitsuneislife.github.io/",
      "Uma prancheta com um bilhete: Nunca soube o que escrever em uma bio ou em um sobre-mim. Curioso né? "
      "Então fiz essa página pra contar um pouquinho de quem sou eu. Eu gosto de fazer alguns projetinhos "
      "(e de lasanha) e quero trabalhar na área. Discord: @thurzinhos. “Penso, logo desisto.” love you forever. "
@@ -199,7 +199,7 @@ def montar():
     # e a folha dos projetinhos cobre o corte de baixo
     c.img("banner-bio.png", 0, 516, 880, 0, z=4, sombra="sombra", px=1238)
     # a placa (cantos achados no desenho: centro 801,854 e inclinada -21°) aponta pro site novo,
-    # escrito de azul e sublinhado que nem link
+    # escrito de azul e sublinhado que nem link (a tira da bio inteira linka pro site)
     larg = medir("mao", "site novo!", 26)
     c.add(f'<g transform="rotate(-21 803 856)">{linha(803, 861, "site novo!", 26, ANIL, 'text-anchor="middle"')}'
           f'<line x1="{803 - larg / 2:.1f}" y1="866" x2="{803 + larg / 2:.1f}" y2="866" stroke="{ANIL}" stroke-width="2" stroke-linecap="round"/></g>',
