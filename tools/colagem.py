@@ -30,7 +30,7 @@ TIRAS = [
      "(e de lasanha) e quero trabalhar na área. Discord: @thurzinhos. “Penso, logo desisto.” love you forever. "
      "Do lado, a turma correndo com uma placa: clica aqui."),
     ("tempo", 840, 380, None,
-     "Eu em 2016, com 8 anos, e eu em 2026, com 18, rodeado de cabecinhas de Nendoroid."),
+     "Um fichário aberto com capa de jeans. Na página vermelha, THEN: eu em 2016, com 8 anos. Na amarela, NOW: eu em 2026, com 18. Cheio de adesivos."),
     ("projetos", 1220, 180, "https://github.com/kitsuneislife?tab=repositories",
      "projetinhos (e de lasanha). Clica nos cards pra abrir cada um."),
     ("artcode", 1400, 270, "https://github.com/kitsuneislife/artcode",
@@ -179,26 +179,11 @@ def montar(dados_recibo):
 
     # ---- bio
     # o export da prancheta já vem cortado na esquerda e embaixo: encosta na borda
-    # e as nuvens cobrem o corte de baixo
+    # e o fichário do 2016 → 2026 cobre o corte de baixo
     c.img("banner-bio.png", 0, 516, 880, 0, z=4, sombra="sombra", px=1238)
-    for x, y, w, rot in [(-40, 914, 250, 3), (186, 940, 236, -1), (400, 918, 250, 4), (630, 910, 260, -3)]:
-        c.img("nuvem.png", x, y, w, rot, z=7, sombra="sombra-leve")
-    c.img("recortes/croissant.png", 744, 990, 110, 14, z=8)
 
-    # ---- 2016 → 2026
-    c.img("eu-2016.png", 70, 1110, 172, -2, z=3, px=205)
-    c.img("eu-2026.png", 620, 1076, 186, 2, z=3, px=312)
-    anos = (f'<text x="262" y="1210" font-size="56" class="revista" fill="#fff" stroke="{TINTA}" stroke-width="7" paint-order="stroke">2016</text>'
-            + linha(270, 1250, "8 anos", 26, TINTA)
-            + f'<text x="606" y="1392" font-size="56" text-anchor="end" class="revista" fill="#fff" stroke="{TINTA}" stroke-width="7" paint-order="stroke">2026</text>'
-            + linha(598, 1432, "18 anos", 26, TINTA, 'text-anchor="end"')
-            + f'<path d="M300 1280 C 360 1360, 440 1250, 520 1316" fill="none" stroke="{TINTA}" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="2 10"/>'
-            + f'<path d="M506 1302 l18 14 l-21 7" fill="none" stroke="{TINTA}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
-    c.add(anos, (240, 1140, 640, 1450), z=4)
-    for nome_, x, y, w, rot in [("recortes/deku.png", 506, 1104, 86, -8), ("recortes/hinata.png", 790, 1082, 88, 10),
-                                ("recortes/killua.png", 792, 1300, 88, -6), ("recortes/gon.png", 500, 1196, 76, 6),
-                                ("recortes/bakugo.png", 400, 1092, 84, -12)]:
-        c.img(nome_, x, y, w, rot, z=5)
+    # ---- 2016 → 2026: um fichário aberto, uma página pra cada
+    fichario(c)
 
     # ---- projetinhos
     c.add(logo("projetinhos", 40, 1562, 74, "#ffb3d1", giros[1:], sobe[2:]), (10, 1480, 600, 1610), z=6)
@@ -263,6 +248,120 @@ def montar(dados_recibo):
     # a bio e tudo que vem depois sobem 240, pra prancheta encaixar embaixo da capa
     c.subir(470, 240)
     return c
+
+
+VERMELHO, AMARELO_PAG, AZUL_ADESIVO, JEANS = "#e8352c", "#f4ec55", "#2f6df0", "#2a3d63"
+
+
+def adesivo(corpo, x, y, w, h, rot, z, c):
+    c.add(f'<g transform="rotate({rot} {x + w / 2:.1f} {y + h / 2:.1f})" filter="url(#adesivo)">{corpo}</g>',
+          caixa_girada(x, y, w, h, rot), z)
+
+
+def pilula(c, x, y, texto, px, rot, z=8, fundo=TINTA, cor="#fff"):
+    w = medir("revista", texto, px) + len(texto) * 3 + px * 1.3
+    h = px * 1.7
+    corpo = (f'<rect x="{x}" y="{y}" width="{w:.1f}" height="{h:.1f}" rx="{h / 2:.1f}" fill="{fundo}"/>'
+             f'<text x="{x + w / 2:.1f}" y="{y + h * .7:.1f}" font-size="{px}" letter-spacing="3" text-anchor="middle" '
+             f'class="revista" fill="{cor}">{t(texto)}</text>')
+    adesivo(corpo, x, y, w, h, rot, z, c)
+
+
+def selo(c, cx, cy, r, linhas, rot, z=8, fundo=AZUL_ADESIVO):
+    corpo = f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{fundo}"/>'
+    for i, (s, px) in enumerate(linhas):
+        corpo += (f'<text x="{cx}" y="{cy + (i - (len(linhas) - 1) / 2) * px * 1.05 + px * .36:.1f}" font-size="{px}" '
+                  f'text-anchor="middle" class="bolha" fill="#fff">{t(s)}</text>')
+    adesivo(corpo, cx - r, cy - r, 2 * r, 2 * r, rot, z, c)
+
+
+def explosao(c, cx, cy, r, texto, px, rot, z=8, fundo="#fff", cor=TINTA, pontas=14, classe=""):
+    pts = []
+    for i in range(pontas * 2):
+        a = math.pi * i / pontas
+        rr = r if i % 2 == 0 else r * .68
+        pts.append(f"{cx + rr * math.cos(a):.1f},{cy + rr * .72 * math.sin(a):.1f}")
+    corpo = (f'<polygon points="{" ".join(pts)}" fill="{fundo}" stroke="{TINTA}" stroke-width="3" stroke-linejoin="round"/>'
+             f'<text x="{cx}" y="{cy + px * .36:.1f}" font-size="{px}" text-anchor="middle" class="bolha" fill="{cor}">{t(texto)}</text>')
+    if classe:
+        corpo = f'<g class="{classe}">{corpo}</g>'
+    adesivo(corpo, cx - r, cy - r * .72, 2 * r, 1.44 * r, rot, z, c)
+
+
+def recortado(c, x, y, letras, z=8):
+    """Letras de bilhete de sequestro, cada uma num pedaço de papel diferente."""
+    estilos = [("#fff", TINTA, "bolha"), (TINTA, "#fff", "revista"), (AMARELO, TINTA, "titulo"),
+               (AZUL_ADESIVO, "#fff", "bolha"), ("#ffb3d1", TINTA, "revista"), (LIMA, TINTA, "titulo")]
+    giros = [-8, 6, -4, 9, -6, 5]
+    for i, l in enumerate(letras):
+        fundo, cor, fam = estilos[(i * 2 + len(letras)) % len(estilos)]
+        px = 40 + (i % 2) * 8
+        w, h = px * .95, px * 1.15
+        corpo = (f'<rect x="{x}" y="{y}" width="{w:.1f}" height="{h:.1f}" fill="{fundo}"/>'
+                 f'<text x="{x + w / 2:.1f}" y="{y + h * .78:.1f}" font-size="{px}" text-anchor="middle" class="{fam}" fill="{cor}">{t(l)}</text>')
+        adesivo(corpo, x, y, w, h, giros[i % len(giros)], z, c)
+        x += w + 4
+        y += -6 if i % 2 == 0 else 6
+
+
+def fichario(c):
+    # capa de jeans, de ponta a ponta, com a costura laranja
+    capa = (f'<g transform="rotate(-1.2 440 1200)" filter="url(#sombra)">'
+            f'<rect x="-30" y="942" width="940" height="506" rx="18" fill="{JEANS}" filter="url(#jeans)"/>'
+            f'<rect x="-30" y="956" width="940" height="478" rx="12" fill="none" stroke="#e58a3c" stroke-width="2.5" stroke-dasharray="9 7"/>'
+            f'<rect x="-30" y="942" width="940" height="506" rx="18" fill="url(#vinco)"/></g>')
+    c.add(capa, (-30, 925, 910, 1465), z=5)
+    # fita prendendo o fichário na prancheta, e o croissant por cima da emenda
+    c.add(fita(318, 916, 150, 44, -6) + fita(640, 904, 150, 44, 7), (80, 890, 800, 980), z=11)
+    c.img("recortes/croissant.png", 760, 896, 104, 14, z=12)
+
+    # as duas páginas
+    esq = (f'<g transform="rotate(-1.2 236 1196)"><rect x="34" y="978" width="400" height="440" fill="{VERMELHO}" filter="url(#sombra)"/>'
+           + "".join(f'<circle cx="420" cy="{1012 + i * 66}" r="7" fill="{JEANS}"/>' for i in range(6)) + '</g>')
+    dir_ = (f'<g transform="rotate(1 648 1196)"><rect x="448" y="974" width="400" height="444" fill="{AMARELO_PAG}" filter="url(#sombra)"/>'
+            + "".join(f'<circle cx="462" cy="{1012 + i * 66}" r="7" fill="{JEANS}"/>' for i in range(6)) + '</g>')
+    c.add(esq + dir_, (20, 960, 860, 1436), z=6)
+
+    # 2016
+    moldura = f'<rect x="58" y="1030" width="214" height="360" fill="{AMARELO}"/><rect x="70" y="1042" width="190" height="336" fill="#fff"/>'
+    adesivo(moldura, 58, 1030, 214, 360, -3, 7, c)
+    c.img("eu-2016.png", 84, 1056, 164, -3, z=8, sombra=None, px=205)
+    recortado(c, 92, 1002, "THEN")
+    pilula(c, 288, 1092, "2016", 30, -4)
+    selo(c, 352, 1214, 46, [("8", 40), ("anos", 18)], 8)
+    xadrez = '<rect x="40" y="1388" width="190" height="34" fill="url(#xadrez)"/>'
+    adesivo(xadrez, 40, 1388, 190, 34, -6, 9, c)
+    c.add(f'<g transform="rotate(4 340 1320)" filter="url(#adesivo)"><circle cx="340" cy="1320" r="28" fill="{AMARELO}"/>'
+          f'<circle cx="331" cy="1313" r="3.5" fill="{TINTA}"/><circle cx="349" cy="1313" r="3.5" fill="{TINTA}"/>'
+          f'<path d="M327 1327 q13 11 26 0" fill="none" stroke="{TINTA}" stroke-width="3.5" stroke-linecap="round"/></g>',
+          (300, 1280, 380, 1360), z=8)
+
+    # as argolas do fichário
+    argolas = "".join(
+        f'<path d="M424 {1006 + i * 66} C 424 {990 + i * 66}, 466 {990 + i * 66}, 466 {1006 + i * 66}" fill="none" '
+        f'stroke="#c9ccd3" stroke-width="7" stroke-linecap="round"/>'
+        f'<path d="M424 {1006 + i * 66} C 424 {990 + i * 66}, 466 {990 + i * 66}, 466 {1006 + i * 66}" fill="none" '
+        f'stroke="#f4f5f8" stroke-width="2.5" stroke-linecap="round"/>' for i in range(6))
+    c.add(f'<g filter="url(#sombra-leve)">{argolas}</g>', (410, 970, 480, 1400), z=9)
+
+    # 2026
+    recortado(c, 500, 1000, "NOW")
+    pilula(c, 488, 1092, "2026", 30, 3)
+    selo(c, 560, 1214, 50, [("18", 40), ("anos", 18)], -6, fundo=VERMELHO)
+    c.img("eu-2026.png", 640, 990, 186, 1.5, z=8, sombra="sombra-leve", px=341)
+    explosao(c, 548, 1330, 66, "cool", 30, -8, classe="brilho")
+    semente, bx, barras = 1206, 0, []
+    for i in range(30):
+        semente = (semente * 1103515245 + 12345) % 2 ** 31
+        w = 1 + semente % 4
+        if i % 2 == 0:
+            barras.append(f'<rect x="{700 + bx}" y="1384" width="{w}" height="26" fill="{TINTA}"/>')
+        bx += w + 1.5
+    adesivo(f'<rect x="692" y="1378" width="{bx + 16:.0f}" height="46" fill="#fff"/>' + "".join(barras)
+            + f'<text x="700" y="1420" font-size="9" class="recibo" fill="{TINTA}">1206 2016 2026</text>', 692, 1378, bx + 16, 46, -2, 9, c)
+    c.add(f'<path d="M398 1262 C 430 1300, 470 1300, 504 1262" fill="none" stroke="{TINTA}" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 10"/>'
+          f'<path d="M488 1262 l17 -1 l-4 16" fill="none" stroke="{TINTA}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>',
+          (380, 1240, 520, 1310), z=10)
 
 
 def musica(c, y0, d):
@@ -379,6 +478,25 @@ DEFS_CENA = f"""
   <stop offset="1" stop-color="#fff" stop-opacity=".3"/>
 </linearGradient>
 <mask id="some" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="url(#g-some)"/></mask>
+<filter id="adesivo" x="-15%" y="-15%" width="130%" height="130%">
+  <feMorphology in="SourceAlpha" operator="dilate" radius="4" result="d"/>
+  <feFlood flood-color="#fff"/><feComposite in2="d" operator="in" result="borda"/>
+  <feDropShadow in="borda" dx="0" dy="3" stdDeviation="2.5" flood-color="#1d1c22" flood-opacity=".3" result="b"/>
+  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+<filter id="jeans" x="0" y="0" width="100%" height="100%">
+  <feTurbulence type="fractalNoise" baseFrequency=".9 .25" numOctaves="2" seed="7" result="n"/>
+  <feColorMatrix in="n" type="matrix" values="0 0 0 0 .75  0 0 0 0 .8  0 0 0 0 .95  0 0 0 .22 0" result="g"/>
+  <feComposite in="g" in2="SourceGraphic" operator="in" result="gg"/>
+  <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="gg"/></feMerge>
+</filter>
+<linearGradient id="vinco" x1="0" y1="0" x2="1" y2="0">
+  <stop offset=".44" stop-color="#000" stop-opacity="0"/><stop offset=".5" stop-color="#000" stop-opacity=".3"/>
+  <stop offset=".56" stop-color="#000" stop-opacity="0"/>
+</linearGradient>
+<pattern id="xadrez" width="20" height="20" patternUnits="userSpaceOnUse">
+  <rect width="20" height="20" fill="#fff"/><rect width="10" height="10" fill="{TINTA}"/><rect x="10" y="10" width="10" height="10" fill="{TINTA}"/>
+</pattern>
 <clipPath id="borda"><rect x="0" y="0" width="{W}" height="{H}" rx="22"/></clipPath>
 """
 
