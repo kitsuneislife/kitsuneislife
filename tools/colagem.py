@@ -169,17 +169,20 @@ def montar():
     # ---- capa
     # tudo no eixo do meio: o arco-íris atrás, uma nuvem em cada pé, o logo
     # embaixo e eu sentado em cima das letras
-    c.img("arco-iris.png", 170, 62, 540, 0, z=1)
-    c.img("nuvem.png", 70, 212, 290, -4, z=2, sombra="sombra-leve")
-    c.img("nuvem.png", 520, 206, 290, 5, z=2, sombra="sombra-leve")
-    c.img("sentado.png", 344, 42, 190, 0, z=8, classe="flutua", px=411)
+    c.img("arco-iris.png", 176, 58, 530, -2.5, z=1)
+    c.img("nuvem.png", 88, 222, 262, -6, z=2, sombra="sombra-leve")
+    c.img("nuvem.png", 508, 196, 310, 4, z=2, sombra="sombra-leve")
+    c.img("sentado.png", 352, 40, 182, 2, z=8, classe="flutua", px=411)
     letreiro(c)
     giros = [-6, 4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3, -4]
     sobe = [0, -6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5, 6]
-    larg = medir("bolha", "kitsuneislife", 100)
-    c.add(logo("kitsuneislife", round(440 - larg / 2), 350, 100, LIMA, giros, sobe), (0, 244, W, 394), z=7)
-    for i, (sx, sy, sr) in enumerate([(120, 110, 22), (770, 118, 22), (236, 166, 13), (650, 166, 13)]):
-        c.add(estrela(sx, sy, sr, i * 0.7), (sx - 40, sy - 40, sx + 40, sy + 40), z=8)
+    larg = medir("bolha", "kitsuneislife", 84)
+    c.add(f'<g transform="rotate(-2.5 440 312)">{logo("kitsuneislife", round(446 - larg / 2), 328, 84, LIMA, giros, sobe)}</g>',
+          (60, 250, 820, 380), z=7)
+    # estrelas soltas, cada uma de um tamanho, sem espelhar
+    for i, (sx, sy, sr, cor) in enumerate([(96, 150, 21, AMARELO), (566, 70, 25, AMARELO), (742, 168, 13, AMARELO),
+                                            (258, 120, 11, "#ffb3d1"), (812, 300, 16, AMARELO)]):
+        c.add(estrela(sx, sy, sr, i * 0.7, cor), (sx - 40, sy - 40, sx + 40, sy + 40), z=8)
 
     # ---- bio
     # o export da prancheta já vem cortado na esquerda e embaixo: encosta na borda
