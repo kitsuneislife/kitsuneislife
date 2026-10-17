@@ -25,7 +25,7 @@ CEU_TOPO, CEU_MEIO, CEU_FUNDO = "#3d8ce6", "#9fd2fa", "#4f9ae9"
 TIRAS = [
     ("capa", 0, 440, None,
      "Uma barrinha de letreiro rolando no topo: ようこそ! boas-vindas ao meu cantinho. "
-     "No meio, um arco-íris de papelão com uma nuvem em cada pé, e eu de fone sentado em cima de "
+     "No meio, um arco-íris de papelão com uma nuvem em cada pé, e eu de fone sentado atrás de "
      "kitsuneislife, escrito em letra de adesivo, num céu azul."),
     ("bio", 440, 340, None,
      "Uma prancheta com um bilhete: Nunca soube o que escrever em uma bio ou em um sobre-mim. Curioso né? "
@@ -167,21 +167,20 @@ def montar():
         c.img(nome_, x, y, w, rot, z=0, classe=cl, sombra=None)
 
     # ---- capa
-    # tudo no eixo do meio: o arco-íris atrás, uma nuvem em cada pé, o logo
-    # embaixo e eu sentado em cima das letras
+    # tudo no eixo do meio: o arco-íris atrás, uma nuvem em cada pé, e eu
+    # sentado atrás do logo, com as pernas escondidas pelas letras
     c.img("arco-iris.png", 176, 58, 530, -2.5, z=1)
     c.img("nuvem.png", 88, 222, 262, -6, z=2, sombra="sombra-leve")
     c.img("nuvem.png", 508, 196, 310, 4, z=2, sombra="sombra-leve")
-    c.img("sentado.png", 352, 40, 182, 2, z=8, classe="flutua", px=411)
+    c.img("sentado.png", 336, 64, 208, 2, z=6, classe="flutua", px=411)
     letreiro(c)
     giros = [-6, 4, -3, 5, -4, 3, -5, 6, -2, 4, -6, 3, -4]
     sobe = [0, -6, 8, -4, 6, -8, 5, -3, 7, -6, 4, -5, 6]
     larg = medir("bolha", "kitsuneislife", 84)
-    c.add(f'<g transform="rotate(-2.5 440 312)">{logo("kitsuneislife", round(446 - larg / 2), 328, 84, LIMA, giros, sobe)}</g>',
-          (60, 250, 820, 380), z=7)
+    c.add(logo("kitsuneislife", round(440 - larg / 2), 330, 84, LIMA, giros, sobe), (60, 250, 820, 380), z=7)
     # estrelas soltas, cada uma de um tamanho, sem espelhar
-    for i, (sx, sy, sr, cor) in enumerate([(96, 150, 21, AMARELO), (566, 70, 25, AMARELO), (742, 168, 13, AMARELO),
-                                            (258, 120, 11, "#ffb3d1"), (812, 300, 16, AMARELO)]):
+    for i, (sx, sy, sr, cor) in enumerate([(195, 126, 20, AMARELO), (716, 95, 24, AMARELO), (44, 221, 15, "#ffb3d1"),
+                                            (834, 194, 13, AMARELO)]):
         c.add(estrela(sx, sy, sr, i * 0.7, cor), (sx - 40, sy - 40, sx + 40, sy + 40), z=8)
 
     # ---- bio
