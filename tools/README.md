@@ -14,7 +14,6 @@ carrega nada externo de dentro de uma imagem. Animação é só CSS.
 ```sh
 pip install fonttools brotli pillow
 python tools/colagem.py   # gera todas as tiras
-python tools/recibo.py    # só a tira da música (sem chave do Last.fm sai com EXEMPLO)
 ```
 
 - `tools/colagem.py`: a cena inteira. As posições ficam em `montar()`, e as
@@ -32,14 +31,4 @@ Depois de mexer em `TIRAS`, regenere o README:
 python -c "import sys; sys.path.insert(0,'tools'); import colagem; open('README.md','w').write(colagem.readme()+'\n\n<br clear=\"all\">\n')"
 ```
 
-## recibo da semana
-
-O workflow `.github/workflows/recibo.yml` roda todo domingo. Pra ele usar os seus dados:
-
-1. Crie uma chave de API em https://www.last.fm/api/account/create
-2. No repositório: Settings → Secrets and variables → Actions
-   - em **Secrets**, crie `LASTFM_API_KEY` com a chave
-   - em **Variables**, crie `LASTFM_USER` com o seu usuário do Last.fm
-3. Actions → recibo da semana → Run workflow, pra gerar o primeiro.
-
-Se você ouve no Spotify, ligue o scrobble do Spotify no Last.fm (Settings → Applications).
+O then and now e o recibo da semana estão guardados em `archive/`.
