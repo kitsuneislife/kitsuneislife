@@ -292,12 +292,14 @@ def print_adesivo(c, nome, x, y, w, rot, z, moldura="#fff", borda=10, lupa=None)
         # o vidro da lupa.png fica em (0.3245, 0.3165) da imagem, com raio de 0.2817 da largura
         lw = r / .2817
         lh = lw * 530 / 520
-        s.append(f'<clipPath id="lente"><circle cx="{lx}" cy="{ly}" r="{r}"/></clipPath>'
+        # a lupa anda em círculo (.gira); pra continuar mostrando o que tá embaixo dela,
+        # a foto aumentada anda zoom vezes ao contrário (.contra), e as duas juntas dão d - zoom·d
+        s.append(f'<g class="gira"><clipPath id="lente"><circle cx="{lx}" cy="{ly}" r="{r}"/></clipPath>'
                  f'<circle cx="{lx}" cy="{ly}" r="{r}" fill="#fff"/>'
-                 f'<g clip-path="url(#lente)"><image x="{lx - (px_ - x - borda) * zoom:.1f}" y="{ly - (py_ - y - borda) * zoom:.1f}" '
-                 f'width="{w * zoom:.1f}" height="{h * zoom:.1f}" href="{uri2}"/></g>'
+                 f'<g clip-path="url(#lente)"><g class="contra"><image x="{lx - (px_ - x - borda) * zoom:.1f}" y="{ly - (py_ - y - borda) * zoom:.1f}" '
+                 f'width="{w * zoom:.1f}" height="{h * zoom:.1f}" href="{uri2}"/></g></g>'
                  f'<image x="{lx - .3245 * lw:.1f}" y="{ly - .3165 * lh:.1f}" width="{lw:.1f}" height="{lh:.1f}" '
-                 f'href="{imagem("recortes/lupa.png", 520)}" filter="url(#sombra-leve)"/>')
+                 f'href="{imagem("recortes/lupa.png", 520)}" filter="url(#sombra-leve)"/></g>')
     s.append("</g>")
     c.add("".join(s), caixa_girada(x, y, fw, fh, rot), z)
     return fw, fh
@@ -353,14 +355,12 @@ def projetinhos(c):
                 f'<text x="166" y="1888" font-size="13" class="recibo" fill="{TINTA}">já tá saindo</text>'
                 f'<circle cx="288" cy="1868" r="9" fill="{AMARELO}" stroke="{TINTA}" stroke-width="2.5"/></g>')
     c.add(ingresso, (70, 1820, 340, 1915), z=7)
-    c.add(f'<g transform="rotate(-6 200 1868)"><rect class="pisca" x="{166 + medir("recibo", "já tá saindo", 13) + 3:.0f}" y="1878" width="7" height="13" fill="{TINTA}"/></g>',
-          (230, 1860, 270, 1900), z=8)
     c.add(estrela(64, 1676, 20, 0.2) + brilhinho(410, 1700, 12, "#fff", 0.9), (30, 1640, 440, 1730), z=8)
 
     # 02 lover: a janela do jogo, com a setinha clicando no botão
     cartao(c, 40, 1934, -1.5, "02", "lover", "#ffb3d1",
            ["um jogo de quebra-cabeça em que", "o controle é o seu navegador.", ("clica pra jogar", ANIL)],
-           [("32 páginas", AMARELO, TINTA), ("dois atos", "#fff", TINTA), ("navegador", AZUL_VIVO, "#fff")], 22)
+           [("32 páginas", AMARELO, TINTA), ("dois atos", "#fff", TINTA)], 22)
     print_adesivo(c, "foto-lover.png", 446, 1920, 380, 3, z=5)
     c.img("recortes/washi-09.png", 736, 1902, 110, 34, z=6, px=300)
     bolha_ = (f'<g class="treme"><g transform="translate(0 22) rotate(8 760 1922)" filter="url(#sombra-leve)">'
@@ -377,15 +377,15 @@ def projetinhos(c):
     cartao(c, 428, 2214, 1.2, "03", "clios", "#fff",
            ["um desktop Linux feito pro terminal,", "com um binário em Rust.", ("clica pra abrir o repo", ANIL)],
            [("Arch", "#7fc8ff", TINTA), ("Hyprland", VERDE, TINTA), ("Quickshell", "#fff", TINTA)], 33)
-    t1, w1 = tecla(260, 2384, "super", -6)
-    t2, _ = tecla(260 + w1 + 6, 2390, "F2", 4, w=52)
-    c.add(f'<g class="tecla-a">{t1}</g><g class="tecla-b">{t2}</g>', (240, 2366, 420, 2446), z=8)
+    t1, w1 = tecla(16, 2392, "super", -6)
+    t2, _ = tecla(16 + w1 + 6, 2396, "F2", 4, w=52)
+    c.add(f'<g class="tecla-a">{t1}</g><g class="tecla-b">{t2}</g>', (0, 2374, 200, 2448), z=8)
 
     # 04 hackintosh: o print do Acer com uma lupa em cima do "MacBook Pro"
     cartao(c, 40, 2480, -1.2, "04", "hackintosh", "#9fc4ff",
            ["macOS Sequoia num Acer Nitro V15,", "com o desktop acelerado na RTX 3050.", ("clica pra abrir o repo", ANIL)],
-           [("macOS 15", "#fff", TINTA), ("OpenCore", AMARELO, TINTA), ("RTX 3050", VERDE, TINTA)], 44)
-    print_adesivo(c, "foto-hackintosh.jpg", 450, 2470, 376, 2.5, z=5, lupa=(.5, .37, 50, 2.6, 560, 2600))
+           [("macOS 15", "#fff", TINTA), ("OpenCore", AMARELO, TINTA)], 44)
+    print_adesivo(c, "foto-hackintosh.jpg", 450, 2470, 376, 2.5, z=5, lupa=(.5, .37, 50, LUPA_ZOOM, 560, 2600))
     c.img("recortes/washi-rasgada-02.png", 772, 2690, 110, -28, z=6, px=300)
     c.add('<g class="treme" style="animation-delay:1.2s">' + etiqueta(690, 2672, "psiu: é um Acer", "#fff", 5)[0] + "</g>", (680, 2660, 820, 2712), z=8)
     c.add(brilhinho(458, 2492, 14, AMARELO, 0.5) + estrela(842, 2496, 18, 1.4, "#9fc4ff"), (430, 2470, 870, 2520), z=8)
@@ -665,8 +665,8 @@ CSS = """
 @keyframes deriva{from{transform:translateX(-14px)}to{transform:translateX(18px)}}
 .flutua{animation:flutua 4.6s ease-in-out infinite}
 @keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-.brilho{transform-box:fill-box;transform-origin:center;animation:brilho 3.4s ease-in-out infinite}
-@keyframes brilho{0%,70%,100%{transform:scale(1) rotate(0)}80%{transform:scale(1.2) rotate(10deg)}}
+.brilho{transform-box:fill-box;transform-origin:center;animation:brilho 4.5s ease-in-out infinite alternate}
+@keyframes brilho{from{transform:translateY(1px) rotate(-5deg)}to{transform:translateY(-3px) rotate(5deg)}}
 .letreiro{animation:letreiro 22s linear infinite}
 .pula{animation:pula 3.6s ease-in-out infinite}
 @keyframes pula{0%,60%,100%{transform:translateY(0)}70%{transform:translateY(-10px)}80%{transform:translateY(0)}86%{transform:translateY(-4px)}}
@@ -674,14 +674,11 @@ CSS = """
 @keyframes aperta{0%,72%,100%{transform:translate(0,0)}78%,84%{transform:translate(6px,6px)}}
 .clica{animation:clica 2.4s ease-in-out infinite}
 @keyframes clica{0%,60%,100%{transform:translate(18px,18px)}72%{transform:translate(0,0)}78%,84%{transform:translate(3px,4px)}}
-.pisca{animation:pisca 1s steps(1) infinite}
-@keyframes pisca{50%{opacity:0}}
 .treme{transform-box:fill-box;transform-origin:center;animation:treme 3.2s ease-in-out infinite}
 @keyframes treme{0%,80%,100%{transform:rotate(0)}84%{transform:rotate(-6deg)}88%{transform:rotate(5deg)}92%{transform:rotate(-3deg)}}
 .toca{animation:toca 1.6s ease-in-out infinite}
 @keyframes toca{0%,55%,100%{transform:translate(0,0)}65%,75%{transform:translate(2px,5px)}}
-.bate{transform-box:fill-box;transform-origin:center;animation:bate 1.8s ease-in-out infinite}
-@keyframes bate{0%,40%,100%{transform:scale(1)}10%,30%{transform:scale(1.18)}20%{transform:scale(1.04)}}
+.bate{transform-box:fill-box;transform-origin:center;animation:brilho 4s ease-in-out infinite alternate}
 .tecla-a,.tecla-b{animation:tecla 2.8s ease-in-out infinite}
 .tecla-b{animation-delay:.35s}
 @keyframes tecla{0%,30%,100%{transform:translateY(0)}38%,46%{transform:translateY(5px)}}
@@ -689,6 +686,19 @@ CSS = """
 @keyframes boia{to{transform:translate(-8px,-4px)}}
 @keyframes letreiro{to{transform:translateX(var(--volta))}}
 """
+
+
+def _circulo(nome, raio, passos=12):
+    quadros = []
+    for i in range(passos + 1):
+        a = 2 * math.pi * i / passos
+        quadros.append(f"{100 * i / passos:.2f}%{{transform:translate({raio * math.cos(a):.2f}px,{raio * math.sin(a):.2f}px)}}")
+    return f"@keyframes {nome}{{{''.join(quadros)}}}"
+
+
+LUPA_RAIO, LUPA_ZOOM = 12, 2.6
+CSS += (".gira{animation:gira 7s linear infinite}.contra{animation:contra 7s linear infinite}"
+        + _circulo("gira", LUPA_RAIO) + _circulo("contra", -LUPA_ZOOM * LUPA_RAIO) + "\n")
 
 
 def gerar(so=None):
