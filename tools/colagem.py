@@ -21,11 +21,11 @@ CEU_TOPO, CEU_MEIO, CEU_FUNDO = "#3d8ce6", "#9fd2fa", "#4f9ae9"
 
 # nome, y inicial, altura, link, descrição (alt)
 TIRAS = [
-    ("capa", 0, 540, "https://kitsuneislife.github.io",
+    ("capa", 0, 540, None,
      "kitsuneislife, escrito em letra de adesivo, num céu azul com nuvens de papelão. "
      "Um arco-íris de papelão e eu sentado numa nuvem, de fone. ようこそ! "
      "artbook, portfolio, media log."),
-    ("bio", 540, 540, "https://kitsuneislife.github.io",
+    ("bio", 540, 540, None,
      "Uma pasta de arquivo com um crachá e um bilhete: Costumam escrever muitas coisas por aqui, né? "
      "Tem gente que quer falar sobre o quanto eh bom, ou o quanto eh apaixonado pelo que faz.. "
      "Bom, eu gosto de fazer alguns projetinhos (e de lasanha) e quero trabalhar na área. "
@@ -49,7 +49,7 @@ TIRAS = [
      "Aprendendo Dart, Java, Kotlin e Rust. Ferramentas: git, npm, Redis, Express, Docker, Expo. "
      "Se você não sabe nem isso, não recomendo continuar. So cold..."),
     ("musica", 3520, 720, None, "Recibo da semana com as músicas que eu mais ouvi nos últimos 7 dias."),
-    ("fim", 4240, 380, "https://kitsuneislife.github.io",
+    ("fim", 4240, 380, None,
      "Gostou? Sei fazer bem mais. Eu abraçando uma pelúcia do Claude. kitsuneislife, 2026."),
 ]
 H = TIRAS[-1][1] + TIRAS[-1][2]
@@ -195,7 +195,7 @@ def montar(dados_recibo):
 
     # ---- projetinhos
     c.add(logo("projetinhos", 40, 1562, 74, "#ffb3d1", giros[1:], sobe[2:]), (10, 1480, 600, 1610), z=6)
-    c.add(fita(70, 1584, 220, 34, -2, "#f3eccd", 0.95) + linha(92, 1609, "(e de lasanha)", 22, TINTA, 'transform="rotate(-2 180 1600)"'),
+    c.add(fita(62, 1578, 240, 46, -2) + linha(92, 1609, "(e de lasanha)", 22, TINTA, 'transform="rotate(-2 180 1600)"'),
           (50, 1570, 320, 1630), z=7)
     c.img("turma-correndo.png", 520, 1440, 340, 0, z=5, px=597)
     c.add(f'<g transform="rotate(-9 800 1545)">{linha(786, 1552, "clica nos", 18)}{linha(792, 1575, "cards", 18)}</g>',
@@ -208,12 +208,13 @@ def montar(dados_recibo):
         else:
             fx, nx = 450, 46
         fw, fh = foto(c, nome_foto, fx, y0 + 18, larg, rot, z=4, moldura=moldura, rodape=rodape)
-        c.add(fita(fx + fw / 2 - 50, y0 + 6, 100, 28, rot * 2), (fx, y0 - 20, fx + fw, y0 + 50), z=5)
+        c.add(fita(fx + fw / 2 - 56, y0 + 2, 112, 36, rot * 2), (fx, y0 - 20, fx + fw, y0 + 50), z=5)
         tx = fx + 10 if lado == "esq" else fx + 20
         g = [-4, 3, -2, 4, -3, 2, -4, 3, -2, 4]
         c.add(logo(titulo, tx, y0 + 56, 44, cor_titulo, g, [0] * 12), (tx - 20, y0, tx + 380, y0 + 80), z=6)
         svg, cx_ = bilhete(nx, y0 + 70, 372, linhas, -rot * 0.7, px=20)
         c.add(svg + extra, cx_, z=5)
+        c.img("recortes/clipe.png", nx + 336, y0 + 34, 26, 6 if lado == "esq" else -6, z=6, px=120)
         n, dx, dy, dw, drot = deco
         c.img(n, dx, y0 + dy, dw, drot, z=6)
 
@@ -236,6 +237,7 @@ def montar(dados_recibo):
     svg, cx_ = bilhete(250, 2738, 380, [("tem mais projetinhos no meu perfil", TINTA)], -1.5, cor="#eef08a", pautado=False)
     c.add(svg, cx_, z=5)
     c.img("recortes/leite-caixinha.png", 650, 2722, 62, 10, z=6)
+    c.img("recortes/tachinha.png", 578, 2708, 40, -6, z=6)
 
     # ---- o que eu sei fazer (a prancheta do banner antigo)
     c.img("banner-habilidades.png", 18, 2856, 848, 0.8, z=4, sombra="sombra", px=1124)
@@ -249,7 +251,7 @@ def montar(dados_recibo):
     c.add(papel, (20, 4230, 660, 4550), z=3)
     c.img("recortes/gostou.png", 96, 4296, 430, -2, z=4, sombra=None)
     c.img("abraco-claude.png", 584, 4250, 270, 5, z=5, px=700)
-    c.add(fita(560, 4546, 240, 34, 2, "#f3eccd", 0.95) + linha(584, 4571, "kitsuneislife, 2026", 22, TINTA, 'transform="rotate(2 680 4563)"'),
+    c.add(fita(550, 4538, 264, 48, 2) + linha(584, 4571, "kitsuneislife, 2026", 22, TINTA, 'transform="rotate(2 680 4563)"'),
           (540, 4530, 820, 4590), z=6)
     return c
 
@@ -265,8 +267,8 @@ def musica(c, y0, d):
     inicio = hoje - timedelta(days=7)
 
     # título
-    c.add(fita(46, y0 + 4, medir("revista", "no fone essa semana", 28) + 80, 48, -2, TINTA, 1) +
-          f'<text x="66" y="{y0 + 40}" font-size="28" class="revista" fill="#fff" transform="rotate(-2 210 {y0 + 28})">no fone essa semana</text>',
+    c.add(fita(36, y0, medir("revista", "no fone essa semana", 28) + 96, 58, -2, preta=True, opacidade=1) +
+          f'<text x="72" y="{y0 + 40}" font-size="28" class="revista" fill="#fff" transform="rotate(-2 210 {y0 + 28})">no fone essa semana</text>',
           (30, y0 - 10, 400, y0 + 70), z=7)
 
     x0, lw = 64, 300
@@ -342,7 +344,8 @@ def musica(c, y0, d):
                  f'fill="none" stroke="{CRACHA}" stroke-width="4" opacity=".8"/>'
                  f'<text x="{sx}" y="{sy + 11}" font-size="28" text-anchor="middle" fill="{CRACHA}" opacity=".8" class="bolha">EXEMPLO</text></g>')
     n.append("</g>")
-    c.add("".join(n) + fita(nx + 110, ny - 14, 110, 30, 4), (nx - 30, ny - 30, nx + nw + 30, ny + nh + 30), z=5)
+    c.add("".join(n), (nx - 30, ny - 30, nx + nw + 30, ny + nh + 30), z=5)
+    c.img("recortes/tachinha.png", nx + nw / 2 - 18, ny - 30, 46, -10, z=6)
     c.img("recortes/bolo-morango.png", 470, y0 + 506, 112, -8, z=7)
     c.img("recortes/leite-garrafa.png", 812, y0 + 470, 58, 8, z=7)
 

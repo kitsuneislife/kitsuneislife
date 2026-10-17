@@ -118,16 +118,13 @@ DEFS = f"""
 """
 
 
-def fita(x, y, w, h, angulo, cor="#f3eccd", opacidade=0.82):
-    """Fita crepe com as pontas serrilhadas."""
-    dente = 4
-    n = max(2, int(h // dente))
-    esq = " ".join(f"L{x + (2 if i % 2 else 0)} {y + i * h / n:.1f}" for i in range(n + 1))
-    dir_ = " ".join(f"L{x + w - (2 if i % 2 else 0)} {y + h - i * h / n:.1f}" for i in range(n + 1))
-    d = f"M{x} {y} L{x + w} {y} {dir_} L{x} {y + h} {esq} Z"
+def fita(x, y, w, h, angulo, preta=False, opacidade=0.94):
+    """Fita crepe de verdade (recorte), esticada no tamanho pedido."""
+    nome = "recortes/fita-preta.png" if preta else "recortes/fita.png"
     cx, cy = x + w / 2, y + h / 2
-    return (f'<path d="{d}" fill="{cor}" opacity="{opacidade}" '
-            f'transform="rotate({angulo} {cx} {cy})" filter="url(#sombra-leve)"/>')
+    return (f'<image x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" preserveAspectRatio="none" '
+            f'href="{imagem(nome, min(547, round(w * 2)))}" opacity="{opacidade}" '
+            f'transform="rotate({angulo} {cx:.1f} {cy:.1f})" filter="url(#sombra-leve)"/>')
 
 
 def svg(largura, altura, corpo, fontes, css="", titulo="", viewbox=None):
