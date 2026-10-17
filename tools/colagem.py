@@ -9,12 +9,17 @@ e width="100%", que é o jeito de o GitHub empilhar imagem sem fresta.
 
 O then and now e o recibo da semana saíram daqui e estão guardados em archive/colagem/.
 """
+import base64
+import functools
+import io
 import json
 import math
 import random
 from pathlib import Path
 
-from kit import (AMARELO, ANIL, CRACHA, LIMA, PAUTA, TINTA, fita, imagem,
+from PIL import Image, ImageFilter
+
+from kit import (AMARELO, ANIL, ART, CRACHA, LIMA, PAUTA, TINTA, fita, imagem,
                  linha, medir, salvar, t, tamanho)
 
 W = 880
@@ -623,8 +628,66 @@ def boletim(c):
 
 # ---------------------------------------------------------------- fundo e saída
 
-def fundo(y0, h):
-    return (f'<rect x="0" y="{y0}" width="{W}" height="{h}" fill="url(#ceu)"/>'
+@functools.lru_cache(maxsize=None)
+def textura_nuvens(largura=820, emenda=300):
+    """As nuvens da foto, de cabeça pra baixo, viradas em branco com transparência
+    (o céu de baixo continua o mesmo) e com as pontas misturadas, pra repetir sem emenda."""
+    im = Image.open(ART / "nuvens-ceu.png").convert("RGB").transpose(Image.FLIP_TOP_BOTTOM)
+    cinza = im.convert("L").filter(ImageFilter.GaussianBlur(2.5))
+    # o azul vira transparente, o creme vira nuvem
+    alfa = cinza.point(lambda v: round(255 * min(1, max(0, (v - 128) / 96)) ** 1.4))
+    larg, alt = im.size
+    passo = larg - emenda
+    rampa = Image.linear_gradient("L").rotate(-90, expand=True).resize((emenda, alt))  # 255 → 0 da esquerda pra direita
+    inicio = Image.composite(alfa.crop((passo, 0, larg, alt)), alfa.crop((0, 0, emenda, alt)), rampa)
+    alfa = alfa.crop((0, 0, passo, alt))
+    alfa.paste(inicio, (0, 0))
+    branco = Image.new("RGBA", alfa.size, "#fff")
+    branco.putalpha(alfa)
+    branco = branco.resize((largura, round(alt * largura / passo)), Image.LANCZOS)
+    buf = io.BytesIO()
+    branco.save(buf, "WEBP", quality=60, method=6)
+    return "data:image/webp;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+# nuvens andando atrás de tudo: (tira, y, altura, opacidade, cor, fim do sumiço embaixo)
+# cada camada anda de um tile inteiro por volta, então o fim da volta é igual ao começo
+NUVENS = {
+    "capa": [(40, 420, .6, "#fff", 440), (150, 300, .4, "#fff", 440)],
+    "fim": [(2900, 380, .4, "#cfcaff", None), (3010, 270, .3, "#ffd3ec", None)],
+}
+NUVEM_TILE = 1000
+NUVEM_VOLTA = [150, 105]  # segundos por volta, uma camada mais rápida que a outra
+
+
+def nuvens(nome, y0, h):
+    if nome not in NUVENS:
+        return ""
+    s = [f'<defs><image id="nuvem-tile" width="{NUVEM_TILE}" height="100" preserveAspectRatio="none" href="{textura_nuvens()}"/>']
+    for i, (ny, nh, op, cor, some) in enumerate(NUVENS[nome]):
+        if some:
+            s.append(f'<linearGradient id="nuvem-some-{i}" gradientUnits="userSpaceOnUse" x1="0" y1="{some - 70}" x2="0" y2="{some}">'
+                     f'<stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
+                     f'<mask id="nuvem-m-{i}" maskUnits="userSpaceOnUse" x="0" y="{y0}" width="{W}" height="{h}">'
+                     f'<rect x="0" y="{y0}" width="{W}" height="{h}" fill="url(#nuvem-some-{i})"/></mask>')
+        if cor != "#fff":
+            s.append(f'<filter id="nuvem-cor-{i}"><feFlood flood-color="{cor}"/><feComposite in2="SourceAlpha" operator="in"/></filter>')
+    s.append("</defs>")
+    for i, (ny, nh, op, cor, some) in enumerate(NUVENS[nome]):
+        # a segunda camada vai espelhada, pra não parecer o mesmo lençol andando; o
+        # reverse faz ela andar pro mesmo lado da outra
+        esp = f' transform="translate({W} 0) scale(-1 1)"' if i % 2 else ""
+        sentido = ";animation-direction:reverse" if i % 2 else ""
+        copias = "".join(f'<use href="#nuvem-tile" transform="translate({k * NUVEM_TILE} {ny}) scale(1 {nh / 100})"/>' for k in (-1, 0, 1))
+        f = f' filter="url(#nuvem-cor-{i})"' if cor != "#fff" else ""
+        m = f' mask="url(#nuvem-m-{i})"' if some else ""
+        s.append(f'<g opacity="{op}"{m}><g{esp}><g class="nuvens" style="--tile:-{NUVEM_TILE}px;animation-duration:{NUVEM_VOLTA[i % 2]}s{sentido}">'
+                 f'<g{f}>{copias}</g></g></g></g>')
+    return "".join(s)
+
+
+def fundo(y0, h, nome=""):
+    return (f'<rect x="0" y="{y0}" width="{W}" height="{h}" fill="url(#ceu)"/>' + nuvens(nome, y0, h) +
             f'<rect x="0" y="{y0}" width="{W}" height="{h}" fill="url(#pontos)" mask="url(#some)"/>')
 
 
@@ -685,6 +748,8 @@ CSS = """
 .boia{animation:boia 2.2s ease-in-out infinite alternate}
 @keyframes boia{to{transform:translate(-8px,-4px)}}
 @keyframes letreiro{to{transform:translateX(var(--volta))}}
+.nuvens{animation:nuvens 150s linear infinite}
+@keyframes nuvens{to{transform:translateX(var(--tile))}}
 """
 
 
@@ -707,7 +772,7 @@ def gerar(so=None):
         if so and nome not in so:
             continue
         dentro = sorted((e for e in cena.els if e[2][1] < y0 + h and e[2][3] > y0), key=lambda e: (e[0], e[1]))
-        corpo = (f'<g clip-path="url(#borda)">{fundo(y0, h)}' + "".join(e[3] for e in dentro) + "</g>")
+        corpo = (f'<g clip-path="url(#borda)">{fundo(y0, h, nome)}' + "".join(e[3] for e in dentro) + "</g>")
         salvar(f"colagem-{nome}.svg", W, h, f"<defs>{DEFS_CENA}</defs>{corpo}", CSS, alt, viewbox=f"0 {y0} {W} {h}")
 
 

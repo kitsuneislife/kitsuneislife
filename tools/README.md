@@ -22,6 +22,10 @@ python tools/colagem.py   # gera todas as tiras
 - `assets/art/`: seus desenhos. `assets/art/recortes/`: objetos recortados do
   layout do site (comidinhas, Nendoroids, prancheta, o "Gostou?").
   Troque um PNG com o mesmo nome e rode o build de novo.
+- `assets/art/nuvens-ceu.png`: a foto de nuvens que vira a textura do céu na
+  capa e no fim (`NUVENS` em `tools/colagem.py`). Ela entra de cabeça pra
+  baixo, só como branco transparente por baixo dos pontinhos, e com as pontas
+  misturadas pra repetir sem emenda enquanto anda.
 - `tools/fonts/`: Gochi Hand, Bagel Fat One, Dela Gothic One, Lilita One e
   DotGothic16 (todas OFL), já cortadas.
 
