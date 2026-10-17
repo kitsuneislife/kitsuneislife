@@ -1,4 +1,5 @@
 <img align="center" src="banner.png"/> 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/kitsuneislife/kitsuneislife/refs/heads/main/i_love_claude.png" width="200" height="200">
+  <img src="i_love_claude.png" width="300" height="300">
+  <p>kitsuneislife, 2026</p>
 </div>
