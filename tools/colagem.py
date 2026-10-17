@@ -28,33 +28,33 @@ CEU_TOPO, CEU_MEIO, CEU_FUNDO = "#3d8ce6", "#9fd2fa", "#4f9ae9"
 
 # nome, y inicial, altura, link, descrição (alt)
 TIRAS = [
-    ("capa", 0, 456, None,
+    ("capa", 0, 470, None,
      "Uma barrinha de letreiro rolando no topo dizendo oi em várias línguas. "
      "No meio, um arco-íris de papelão com uma nuvem em cada pé, e eu de fone sentado atrás de "
      "kitsuneislife, escrito em letra de adesivo, num céu azul."),
-    ("bio", 456, 340, None,
+    ("bio", 470, 340, None,
      "Uma prancheta com um bilhete: Nunca soube o que escrever em uma bio ou em um sobre-mim. Curioso né? "
      "Então fiz essa página pra contar um pouquinho de quem sou eu. Eu gosto de fazer alguns projetinhos "
      "(e de lasanha) e quero trabalhar na área. Discord: @thurzinhos. “Penso, logo desisto.” love you forever. "
-     "Do lado, a turma correndo com uma placa: site novo! kitsuneislife.github.io"),
-    ("projetos", 796, 180, "https://github.com/kitsuneislife?tab=repositories",
+     "Do lado, a turma correndo com uma placa: site novo!"),
+    ("projetos", 810, 180, "https://github.com/kitsuneislife?tab=repositories",
      "projetinhos (e de lasanha). Clica nos cards pra abrir cada um."),
-    ("artcode", 976, 270, "https://github.com/kitsuneislife/artcode",
+    ("artcode", 990, 270, "https://github.com/kitsuneislife/artcode",
      "artcode: minha própria linguagem de programação, interpretada e escrita em Rust. Tá na v0.5.1."),
-    ("lover", 1246, 270, "https://kitsuneislife.github.io/lover/",
+    ("lover", 1260, 270, "https://kitsuneislife.github.io/lover/",
      "lover: um jogo de quebra-cabeça em que o controle é o seu navegador. Clica pra jogar."),
-    ("clios", 1516, 270, "https://github.com/kitsuneislife/clios",
+    ("clios", 1530, 270, "https://github.com/kitsuneislife/clios",
      "clios: um desktop Linux feito pro terminal. Arch, Hyprland e Quickshell, com um binário em Rust."),
-    ("hackintosh", 1786, 270, "https://github.com/kitsuneislife/Acer-Nitro-V15-ANV15-51-Hackintosh",
+    ("hackintosh", 1800, 270, "https://github.com/kitsuneislife/Acer-Nitro-V15-ANV15-51-Hackintosh",
      "Hackintosh: macOS Sequoia num Acer Nitro V15, com o desktop acelerado na RTX 3050."),
-    ("mais", 2056, 120, "https://github.com/kitsuneislife?tab=repositories",
+    ("mais", 2070, 120, "https://github.com/kitsuneislife?tab=repositories",
      "Um botão rosa: tem mais no meu perfil, com quantos repositórios eu tenho."),
-    ("habilidades", 2176, 720, None,
+    ("habilidades", 2190, 720, None,
      "O que eu sei fazer, num boletim escolar com as notas tiradas dos meus repositórios no GitHub: "
      "cada linguagem com quantos repos usam ela, a nota e se passou. Dart, Java e Kotlin estão em curso. "
      "Atividades extras: git, npm, Redis, Express, Docker, Expo. Deveres entregues: os repositórios "
      "mexidos por último. Carimbo de aprovado."),
-    ("fim", 2896, 440, None,
+    ("fim", 2910, 440, None,
      "Anoitece. Gostou? Sei fazer bem mais. Eu abraçando uma pelúcia do Claude, com a lua e umas estrelinhas. "
      "Embaixo, botõezinhos de site antigo: feito à mão por kitsune, 100% SVG, movido a lasanha, "
      "melhor visto em qualquer um, sem cookies. kitsuneislife, 2026."),
@@ -198,11 +198,11 @@ def montar():
     # o export da prancheta já vem cortado na esquerda e embaixo: encosta na borda
     # e a folha dos projetinhos cobre o corte de baixo
     c.img("banner-bio.png", 0, 516, 880, 0, z=4, sombra="sombra", px=1238)
-    # a placa (cantos achados no desenho: centro 801,854 e inclinada -21°) aponta pro site novo;
-    # por enquanto só o texto, o link entra quando o site estiver no ar
-    c.add(f'<g transform="rotate(-21 806 854)">{linha(806, 852, "site novo!", 24, TINTA, 'text-anchor="middle"')}'
-          f'{linha(808, 870, "kitsuneislife.github.io", 11.5, ANIL, 'text-anchor="middle"')}'
-          f'<path d="M760 874 q24 3 48 0 t48 0" fill="none" stroke="{ANIL}" stroke-width="1.2" stroke-linecap="round"/></g>',
+    # a placa (cantos achados no desenho: centro 801,854 e inclinada -21°) aponta pro site novo,
+    # escrito de azul e sublinhado que nem link
+    larg = medir("mao", "site novo!", 26)
+    c.add(f'<g transform="rotate(-21 803 856)">{linha(803, 861, "site novo!", 26, ANIL, 'text-anchor="middle"')}'
+          f'<line x1="{803 - larg / 2:.1f}" y1="866" x2="{803 + larg / 2:.1f}" y2="866" stroke="{ANIL}" stroke-width="2" stroke-linecap="round"/></g>',
           (720, 810, 880, 900), z=5)
 
     # ---- projetinhos, numa folha quadriculada amarela que vai até o "tem mais"
@@ -229,7 +229,7 @@ def montar():
     c.subir(1300, 440)
     c.subir(470, 240)
     # um respiro entre o letreiro e o arco-íris: desce tudo menos o letreiro
-    c.subir(1, -16)
+    c.subir(1, -30)
     return c
 
 
@@ -506,7 +506,7 @@ CORES_LING = {"JavaScript": "#f1e05a", "TypeScript": "#3178c6", "Python": "#3572
               "Dart": "#00B4AB", "Java": "#b07219", "Kotlin": "#A97BFF", "C": "#555555", "C++": "#f34b7d",
               "Lua": "#000080", "QML": "#44a51c", "Vue": "#41b883", "SCSS": "#c6538c", "Go": "#00ADD8"}
 MATERIAS = 8  # linhas da tabela; mais que isso o boletim passa da tira
-MAX_EXTRAS, LINHAS_EXTRAS = 8, 3  # etiquetas das atividades extras, e em quantas linhas cabem
+MAX_EXTRAS, LINHAS_EXTRAS = 8, 4  # etiquetas das atividades extras, e em quantas linhas cabem
 CURSANDO = ["Dart", "Java", "Kotlin"]  # o que eu tô aprendendo, mesmo sem código ainda
 EXTRAS = ["git", "npm", "Redis", "Express", "Docker", "Expo"]  # enquanto o boletim.json não tem "ferramentas"
 ICONES_JSON = Path(__file__).resolve().parent.parent / "assets" / "readme" / "icones.json"
@@ -581,7 +581,7 @@ def boletim(c):
                 + linha(cx + 4, cy + 26, valor, 23, ANIL))
 
     yy = y + 76
-    s.append(campo(x + 24, yy, "ALUNO(A)", "kitsune", 300))
+    s.append(campo(x + 24, yy, "ALUNO(A)", "kit", 300))
     s.append(campo(x + 24, yy + 46, "TURMA", "@kitsuneislife", 140))
     s.append(campo(x + 184, yy + 46, "REPOSITÓRIOS", str(d["repos"]), 140))
     fq = d.get("frequencia")
@@ -654,12 +654,12 @@ def boletim(c):
         icones = {}
     for i, e in enumerate(extras):
         cor_, rot_ = ["#fff", AMARELO, "#7fc8ff", VERDE, "#ffb3d1", "#fff"][i % 6], (-3, 2, -2, 3)[i % 4]
-        eti, ew = etiqueta(tx, ty2, e, cor_, rot_, px=14, icone=icones.get(e))
+        eti, ew = etiqueta(tx, ty2, e, cor_, rot_, px=13, icone=icones.get(e))
         if tx + ew > nx + nw - 10:
             if ty2 >= ny + 70 + 42 * (LINHAS_EXTRAS - 1):
                 break  # a nota não cresce mais que isso, senão empurra os deveres pra fora
             tx, ty2 = nx + 18, ty2 + 42
-            eti, ew = etiqueta(tx, ty2, e, cor_, rot_, px=14, icone=icones.get(e))
+            eti, ew = etiqueta(tx, ty2, e, cor_, rot_, px=13, icone=icones.get(e))
         # cada etiqueta dá uma tremidinha, uma depois da outra
         tags.append(f'<g class="treme" style="animation-delay:{i * .45:.2f}s">{eti}</g>')
         tx += ew + 8
@@ -690,8 +690,6 @@ def boletim(c):
     a.append("</g>")
     c.add("".join(a), caixa_girada(nx, ay, nw, ah, -2), z=6)
     c.add(fita(nx + 60, ay - 18, 110, 36, 4), (nx + 40, ay - 40, nx + 190, ay + 30), z=7)
-    # a régua deitada por cima do pé do boletim, descendo um pouquinho pra direita
-    c.img("recortes/regua.png", 24, y + h - 104, 250, 50, z=8, px=560)
 
 
 # ---------------------------------------------------------------- fundo e saída
@@ -721,8 +719,8 @@ def textura_nuvens(largura=820, emenda=300):
 # nuvens andando atrás de tudo: (tira, y, altura, opacidade, cor, fim do sumiço embaixo)
 # cada camada anda de um tile inteiro por volta, então o fim da volta é igual ao começo
 NUVENS = {
-    "capa": [(56, 420, .6, "#fff", 456), (166, 300, .4, "#fff", 456)],
-    "fim": [(2956, 380, .4, "#cfcaff", None), (3066, 270, .3, "#ffd3ec", None)],
+    "capa": [(70, 420, .6, "#fff", 470), (180, 300, .4, "#fff", 470)],
+    "fim": [(2970, 380, .4, "#cfcaff", None), (3080, 270, .3, "#ffd3ec", None)],
 }
 NUVEM_TILE = 1000
 NUVEM_VOLTA = [46, 33]  # segundos por volta, uma camada mais rápida que a outra
