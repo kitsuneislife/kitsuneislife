@@ -1,0 +1,29 @@
+name: boletim
+
+on:
+  schedule:
+    - cron: "41 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  boletim:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install fonttools brotli pillow
+      - run: python tools/boletim.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USER: ${{ github.repository_owner }}
+      - name: commit
+        run: |
+          git config user.name kitsuneislife
+          git config user.email kitsuneislif3@gmail.com
+          git add assets/readme/boletim.json assets/readme/colagem-habilidades.svg
+          git diff --cached --quiet || (git commit -m "boletim de $(date +%d/%m)" && git push)

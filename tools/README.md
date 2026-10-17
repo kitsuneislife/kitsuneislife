@@ -31,4 +31,21 @@ Depois de mexer em `TIRAS`, regenere o README:
 python -c "import sys; sys.path.insert(0,'tools'); import colagem; open('README.md','w').write(colagem.readme()+'\n\n<br clear=\"all\">\n')"
 ```
 
+## boletim
+
+O "o que eu sei fazer" é um boletim escolar com as notas tiradas dos
+repositórios. `tools/boletim.py` busca os repositórios públicos (sem fork),
+soma os bytes de cada linguagem e grava `assets/readme/boletim.json`; a
+maior linguagem tira 10 e as outras vão pela raiz quarta da proporção.
+Frequência e faltas são os dias com e sem contribuição no último ano.
+
+O workflow `.github/workflows/boletim.yml` roda todo dia usando o
+`GITHUB_TOKEN` do próprio Actions, sem precisar configurar nada. Agendamento
+só roda na branch padrão, então ele começa quando isso estiver na `main`;
+antes disso dá pra rodar na mão em Actions → boletim → Run workflow.
+
+Sem o json, o boletim sai com dados de exemplo. O que eu tô aprendendo
+(`CURSANDO`) e as atividades extras (`EXTRAS`) ficam fixos em
+`tools/colagem.py`.
+
 O then and now e o recibo da semana estão guardados em `archive/`.

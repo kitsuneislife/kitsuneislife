@@ -7,6 +7,8 @@ projetinhos e no que eu sei fazer.
   vermelha e em 2026 na amarela.
 - `no-fone-essa-semana.svg`: o recibo da semana com as músicas do Last.fm.
   Tá com os dados de exemplo.
+- `banner-habilidades.png`: a prancheta antiga do "o que eu sei fazer",
+  com o "so cold..." e o Danoninho.
 - `tools/colagem.py`: o gerador do jeito que estava com as duas partes
   (`fichario()` e `musica()`), com as coordenadas de antes.
 - `tools/recibo.py` e `workflows/recibo.yml`: o que buscava o Last.fm todo

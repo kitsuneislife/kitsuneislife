@@ -9,8 +9,10 @@ e width="100%", que é o jeito de o GitHub empilhar imagem sem fresta.
 
 O then and now e o recibo da semana saíram daqui e estão guardados em archive/.
 """
+import json
 import math
 import random
+from pathlib import Path
 
 from kit import (AMARELO, ANIL, CRACHA, LIMA, PAUTA, TINTA, fita, imagem,
                  linha, medir, salvar, t, tamanho)
@@ -42,9 +44,10 @@ TIRAS = [
     ("mais", 2040, 110, "https://github.com/kitsuneislife?tab=repositories",
      "Tem mais projetinhos no meu perfil."),
     ("habilidades", 2150, 690, None,
-     "O que eu sei fazer: JavaScript (essa eh braba), Python, PHP, HTML, CSS, Svelte, React. "
-     "Aprendendo Dart, Java, Kotlin e Rust. Ferramentas: git, npm, Redis, Express, Docker, Expo. "
-     "Se você não sabe nem isso, não recomendo continuar. So cold..."),
+     "O que eu sei fazer, num boletim escolar com as notas tiradas dos meus repositórios no GitHub: "
+     "cada linguagem com quantos repos usam ela, a nota e se passou. Dart, Java e Kotlin estão em curso. "
+     "Atividades extras: git, npm, Redis, Express, Docker, Expo. Deveres entregues: os repositórios "
+     "mexidos por último. Carimbo de aprovado."),
     ("fim", 2840, 380, None,
      "Gostou? Sei fazer bem mais. Eu abraçando uma pelúcia do Claude. kitsuneislife, 2026."),
 ]
@@ -176,9 +179,8 @@ def montar():
     c.add(fita(318, 1376, 150, 44, -6) + fita(640, 1366, 150, 44, 7), (300, 1340, 800, 1430), z=11)
     projetinhos(c)
 
-    # ---- o que eu sei fazer (a prancheta do banner antigo)
-    c.img("banner-habilidades.png", 18, 2856, 848, 0.8, z=4, sombra="sombra", px=1124)
-    c.img("recortes/panqueca-urso.png", -10, 3380, 150, -6, z=6)
+    # ---- o que eu sei fazer: um boletim, com as notas tiradas dos repositórios
+    boletim(c)
 
     # ---- fim
     papel = ('<g transform="rotate(-2 330 4390)"><path d="M48 4272 L612 4256 L626 4500 L60 4522 Z" fill="#111" filter="url(#sombra)"/></g>')
@@ -393,6 +395,171 @@ def projetinhos(c):
     c.add(cursor(640, 2776, -20, .8) + brilhinho(220, 2756, 12, "#fff", 1.8), (200, 2730, 690, 2830), z=7)
 
 
+# cores das linguagens, as mesmas do GitHub
+CORES_LING = {"JavaScript": "#f1e05a", "TypeScript": "#3178c6", "Python": "#3572A5", "Rust": "#dea584",
+              "PHP": "#4F5D95", "HTML": "#e34c26", "CSS": "#563d7c", "Svelte": "#ff3e00", "Shell": "#89e051",
+              "Dart": "#00B4AB", "Java": "#b07219", "Kotlin": "#A97BFF", "C": "#555555", "C++": "#f34b7d",
+              "Lua": "#000080", "QML": "#44a51c", "Vue": "#41b883", "SCSS": "#c6538c", "Go": "#00ADD8"}
+CURSANDO = ["Dart", "Java", "Kotlin"]  # o que eu tô aprendendo, mesmo sem código ainda
+EXTRAS = ["git", "npm", "Redis", "Express", "Docker", "Expo"]
+BOLETIM_JSON = Path(__file__).resolve().parent.parent / "assets" / "readme" / "boletim.json"
+BOLETIM_EXEMPLO = {
+    "repos": 24, "estrelas": 31, "atualizado": None,
+    "linguagens": {"JavaScript": {"bytes": 1840000, "repos": 12}, "Rust": {"bytes": 960000, "repos": 4},
+                   "Svelte": {"bytes": 410000, "repos": 3}, "Python": {"bytes": 300000, "repos": 5},
+                   "CSS": {"bytes": 260000, "repos": 9}, "HTML": {"bytes": 190000, "repos": 10},
+                   "PHP": {"bytes": 120000, "repos": 2}, "Shell": {"bytes": 40000, "repos": 3}},
+    "recentes": [{"nome": "artcode", "dias": 1}, {"nome": "clios", "dias": 3},
+                 {"nome": "lover", "dias": 9}, {"nome": "kitsuneislife", "dias": 0}],
+    "frequencia": {"dias": 365, "presente": 238, "contribuicoes": 1412},
+}
+
+
+def carregar_boletim():
+    try:
+        return json.loads(BOLETIM_JSON.read_text(encoding="utf-8")), False
+    except (OSError, ValueError):
+        return BOLETIM_EXEMPLO, True
+
+
+def nota_de(b, maior):
+    """A maior linguagem tira 10; as outras pela raiz quarta da proporção, de meio em meio ponto."""
+    return round(20 * (b / maior) ** .25) / 2
+
+
+def virgula(n):
+    return f"{n:.1f}".replace(".", ",")
+
+
+def boletim(c):
+    d, exemplo = carregar_boletim()
+    ling = sorted(d["linguagens"].items(), key=lambda kv: -kv[1]["bytes"])
+    maior = ling[0][1]["bytes"] if ling else 1
+    linhas = [(n, v["repos"], nota_de(v["bytes"], maior)) for n, v in ling[:8 - len(CURSANDO)]]
+    for n in CURSANDO:
+        if n not in d["linguagens"] and len(linhas) < 8:
+            linhas.append((n, 0, None))
+
+    # título, colado na beirada da folha amarela
+    c.add(logo("o que eu sei fazer?", 40, 2872, 50, LIMA, [-4, 3, -2, 4, -3, 2, -4, 3, -2, 4, -3, 2, -4, 3, -2, 4, -3, 2, 3],
+               [0, -4, 5, -3, 4, -5, 3, -2, 4, -4, 3, -3, 4, -5, 3, -2, 4, -3, 0]), (10, 2810, 620, 2900), z=9)
+
+    x, y, w, rot = 30, 2904, 572, -1.2
+    h = 236 + 30 * len(linhas) + 122
+    s = [f'<g transform="rotate({rot} {x + w / 2} {y + h / 2})">',
+         f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#fbfaf4" filter="url(#sombra)"/>',
+         f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="url(#grade-azul)" opacity=".45"/>',
+         f'<rect x="{x}" y="{y}" width="{w}" height="56" fill="{AZUL_VIVO}"/>',
+         f'<text x="{x + 24}" y="{y + 39}" font-size="26" class="revista" fill="#fff">BOLETIM ESCOLAR</text>',
+         f'<text x="{x + w - 24}" y="{y + 40}" font-size="28" text-anchor="end" class="bolha" fill="{AMARELO}" '
+         f'stroke="{TINTA}" stroke-width="5" paint-order="stroke">2026</text>']
+
+    def campo(cx, cy, rotulo, valor, largura):
+        return (f'<text x="{cx}" y="{cy}" font-size="12" class="revista" fill="#6b6b78">{rotulo}</text>'
+                f'<line x1="{cx}" y1="{cy + 30}" x2="{cx + largura}" y2="{cy + 30}" stroke="#9aa6bd" stroke-width="1.4"/>'
+                + linha(cx + 4, cy + 26, valor, 23, ANIL))
+
+    yy = y + 76
+    s.append(campo(x + 24, yy, "ALUNO(A)", "kitsune", 300))
+    s.append(campo(x + 24, yy + 46, "TURMA", "@kitsuneislife", 140))
+    s.append(campo(x + 184, yy + 46, "REPOSITÓRIOS", str(d["repos"]), 140))
+    fq = d.get("frequencia")
+    if fq:
+        pct = round(100 * fq["presente"] / max(1, fq["dias"]))
+        s.append(campo(x + 24, yy + 92, "FREQUÊNCIA", f"{pct}%", 140))
+        s.append(campo(x + 184, yy + 92, "FALTAS", f"{fq['dias'] - fq['presente']} dias", 140))
+    else:
+        s.append(campo(x + 24, yy + 92, "ESTRELAS DE BOM COMPORTAMENTO", str(d["estrelas"]), 300))
+    # foto 3x4, presa com clipe
+    s.append(f'<rect x="{x + w - 140}" y="{y + 72}" width="112" height="140" fill="#fff" stroke="#c9ccd6" stroke-width="1.5"/>'
+             f'<image x="{x + w - 134}" y="{y + 78}" width="100" height="128" preserveAspectRatio="xMidYMid slice" '
+             f'href="{imagem("3x4.png", 220)}"/>')
+
+    # a tabela das notas
+    ty = y + 212
+    s.append(f'<rect x="{x + 16}" y="{ty}" width="{w - 32}" height="30" fill="{TINTA}"/>')
+    for cx_, rot_, anc in [(x + 30, "MATÉRIA", "start"), (x + 300, "REPOS", "middle"), (x + 384, "NOTA", "middle"),
+                           (x + w - 30, "SITUAÇÃO", "end")]:
+        s.append(f'<text x="{cx_}" y="{ty + 21}" font-size="13" letter-spacing="1" text-anchor="{anc}" class="revista" fill="#fff">{rot_}</text>')
+    for i, (nome, nrepos, nota) in enumerate(linhas):
+        ly = ty + 30 + i * 30
+        if i % 2:
+            s.append(f'<rect x="{x + 16}" y="{ly}" width="{w - 32}" height="30" fill="#e9eefb" opacity=".8"/>')
+        s.append(f'<line x1="{x + 16}" y1="{ly + 30}" x2="{x + w - 16}" y2="{ly + 30}" stroke="#c3cbe0" stroke-width="1"/>')
+        s.append(f'<circle cx="{x + 38}" cy="{ly + 15}" r="6.5" fill="{CORES_LING.get(nome, "#bbb")}" stroke="{TINTA}" stroke-width="1.6"/>')
+        s.append(f'<text x="{x + 54}" y="{ly + 21}" font-size="15" class="revista" fill="{TINTA}">{t(nome)}</text>')
+        s.append(f'<text x="{x + 300}" y="{ly + 21}" font-size="15" text-anchor="middle" class="recibo" fill="{TINTA}">{nrepos or "-"}</text>')
+        if nota is None:
+            s.append(linha(x + 384, ly + 24, "—", 24, "#8a8a96", 'text-anchor="middle"'))
+            sit, cor_sit, fundo_sit = "cursando", TINTA, AMARELO
+        else:
+            cor_nota = "#2f55d4" if nota >= 6 else "#d42f3a"
+            s.append(linha(x + 384, ly + 24, virgula(nota), 24, cor_nota, f'text-anchor="middle" transform="rotate({(-3, 2, -1, 3)[i % 4]} {x + 384} {ly + 15})"'))
+            sit, cor_sit, fundo_sit = ("aprovado", "#fff", "#2fa35a") if nota >= 6 else ("recuperação", "#fff", "#d42f3a")
+        sw = medir("revista", sit, 11) + 18
+        s.append(f'<rect x="{x + w - 30 - sw:.1f}" y="{ly + 5}" width="{sw:.1f}" height="20" rx="10" fill="{fundo_sit}" stroke="{TINTA}" stroke-width="1.6"/>'
+                 f'<text x="{x + w - 30 - sw / 2:.1f}" y="{ly + 19}" font-size="11" text-anchor="middle" class="revista" fill="{cor_sit}">{sit}</text>')
+
+    # observações do professor, de caneta vermelha
+    oy = ty + 30 + len(linhas) * 30 + 24
+    s.append(f'<text x="{x + 24}" y="{oy}" font-size="12" class="revista" fill="#6b6b78">OBSERVAÇÕES</text>')
+    top = linhas[0][0] if linhas else "JavaScript"
+    s.append(linha(x + 24, oy + 28, f"{top}: essa eh braba.", 23, "#d42f3a", f'transform="rotate(-1 {x + 200} {oy + 30})"'))
+    s.append(linha(x + 24, oy + 54, "se você não sabe nem isso,", 21, "#d42f3a", f'transform="rotate(-1 {x + 200} {oy + 60})"'))
+    s.append(linha(x + 24, oy + 80, "não recomendo continuar.", 21, "#d42f3a", f'transform="rotate(-1 {x + 200} {oy + 60})"'))
+    rodape = f"atualizado em {d['atualizado']}" if d.get("atualizado") else "(dados de exemplo)"
+    s.append(f'<text x="{x + w - 20}" y="{y + h - 14}" font-size="11" text-anchor="end" class="recibo" fill="#8a8a96">{t(rodape)}</text>')
+    s.append("</g>")
+    c.add("".join(s), caixa_girada(x, y, w, h, rot), z=6)
+    c.img("recortes/clipe.png", x + w - 96, y + 52, 28, 8, z=7, px=120)
+
+    # carimbo de aprovado, com tinta falhada
+    sx, sy = x + w - 140, y + h - 70
+    c.add(f'<g transform="rotate(-14 {sx} {sy})" filter="url(#carimbo)" opacity=".85">'
+          f'<rect x="{sx - 108}" y="{sy - 34}" width="216" height="68" rx="10" fill="none" stroke="#d42f3a" stroke-width="6"/>'
+          f'<rect x="{sx - 98}" y="{sy - 24}" width="196" height="48" rx="6" fill="none" stroke="#d42f3a" stroke-width="2"/>'
+          f'<text x="{sx}" y="{sy + 13}" font-size="36" letter-spacing="4" text-anchor="middle" class="revista" fill="#d42f3a">APROVADO</text></g>',
+          (sx - 140, sy - 80, sx + 140, sy + 80), z=8)
+    c.add(fita(x + 210, y - 22, 150, 44, -3), (x + 190, y - 50, x + 380, y + 40), z=9)
+
+    # do lado: o que eu uso além das linguagens, e os deveres de casa entregues
+    nx, ny, nw = 626, 2930, 236
+    tags, tx, ty2 = [], nx + 18, ny + 70
+    for i, e in enumerate(EXTRAS):
+        eti, ew = etiqueta(tx, ty2, e, ["#fff", AMARELO, "#7fc8ff", VERDE, "#ffb3d1", "#fff"][i % 6], (-3, 2, -2, 3)[i % 4], px=14)
+        if tx + ew > nx + nw - 10:
+            tx, ty2 = nx + 18, ty2 + 42
+            eti, ew = etiqueta(tx, ty2, e, ["#fff", AMARELO, "#7fc8ff", VERDE, "#ffb3d1", "#fff"][i % 6], (-3, 2, -2, 3)[i % 4], px=14)
+        tags.append(eti)
+        tx += ew + 8
+    nh = ty2 - ny + 64
+    c.add(f'<g transform="rotate(2.5 {nx + nw / 2} {ny + nh / 2})"><rect x="{nx}" y="{ny}" width="{nw}" height="{nh}" fill="{ROSA_BILHETE}" filter="url(#sombra)"/>'
+          + linha(nx + 18, ny + 44, "atividades extras", 24, TINTA) + "".join(tags) + "</g>",
+          caixa_girada(nx, ny, nw, nh, 2.5), z=6)
+    c.img("recortes/tachinha.png", nx + nw / 2 - 16, ny - 26, 40, -8, z=7)
+
+    ay = ny + nh + 34
+    rec = d.get("recentes", [])[:4]
+    ah = 70 + 40 * len(rec) + 20
+    a = [f'<g transform="rotate(-2 {nx + nw / 2} {ay + ah / 2})"><rect x="{nx}" y="{ay}" width="{nw}" height="{ah}" fill="#fff" filter="url(#sombra)"/>']
+    for i in range(len(rec) + 1):
+        a.append(f'<line x1="{nx}" y1="{ay + 58 + i * 40}" x2="{nx + nw}" y2="{ay + 58 + i * 40}" stroke="{PAUTA}" stroke-width="1.3"/>')
+    a.append(f'<line x1="{nx + 32}" y1="{ay}" x2="{nx + 32}" y2="{ay + ah}" stroke="#f0a0aa" stroke-width="1.5"/>')
+    a.append(linha(nx + 42, ay + 44, "deveres entregues", 23, TINTA))
+    for i, r in enumerate(rec):
+        ry = ay + 88 + i * 40
+        quando = "hoje" if r["dias"] == 0 else ("ontem" if r["dias"] == 1 else f"há {r['dias']} dias")
+        nome = r["nome"] if len(r["nome"]) <= 14 else r["nome"][:13] + "…"
+        a.append(f'<path d="M{nx + 10} {ry - 8} l6 7 l11 -14" fill="none" stroke="#2fa35a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
+        a.append(linha(nx + 42, ry, nome, 21, ANIL))
+        a.append(linha(nx + nw - 12, ry, quando, 17, "#6b6b78", 'text-anchor="end"'))
+    a.append("</g>")
+    c.add("".join(a), caixa_girada(nx, ay, nw, ah, -2), z=6)
+    c.add(fita(nx + 60, ay - 18, 110, 36, 4), (nx + 40, ay - 40, nx + 190, ay + 30), z=7)
+    c.add(estrela(852, ay + ah + 20, 18, 0.6, "#ffb3d1") + brilhinho(612, ay + ah + 40, 12, AMARELO, 1.6),
+          (590, ay + ah - 10, 875, ay + ah + 60), z=8)
+
+
 # ---------------------------------------------------------------- fundo e saída
 
 def fundo(y0, h):
@@ -422,6 +589,11 @@ DEFS_CENA = f"""
 <pattern id="xadrez" width="20" height="20" patternUnits="userSpaceOnUse">
   <rect width="20" height="20" fill="#fff"/><rect width="10" height="10" fill="{TINTA}"/><rect x="10" y="10" width="10" height="10" fill="{TINTA}"/>
 </pattern>
+<filter id="carimbo" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="3" result="n"/>
+  <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.5" result="m"/>
+  <feComposite in="SourceGraphic" in2="m" operator="in"/>
+</filter>
 <clipPath id="borda"><rect x="0" y="0" width="{W}" height="{H}" rx="22"/></clipPath>
 """
 
