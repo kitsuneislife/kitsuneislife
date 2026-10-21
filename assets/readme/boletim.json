@@ -1,22 +1,22 @@
 {
  "repos": 50,
- "estrelas": 15,
+ "estrelas": 17,
  "linguagens": {
   "Shell": {
-   "bytes": 267389,
+   "bytes": 289724,
    "repos": 12
+  },
+  "Objective-C": {
+   "bytes": 22732,
+   "repos": 1
   },
   "C": {
    "bytes": 79261,
    "repos": 2
   },
   "Python": {
-   "bytes": 853141,
+   "bytes": 856495,
    "repos": 11
-  },
-  "ASL": {
-   "bytes": 10275,
-   "repos": 1
   },
   "HTML": {
    "bytes": 1263730,
@@ -29,6 +29,10 @@
   "CSS": {
    "bytes": 477950,
    "repos": 22
+  },
+  "ASL": {
+   "bytes": 10275,
+   "repos": 1
   },
   "Rust": {
    "bytes": 2634075,
@@ -97,16 +101,16 @@
    "dias": 0
   },
   {
-   "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 0
+   "nome": "kitsuneislife",
+   "dias": 1
   },
   {
-   "nome": "kitsuneislife",
-   "dias": 0
+   "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
+   "dias": 1
   },
   {
    "nome": "vorssaint-intel-builder",
-   "dias": 2
+   "dias": 3
   }
  ],
  "ferramentas": [
@@ -163,10 +167,10 @@
    "repos": 1
   }
  ],
- "atualizado": "20/10/2026",
+ "atualizado": "21/10/2026",
  "frequencia": {
-  "dias": 367,
-  "presente": 59,
-  "contribuicoes": 642
+  "dias": 368,
+  "presente": 61,
+  "contribuicoes": 677
  }
 }
