@@ -1,7 +1,23 @@
 {
  "repos": 50,
- "estrelas": 17,
+ "estrelas": 19,
  "linguagens": {
+  "HTML": {
+   "bytes": 1263730,
+   "repos": 17
+  },
+  "Python": {
+   "bytes": 856512,
+   "repos": 11
+  },
+  "JavaScript": {
+   "bytes": 1312162,
+   "repos": 27
+  },
+  "CSS": {
+   "bytes": 477950,
+   "repos": 22
+  },
   "Shell": {
    "bytes": 290790,
    "repos": 12
@@ -13,22 +29,6 @@
   "C": {
    "bytes": 79261,
    "repos": 2
-  },
-  "Python": {
-   "bytes": 856512,
-   "repos": 11
-  },
-  "HTML": {
-   "bytes": 1263730,
-   "repos": 17
-  },
-  "JavaScript": {
-   "bytes": 1312162,
-   "repos": 27
-  },
-  "CSS": {
-   "bytes": 477950,
-   "repos": 22
   },
   "ASL": {
    "bytes": 10275,
@@ -97,20 +97,20 @@
  },
  "recentes": [
   {
-   "nome": "nmx-intel",
-   "dias": 0
-  },
-  {
    "nome": "kitsuneislife",
    "dias": 0
   },
   {
+   "nome": "nmx-intel",
+   "dias": 1
+  },
+  {
    "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 2
+   "dias": 3
   },
   {
    "nome": "vorssaint-intel-builder",
-   "dias": 4
+   "dias": 5
   }
  ],
  "ferramentas": [
@@ -167,10 +167,10 @@
    "repos": 1
   }
  ],
- "atualizado": "22/10/2026",
+ "atualizado": "23/10/2026",
  "frequencia": {
-  "dias": 369,
-  "presente": 61,
-  "contribuicoes": 685
+  "dias": 370,
+  "presente": 62,
+  "contribuicoes": 686
  }
 }
