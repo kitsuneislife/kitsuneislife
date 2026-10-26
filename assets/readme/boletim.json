@@ -1,6 +1,6 @@
 {
  "repos": 50,
- "estrelas": 21,
+ "estrelas": 22,
  "linguagens": {
   "HTML": {
    "bytes": 1263730,
@@ -102,15 +102,15 @@
   },
   {
    "nome": "nmx-intel",
-   "dias": 1
+   "dias": 2
   },
   {
    "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 5
+   "dias": 6
   },
   {
    "nome": "vorssaint-intel-builder",
-   "dias": 6
+   "dias": 8
   }
  ],
  "ferramentas": [
@@ -167,10 +167,10 @@
    "repos": 1
   }
  ],
- "atualizado": "25/10/2026",
+ "atualizado": "26/10/2026",
  "frequencia": {
-  "dias": 365,
-  "presente": 62,
-  "contribuicoes": 695
+  "dias": 366,
+  "presente": 63,
+  "contribuicoes": 694
  }
 }
