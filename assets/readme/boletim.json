@@ -1,7 +1,11 @@
 {
- "repos": 50,
- "estrelas": 25,
+ "repos": 51,
+ "estrelas": 27,
  "linguagens": {
+  "Go": {
+   "bytes": 128097,
+   "repos": 1
+  },
   "HTML": {
    "bytes": 1263730,
    "repos": 17
@@ -97,26 +101,26 @@
  },
  "recentes": [
   {
+   "nome": "paragram-api",
+   "dias": 0
+  },
+  {
    "nome": "kitsuneislife",
    "dias": 1
   },
   {
    "nome": "nmx-intel",
-   "dias": 4
+   "dias": 5
   },
   {
    "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 8
-  },
-  {
-   "nome": "vorssaint-intel-builder",
-   "dias": 10
+   "dias": 9
   }
  ],
  "ferramentas": [
   {
    "nome": "git",
-   "repos": 47
+   "repos": 48
   },
   {
    "nome": "npm",
@@ -124,7 +128,7 @@
   },
   {
    "nome": "Actions",
-   "repos": 12
+   "repos": 13
   },
   {
    "nome": "Express",
@@ -135,12 +139,12 @@
    "repos": 4
   },
   {
-   "nome": "Cargo",
+   "nome": "Docker",
    "repos": 3
   },
   {
-   "nome": "Docker",
-   "repos": 2
+   "nome": "Cargo",
+   "repos": 3
   },
   {
    "nome": "Nix",
@@ -167,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "28/10/2026",
+ "atualizado": "29/10/2026",
  "frequencia": {
-  "dias": 368,
-  "presente": 65,
-  "contribuicoes": 696
+  "dias": 369,
+  "presente": 66,
+  "contribuicoes": 733
  }
 }
