@@ -1,18 +1,26 @@
 {
  "repos": 51,
- "estrelas": 27,
+ "estrelas": 31,
  "linguagens": {
-  "Go": {
-   "bytes": 128097,
+  "Shell": {
+   "bytes": 303456,
+   "repos": 12
+  },
+  "Objective-C": {
+   "bytes": 22732,
    "repos": 1
+  },
+  "Python": {
+   "bytes": 861441,
+   "repos": 11
+  },
+  "C": {
+   "bytes": 79261,
+   "repos": 2
   },
   "HTML": {
    "bytes": 1263730,
    "repos": 17
-  },
-  "Python": {
-   "bytes": 856512,
-   "repos": 11
   },
   "JavaScript": {
    "bytes": 1312162,
@@ -22,17 +30,9 @@
    "bytes": 477950,
    "repos": 22
   },
-  "Shell": {
-   "bytes": 291337,
-   "repos": 12
-  },
-  "Objective-C": {
-   "bytes": 22732,
+  "Go": {
+   "bytes": 128097,
    "repos": 1
-  },
-  "C": {
-   "bytes": 79261,
-   "repos": 2
   },
   "ASL": {
    "bytes": 10275,
@@ -101,20 +101,20 @@
  },
  "recentes": [
   {
-   "nome": "paragram-api",
+   "nome": "nmx-intel",
    "dias": 0
   },
   {
    "nome": "kitsuneislife",
+   "dias": 0
+  },
+  {
+   "nome": "paragram-api",
    "dias": 1
   },
   {
-   "nome": "nmx-intel",
-   "dias": 5
-  },
-  {
    "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 9
+   "dias": 10
   }
  ],
  "ferramentas": [
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "29/10/2026",
+ "atualizado": "30/10/2026",
  "frequencia": {
-  "dias": 369,
-  "presente": 66,
-  "contribuicoes": 733
+  "dias": 370,
+  "presente": 67,
+  "contribuicoes": 758
  }
 }
