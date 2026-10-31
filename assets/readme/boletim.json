@@ -3,7 +3,7 @@
  "estrelas": 31,
  "linguagens": {
   "Shell": {
-   "bytes": 303456,
+   "bytes": 304284,
    "repos": 12
   },
   "Objective-C": {
@@ -110,11 +110,11 @@
   },
   {
    "nome": "paragram-api",
-   "dias": 1
+   "dias": 2
   },
   {
    "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 10
+   "dias": 11
   }
  ],
  "ferramentas": [
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "30/10/2026",
+ "atualizado": "31/10/2026",
  "frequencia": {
-  "dias": 370,
-  "presente": 67,
-  "contribuicoes": 758
+  "dias": 371,
+  "presente": 68,
+  "contribuicoes": 761
  }
 }
