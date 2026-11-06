@@ -102,19 +102,19 @@
  "recentes": [
   {
    "nome": "kitsuneislife",
-   "dias": 1
+   "dias": 0
   },
   {
    "nome": "nmx-intel",
-   "dias": 5
+   "dias": 6
   },
   {
    "nome": "paragram-api",
-   "dias": 7
+   "dias": 8
   },
   {
    "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 16
+   "dias": 17
   }
  ],
  "ferramentas": [
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "05/11/2026",
+ "atualizado": "06/11/2026",
  "frequencia": {
-  "dias": 369,
-  "presente": 70,
-  "contribuicoes": 761
+  "dias": 370,
+  "presente": 159,
+  "contribuicoes": 4043
  }
 }
