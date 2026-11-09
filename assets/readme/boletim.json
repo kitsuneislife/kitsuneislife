@@ -106,15 +106,15 @@
   },
   {
    "nome": "nmx-intel",
-   "dias": 8
+   "dias": 9
   },
   {
    "nome": "paragram-api",
-   "dias": 10
+   "dias": 11
   },
   {
    "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 19
+   "dias": 20
   }
  ],
  "ferramentas": [
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "08/11/2026",
+ "atualizado": "09/11/2026",
  "frequencia": {
-  "dias": 365,
-  "presente": 156,
-  "contribuicoes": 4050
+  "dias": 366,
+  "presente": 158,
+  "contribuicoes": 4086
  }
 }
