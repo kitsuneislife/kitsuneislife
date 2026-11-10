@@ -1,6 +1,6 @@
 {
  "repos": 51,
- "estrelas": 38,
+ "estrelas": 39,
  "linguagens": {
   "HTML": {
    "bytes": 1263730,
@@ -102,19 +102,19 @@
  "recentes": [
   {
    "nome": "kitsuneislife",
-   "dias": 1
+   "dias": 0
   },
   {
    "nome": "nmx-intel",
-   "dias": 9
+   "dias": 10
   },
   {
    "nome": "paragram-api",
-   "dias": 11
+   "dias": 12
   },
   {
    "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 20
+   "dias": 21
   }
  ],
  "ferramentas": [
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "09/11/2026",
+ "atualizado": "10/11/2026",
  "frequencia": {
-  "dias": 366,
-  "presente": 158,
-  "contribuicoes": 4086
+  "dias": 367,
+  "presente": 159,
+  "contribuicoes": 4100
  }
 }
