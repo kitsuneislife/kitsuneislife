@@ -1,25 +1,25 @@
 {
- "repos": 51,
- "estrelas": 41,
+ "repos": 52,
+ "estrelas": 42,
  "linguagens": {
-  "HTML": {
-   "bytes": 1263730,
-   "repos": 17
+  "JavaScript": {
+   "bytes": 1765972,
+   "repos": 28
   },
   "Python": {
-   "bytes": 861441,
-   "repos": 11
+   "bytes": 1023546,
+   "repos": 12
   },
-  "JavaScript": {
-   "bytes": 1312162,
-   "repos": 27
+  "HTML": {
+   "bytes": 1328934,
+   "repos": 18
   },
   "CSS": {
-   "bytes": 477950,
-   "repos": 22
+   "bytes": 535366,
+   "repos": 23
   },
   "Shell": {
-   "bytes": 304284,
+   "bytes": 328811,
    "repos": 12
   },
   "Objective-C": {
@@ -101,30 +101,30 @@
  },
  "recentes": [
   {
-   "nome": "kitsuneislife",
-   "dias": 1
+   "nome": "cooking",
+   "dias": 0
   },
   {
    "nome": "nmx-intel",
-   "dias": 12
+   "dias": 0
+  },
+  {
+   "nome": "kitsuneislife",
+   "dias": 0
   },
   {
    "nome": "paragram-api",
-   "dias": 14
-  },
-  {
-   "nome": "Acer-Nitro-V15-ANV15-51-Hackintosh",
-   "dias": 23
+   "dias": 15
   }
  ],
  "ferramentas": [
   {
    "nome": "git",
-   "repos": 48
+   "repos": 49
   },
   {
    "nome": "npm",
-   "repos": 19
+   "repos": 20
   },
   {
    "nome": "Actions",
@@ -136,7 +136,11 @@
   },
   {
    "nome": "Vite",
-   "repos": 4
+   "repos": 5
+  },
+  {
+   "nome": "React",
+   "repos": 3
   },
   {
    "nome": "Docker",
@@ -148,10 +152,6 @@
   },
   {
    "nome": "Nix",
-   "repos": 2
-  },
-  {
-   "nome": "React",
    "repos": 2
   },
   {
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "12/11/2026",
+ "atualizado": "13/11/2026",
  "frequencia": {
-  "dias": 369,
-  "presente": 161,
-  "contribuicoes": 4122
+  "dias": 370,
+  "presente": 162,
+  "contribuicoes": 4345
  }
 }
