@@ -2,25 +2,13 @@
  "repos": 52,
  "estrelas": 41,
  "linguagens": {
-  "Shell": {
-   "bytes": 342516,
-   "repos": 12
-  },
-  "Objective-C": {
-   "bytes": 26025,
-   "repos": 1
+  "HTML": {
+   "bytes": 1328934,
+   "repos": 18
   },
   "Python": {
    "bytes": 1024528,
    "repos": 12
-  },
-  "C": {
-   "bytes": 79261,
-   "repos": 2
-  },
-  "HTML": {
-   "bytes": 1328934,
-   "repos": 18
   },
   "JavaScript": {
    "bytes": 1765972,
@@ -29,6 +17,18 @@
   "CSS": {
    "bytes": 535366,
    "repos": 23
+  },
+  "Shell": {
+   "bytes": 342516,
+   "repos": 12
+  },
+  "Objective-C": {
+   "bytes": 26025,
+   "repos": 1
+  },
+  "C": {
+   "bytes": 79261,
+   "repos": 2
   },
   "Go": {
    "bytes": 128097,
@@ -101,20 +101,20 @@
  },
  "recentes": [
   {
-   "nome": "nmx-intel",
-   "dias": 0
-  },
-  {
    "nome": "kitsuneislife",
-   "dias": 0
-  },
-  {
-   "nome": "cooking",
    "dias": 1
   },
   {
+   "nome": "nmx-intel",
+   "dias": 1
+  },
+  {
+   "nome": "cooking",
+   "dias": 2
+  },
+  {
    "nome": "paragram-api",
-   "dias": 16
+   "dias": 17
   }
  ],
  "ferramentas": [
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "14/11/2026",
+ "atualizado": "15/11/2026",
  "frequencia": {
-  "dias": 371,
-  "presente": 163,
-  "contribuicoes": 4488
+  "dias": 365,
+  "presente": 162,
+  "contribuicoes": 4600
  }
 }
