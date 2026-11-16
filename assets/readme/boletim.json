@@ -106,15 +106,15 @@
   },
   {
    "nome": "nmx-intel",
-   "dias": 1
-  },
-  {
-   "nome": "cooking",
    "dias": 2
   },
   {
+   "nome": "cooking",
+   "dias": 3
+  },
+  {
    "nome": "paragram-api",
-   "dias": 17
+   "dias": 18
   }
  ],
  "ferramentas": [
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "15/11/2026",
+ "atualizado": "16/11/2026",
  "frequencia": {
-  "dias": 365,
-  "presente": 162,
+  "dias": 366,
+  "presente": 163,
   "contribuicoes": 4600
  }
 }
