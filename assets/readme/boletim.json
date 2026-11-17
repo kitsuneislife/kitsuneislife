@@ -1,6 +1,6 @@
 {
  "repos": 52,
- "estrelas": 41,
+ "estrelas": 42,
  "linguagens": {
   "HTML": {
    "bytes": 1328934,
@@ -102,19 +102,19 @@
  "recentes": [
   {
    "nome": "kitsuneislife",
-   "dias": 1
+   "dias": 0
   },
   {
    "nome": "nmx-intel",
-   "dias": 2
-  },
-  {
-   "nome": "cooking",
    "dias": 3
   },
   {
+   "nome": "cooking",
+   "dias": 4
+  },
+  {
    "nome": "paragram-api",
-   "dias": 18
+   "dias": 19
   }
  ],
  "ferramentas": [
@@ -171,10 +171,10 @@
    "repos": 1
   }
  ],
- "atualizado": "16/11/2026",
+ "atualizado": "17/11/2026",
  "frequencia": {
-  "dias": 366,
-  "presente": 163,
-  "contribuicoes": 4600
+  "dias": 367,
+  "presente": 164,
+  "contribuicoes": 4612
  }
 }
