@@ -1,10 +1,22 @@
 {
- "repos": 52,
+ "repos": 53,
  "estrelas": 42,
  "linguagens": {
+  "TypeScript": {
+   "bytes": 482224,
+   "repos": 5
+  },
+  "Svelte": {
+   "bytes": 4962,
+   "repos": 1
+  },
+  "CSS": {
+   "bytes": 536952,
+   "repos": 24
+  },
   "HTML": {
-   "bytes": 1328934,
-   "repos": 18
+   "bytes": 1329268,
+   "repos": 19
   },
   "Python": {
    "bytes": 1024528,
@@ -13,10 +25,6 @@
   "JavaScript": {
    "bytes": 1765972,
    "repos": 28
-  },
-  "CSS": {
-   "bytes": 535366,
-   "repos": 23
   },
   "Shell": {
    "bytes": 342516,
@@ -49,10 +57,6 @@
   "Kotlin": {
    "bytes": 226388,
    "repos": 1
-  },
-  "TypeScript": {
-   "bytes": 466297,
-   "repos": 4
   },
   "Dockerfile": {
    "bytes": 2409,
@@ -101,30 +105,30 @@
  },
  "recentes": [
   {
-   "nome": "kitsuneislife",
+   "nome": "pauta",
    "dias": 0
   },
   {
-   "nome": "nmx-intel",
-   "dias": 4
+   "nome": "kitsuneislife",
+   "dias": 1
   },
   {
-   "nome": "cooking",
+   "nome": "nmx-intel",
    "dias": 5
   },
   {
-   "nome": "paragram-api",
-   "dias": 20
+   "nome": "cooking",
+   "dias": 6
   }
  ],
  "ferramentas": [
   {
    "nome": "git",
-   "repos": 49
+   "repos": 50
   },
   {
    "nome": "npm",
-   "repos": 20
+   "repos": 21
   },
   {
    "nome": "Actions",
@@ -136,14 +140,14 @@
   },
   {
    "nome": "Vite",
-   "repos": 5
-  },
-  {
-   "nome": "React",
-   "repos": 3
+   "repos": 6
   },
   {
    "nome": "Docker",
+   "repos": 4
+  },
+  {
+   "nome": "React",
    "repos": 3
   },
   {
@@ -151,12 +155,12 @@
    "repos": 3
   },
   {
-   "nome": "Nix",
+   "nome": "pnpm",
    "repos": 2
   },
   {
-   "nome": "pnpm",
-   "repos": 1
+   "nome": "Nix",
+   "repos": 2
   },
   {
    "nome": "pip",
@@ -171,10 +175,10 @@
    "repos": 1
   }
  ],
- "atualizado": "18/11/2026",
+ "atualizado": "19/11/2026",
  "frequencia": {
-  "dias": 368,
-  "presente": 165,
-  "contribuicoes": 4785
+  "dias": 369,
+  "presente": 166,
+  "contribuicoes": 4814
  }
 }
