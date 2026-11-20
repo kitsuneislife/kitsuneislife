@@ -1,19 +1,7 @@
 {
  "repos": 53,
- "estrelas": 42,
+ "estrelas": 43,
  "linguagens": {
-  "TypeScript": {
-   "bytes": 482224,
-   "repos": 5
-  },
-  "Svelte": {
-   "bytes": 4962,
-   "repos": 1
-  },
-  "CSS": {
-   "bytes": 536952,
-   "repos": 24
-  },
   "HTML": {
    "bytes": 1329268,
    "repos": 19
@@ -25,6 +13,18 @@
   "JavaScript": {
    "bytes": 1765972,
    "repos": 28
+  },
+  "CSS": {
+   "bytes": 536952,
+   "repos": 24
+  },
+  "TypeScript": {
+   "bytes": 482224,
+   "repos": 5
+  },
+  "Svelte": {
+   "bytes": 4962,
+   "repos": 1
   },
   "Shell": {
    "bytes": 342516,
@@ -105,20 +105,20 @@
  },
  "recentes": [
   {
-   "nome": "pauta",
+   "nome": "kitsuneislife",
    "dias": 0
   },
   {
-   "nome": "kitsuneislife",
+   "nome": "pauta",
    "dias": 1
   },
   {
    "nome": "nmx-intel",
-   "dias": 5
+   "dias": 6
   },
   {
    "nome": "cooking",
-   "dias": 6
+   "dias": 7
   }
  ],
  "ferramentas": [
@@ -175,10 +175,10 @@
    "repos": 1
   }
  ],
- "atualizado": "19/11/2026",
+ "atualizado": "20/11/2026",
  "frequencia": {
-  "dias": 369,
-  "presente": 166,
-  "contribuicoes": 4814
+  "dias": 370,
+  "presente": 167,
+  "contribuicoes": 4830
  }
 }
