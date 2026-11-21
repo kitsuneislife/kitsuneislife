@@ -110,15 +110,15 @@
   },
   {
    "nome": "pauta",
-   "dias": 1
+   "dias": 2
   },
   {
    "nome": "nmx-intel",
-   "dias": 6
+   "dias": 7
   },
   {
    "nome": "cooking",
-   "dias": 7
+   "dias": 8
   }
  ],
  "ferramentas": [
@@ -175,10 +175,10 @@
    "repos": 1
   }
  ],
- "atualizado": "20/11/2026",
+ "atualizado": "21/11/2026",
  "frequencia": {
-  "dias": 370,
-  "presente": 167,
-  "contribuicoes": 4830
+  "dias": 371,
+  "presente": 168,
+  "contribuicoes": 4840
  }
 }
