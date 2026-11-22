@@ -2,13 +2,25 @@
  "repos": 53,
  "estrelas": 43,
  "linguagens": {
-  "HTML": {
-   "bytes": 1329268,
-   "repos": 19
+  "Shell": {
+   "bytes": 346786,
+   "repos": 12
+  },
+  "Objective-C": {
+   "bytes": 26025,
+   "repos": 1
   },
   "Python": {
    "bytes": 1024528,
    "repos": 12
+  },
+  "C": {
+   "bytes": 79261,
+   "repos": 2
+  },
+  "HTML": {
+   "bytes": 1329268,
+   "repos": 19
   },
   "JavaScript": {
    "bytes": 1765972,
@@ -25,18 +37,6 @@
   "Svelte": {
    "bytes": 4962,
    "repos": 1
-  },
-  "Shell": {
-   "bytes": 342516,
-   "repos": 12
-  },
-  "Objective-C": {
-   "bytes": 26025,
-   "repos": 1
-  },
-  "C": {
-   "bytes": 79261,
-   "repos": 2
   },
   "Go": {
    "bytes": 128097,
@@ -105,20 +105,20 @@
  },
  "recentes": [
   {
-   "nome": "kitsuneislife",
+   "nome": "nmx-intel",
    "dias": 0
   },
   {
-   "nome": "pauta",
-   "dias": 2
+   "nome": "kitsuneislife",
+   "dias": 1
   },
   {
-   "nome": "nmx-intel",
-   "dias": 7
+   "nome": "pauta",
+   "dias": 3
   },
   {
    "nome": "cooking",
-   "dias": 8
+   "dias": 9
   }
  ],
  "ferramentas": [
@@ -175,10 +175,10 @@
    "repos": 1
   }
  ],
- "atualizado": "21/11/2026",
+ "atualizado": "22/11/2026",
  "frequencia": {
-  "dias": 371,
+  "dias": 365,
   "presente": 168,
-  "contribuicoes": 4840
+  "contribuicoes": 4867
  }
 }
