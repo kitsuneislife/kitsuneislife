@@ -1,42 +1,46 @@
 {
- "repos": 53,
+ "repos": 54,
  "estrelas": 43,
  "linguagens": {
+  "TypeScript": {
+   "bytes": 1219524,
+   "repos": 6
+  },
+  "Svelte": {
+   "bytes": 411884,
+   "repos": 2
+  },
+  "CSS": {
+   "bytes": 551463,
+   "repos": 25
+  },
+  "HTML": {
+   "bytes": 1329617,
+   "repos": 20
+  },
+  "PLpgSQL": {
+   "bytes": 3456,
+   "repos": 1
+  },
+  "JavaScript": {
+   "bytes": 1767947,
+   "repos": 29
+  },
   "Shell": {
-   "bytes": 346786,
+   "bytes": 375884,
+   "repos": 12
+  },
+  "Python": {
+   "bytes": 1030231,
    "repos": 12
   },
   "Objective-C": {
-   "bytes": 26025,
+   "bytes": 28054,
    "repos": 1
-  },
-  "Python": {
-   "bytes": 1024528,
-   "repos": 12
   },
   "C": {
-   "bytes": 79261,
+   "bytes": 82009,
    "repos": 2
-  },
-  "HTML": {
-   "bytes": 1329268,
-   "repos": 19
-  },
-  "JavaScript": {
-   "bytes": 1765972,
-   "repos": 28
-  },
-  "CSS": {
-   "bytes": 536952,
-   "repos": 24
-  },
-  "TypeScript": {
-   "bytes": 482224,
-   "repos": 5
-  },
-  "Svelte": {
-   "bytes": 4962,
-   "repos": 1
   },
   "Go": {
    "bytes": 128097,
@@ -105,34 +109,34 @@
  },
  "recentes": [
   {
+   "nome": "pauta",
+   "dias": 0
+  },
+  {
+   "nome": "kriup",
+   "dias": 0
+  },
+  {
    "nome": "nmx-intel",
    "dias": 0
   },
   {
    "nome": "kitsuneislife",
    "dias": 1
-  },
-  {
-   "nome": "pauta",
-   "dias": 3
-  },
-  {
-   "nome": "cooking",
-   "dias": 9
   }
  ],
  "ferramentas": [
   {
    "nome": "git",
-   "repos": 50
+   "repos": 51
   },
   {
    "nome": "npm",
-   "repos": 21
+   "repos": 22
   },
   {
    "nome": "Actions",
-   "repos": 13
+   "repos": 14
   },
   {
    "nome": "Express",
@@ -140,11 +144,15 @@
   },
   {
    "nome": "Vite",
-   "repos": 6
+   "repos": 7
   },
   {
    "nome": "Docker",
-   "repos": 4
+   "repos": 5
+  },
+  {
+   "nome": "pnpm",
+   "repos": 3
   },
   {
    "nome": "React",
@@ -153,10 +161,6 @@
   {
    "nome": "Cargo",
    "repos": 3
-  },
-  {
-   "nome": "pnpm",
-   "repos": 2
   },
   {
    "nome": "Nix",
@@ -175,10 +179,10 @@
    "repos": 1
   }
  ],
- "atualizado": "22/11/2026",
+ "atualizado": "23/11/2026",
  "frequencia": {
-  "dias": 365,
-  "presente": 168,
-  "contribuicoes": 4867
+  "dias": 366,
+  "presente": 169,
+  "contribuicoes": 5381
  }
 }
