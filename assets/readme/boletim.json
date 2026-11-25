@@ -2,36 +2,12 @@
  "repos": 54,
  "estrelas": 44,
  "linguagens": {
-  "TypeScript": {
-   "bytes": 1219524,
-   "repos": 6
-  },
-  "Svelte": {
-   "bytes": 411884,
-   "repos": 2
-  },
-  "CSS": {
-   "bytes": 551463,
-   "repos": 25
-  },
-  "HTML": {
-   "bytes": 1329617,
-   "repos": 20
+  "Shell": {
+   "bytes": 377963,
+   "repos": 12
   },
   "Python": {
    "bytes": 1030231,
-   "repos": 12
-  },
-  "JavaScript": {
-   "bytes": 1767947,
-   "repos": 29
-  },
-  "PLpgSQL": {
-   "bytes": 3456,
-   "repos": 1
-  },
-  "Shell": {
-   "bytes": 375884,
    "repos": 12
   },
   "Objective-C": {
@@ -41,6 +17,30 @@
   "C": {
    "bytes": 82009,
    "repos": 2
+  },
+  "JavaScript": {
+   "bytes": 1783602,
+   "repos": 29
+  },
+  "CSS": {
+   "bytes": 562646,
+   "repos": 25
+  },
+  "HTML": {
+   "bytes": 1330048,
+   "repos": 20
+  },
+  "TypeScript": {
+   "bytes": 1219524,
+   "repos": 6
+  },
+  "Svelte": {
+   "bytes": 411884,
+   "repos": 2
+  },
+  "PLpgSQL": {
+   "bytes": 3456,
+   "repos": 1
   },
   "Go": {
    "bytes": 128097,
@@ -109,7 +109,11 @@
  },
  "recentes": [
   {
-   "nome": "pauta",
+   "nome": "nmx-intel",
+   "dias": 0
+  },
+  {
+   "nome": "cooking",
    "dias": 0
   },
   {
@@ -117,11 +121,7 @@
    "dias": 0
   },
   {
-   "nome": "kriup",
-   "dias": 1
-  },
-  {
-   "nome": "nmx-intel",
+   "nome": "pauta",
    "dias": 1
   }
  ],
@@ -151,11 +151,11 @@
    "repos": 5
   },
   {
-   "nome": "pnpm",
+   "nome": "React",
    "repos": 3
   },
   {
-   "nome": "React",
+   "nome": "pnpm",
    "repos": 3
   },
   {
@@ -179,10 +179,10 @@
    "repos": 1
   }
  ],
- "atualizado": "24/11/2026",
+ "atualizado": "25/11/2026",
  "frequencia": {
-  "dias": 367,
-  "presente": 170,
-  "contribuicoes": 5494
+  "dias": 368,
+  "presente": 171,
+  "contribuicoes": 5529
  }
 }
